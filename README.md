@@ -1,4 +1,4 @@
-# my SBUM (Sistem Web & Mobile
+# my SBUM (Sistem Web & Mobile)
 
 my SBUM adalah sistem informasi **Sub Bagian Umum (SBUM)** untuk proses peminjaman fasilitas, monitoring, dan pengelolaan data melalui aplikasi web dan mobile.
 
