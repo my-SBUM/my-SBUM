@@ -3,6 +3,7 @@ import '../ruangan/ruangan_screen.dart'; // Import Halaman Ruangan
 import '../peralatan/peralatan_screen.dart'; // Import Halaman Peralatan
 import '../riwayat/riwayat_screen.dart'; // Import Halaman Riwayat
 import '../lainnya/lainnya_screen.dart'; // Import Halaman Lainnya
+import '../profil/profil_saya_screen.dart'; // Import Halaman Profil Saya
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -138,8 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
         // Konten Scroll Dashboard
         SafeArea(
           child: SingleChildScrollView(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -150,55 +150,59 @@ class _HomeScreenState extends State<HomeScreen> {
                     Row(
                       children: [
                         Container(
-                          width: 42,
-                          height: 42,
+                          width: 46,
+                          height: 46,
                           decoration: BoxDecoration(
                             gradient: const LinearGradient(
                               colors: [Color(0xFF62D283), Color(0xFF237641)],
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                             ),
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(13),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0xFF0A6332).withOpacity(0.20),
+                                blurRadius: 12,
+                                offset: const Offset(0, 5),
+                              ),
+                            ],
                           ),
                           child: const Icon(
                             Icons.meeting_room_outlined,
                             color: Colors.white,
-                            size: 24,
+                            size: 26,
                           ),
                         ),
                         const SizedBox(width: 8),
-                        RichText(
-                          text: const TextSpan(
-                            children: [
-                              TextSpan(
-                                text: 'my\n',
-                                style: TextStyle(
-                                  color: primaryGreen,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  height: 1.0,
-                                ),
+                        const Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'my',
+                              style: TextStyle(
+                                color: Color(0xFF0A6332),
+                                fontWeight: FontWeight.w800,
+                                fontSize: 15,
+                                height: 1,
                               ),
-                              TextSpan(
-                                text: 'SBUM',
-                                style: TextStyle(
-                                  color: primaryGreen,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w900,
-                                  letterSpacing: 0.5,
-                                ),
+                            ),
+                            Text(
+                              'SBUM',
+                              style: TextStyle(
+                                color: Color(0xFF0A6332),
+                                fontWeight: FontWeight.w900,
+                                fontSize: 21,
+                                height: 1.05,
+                                letterSpacing: 0.4,
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                    const CircleAvatar(
-                      radius: 22,
-                      backgroundColor: Color(0xFFE2E8F0),
-                      child:
-                          Icon(Icons.person, color: primaryGreen, size: 28),
-                    ),
+
+                    // Avatar profil yang bisa diklik
+                    _buildAvatarProfile(),
                   ],
                 ),
                 const SizedBox(height: 24),
@@ -447,6 +451,47 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ],
+    );
+  }
+
+  // Helper: avatar profil di header
+  Widget _buildAvatarProfile() {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ProfilSayaScreen(),
+          ),
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.all(2),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: Colors.white,
+            width: 2,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.08),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: const CircleAvatar(
+          radius: 20,
+          backgroundColor: Color(0xFFE2E8F0),
+          child: Icon(
+            Icons.person,
+            color: Color(0xFF0A6332),
+            size: 26,
+          ),
+        ),
+      ),
     );
   }
 
