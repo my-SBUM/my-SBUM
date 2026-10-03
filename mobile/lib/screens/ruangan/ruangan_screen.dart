@@ -1,0 +1,724 @@
+import 'package:flutter/material.dart';
+import 'ruangan_lainnya_screen.dart'; // halaman list "Lihat Ruangan Lainnya"
+
+// ---------- Warna ----------
+class _C {
+  static const green = Color(0xFF2E9451);
+  static const greenDark = Color(0xFF0A6332);
+  static const greenSoft = Color(0xFFC9F0D6);
+  static const red = Color(0xFFC62828);
+  static const redSoft = Color(0xFFFFD6D6);
+  static const blueSoft = Color(0xFFDDE8FA);
+  static const blue = Color(0xFF1E3A8A);
+  static const bg = Color(0xFFF8FAFC);
+  static const text = Color(0xFF1E293B);
+  static const muted = Color(0xFF64748B);
+}
+
+// ---------- Model ----------
+class Ruangan {
+  final String nama;
+  final String lokasi;
+  final int kapasitas;
+  final bool tersedia;
+  final String? gambar; // URL gambar
+
+  const Ruangan({
+    required this.nama,
+    required this.lokasi,
+    required this.kapasitas,
+    required this.tersedia,
+    this.gambar,
+  });
+}
+
+enum _Filter { semua, tersedia, tidakTersedia }
+
+// ---------- Screen ----------
+class RuanganScreen extends StatefulWidget {
+  const RuanganScreen({super.key});
+
+  @override
+  State<RuanganScreen> createState() => _RuanganScreenState();
+}
+
+class _RuanganScreenState extends State<RuanganScreen> {
+  // Jumlah kartu yang ditampilkan di halaman ini.
+  // Sisanya dilihat lewat tombol "Lihat Ruangan Lainnya".
+  static const int _maxTampil = 4;
+
+  // Data contoh. Ganti dengan data dari API/repository.
+  final List<Ruangan> _semua = const [
+    Ruangan(
+      nama: 'Ruang Teater D301',
+      lokasi: 'Gedung D • Lt. 3',
+      kapasitas: 80,
+      tersedia: true,
+      gambar:
+          'https://images.unsplash.com/photo-1517502884422-41eaead166d4?q=80&w=600',
+    ),
+    Ruangan(
+      nama: 'Ruang Seminar C201',
+      lokasi: 'Gedung C • Lt. 2',
+      kapasitas: 60,
+      tersedia: false,
+      gambar:
+          'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=600',
+    ),
+    Ruangan(
+      nama: 'Ruang Rapat B105',
+      lokasi: 'Gedung B • Lt. 1',
+      kapasitas: 20,
+      tersedia: true,
+      gambar:
+          'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=600',
+    ),
+    Ruangan(
+      nama: 'Lab Komputer A091',
+      lokasi: 'Gedung A • Lt. 2',
+      kapasitas: 40,
+      tersedia: true,
+      gambar:
+          'https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=600',
+    ),
+    Ruangan(
+      nama: 'Aula Serbaguna',
+      lokasi: 'Gedung D • Lt. 1',
+      kapasitas: 200,
+      tersedia: true,
+      gambar:
+          'https://images.unsplash.com/photo-1517502884422-41eaead166d4?q=80&w=600',
+    ),
+    Ruangan(
+      nama: 'Ruang Kelas B202',
+      lokasi: 'Gedung B • Lt. 2',
+      kapasitas: 50,
+      tersedia: false,
+      gambar:
+          'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=600',
+    ),
+    Ruangan(
+      nama: 'Lab Multimedia',
+      lokasi: 'Gedung A • Lt. 2',
+      kapasitas: 25,
+      tersedia: true,
+      gambar:
+          'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=600',
+    ),
+    Ruangan(
+      nama: 'Ruang Diskusi C110',
+      lokasi: 'Gedung C • Lt. 1',
+      kapasitas: 12,
+      tersedia: true,
+      gambar:
+          'https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=600',
+    ),
+  ];
+
+  final TextEditingController _searchCtrl = TextEditingController();
+  _Filter _filter = _Filter.semua;
+  String _query = '';
+
+  @override
+  void dispose() {
+    _searchCtrl.dispose();
+    super.dispose();
+  }
+
+  List<Ruangan> get _hasilFilter {
+    final q = _query.trim().toLowerCase();
+    return _semua.where((r) {
+      bool cocokFilter;
+      if (_filter == _Filter.tersedia) {
+        cocokFilter = r.tersedia;
+      } else if (_filter == _Filter.tidakTersedia) {
+        cocokFilter = !r.tersedia;
+      } else {
+        cocokFilter = true;
+      }
+      final cocokCari = q.isEmpty ||
+          r.nama.toLowerCase().contains(q) ||
+          r.lokasi.toLowerCase().contains(q);
+      return cocokFilter && cocokCari;
+    }).toList();
+  }
+
+  void _aksi(Ruangan r, {required bool pilih}) {
+    // TODO: arahkan ke detail ruangan / jadwal.
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('${pilih ? 'Pilih' : 'Jadwal'}: ${r.nama}')),
+    );
+  }
+
+  void _bukaHalamanLainnya() {
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => RuanganLainnyaScreen()),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final hasil = _hasilFilter;
+    final tampil = hasil.take(_maxTampil).toList();
+    final jumlahTersedia = _semua.where((r) => r.tersedia).length;
+    final jumlahTidak = _semua.length - jumlahTersedia;
+
+    return Scaffold(
+      backgroundColor: _C.bg,
+      body: Stack(
+        children: [
+          // dekorasi lengkung hijau di pojok kanan atas
+          Positioned(
+            top: -90,
+            right: -80,
+            child: Container(
+              width: 300,
+              height: 260,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: RadialGradient(
+                  colors: [Color(0xFFD7F2E0), Color(0x00D7F2E0)],
+                ),
+              ),
+            ),
+          ),
+          SafeArea(
+            bottom: false,
+            child: ListView(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+              children: [
+                const _TopBar(),
+                const SizedBox(height: 28),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 4),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Daftar Ruangan',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                              color: _C.text)),
+                      SizedBox(height: 2),
+                      Text('Memilih ruangan yang tersedia berdasarkan jadwal',
+                          style: TextStyle(fontSize: 13, color: _C.muted)),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 14),
+                _SearchField(
+                  controller: _searchCtrl,
+                  onChanged: (v) => setState(() => _query = v),
+                ),
+                const SizedBox(height: 14),
+                _FilterRow(
+                  selected: _filter,
+                  jumlahSemua: _semua.length,
+                  jumlahTersedia: jumlahTersedia,
+                  jumlahTidak: jumlahTidak,
+                  onSelect: (f) => setState(() => _filter = f),
+                ),
+                const SizedBox(height: 16),
+                if (tampil.isEmpty)
+                  const _EmptyState()
+                else
+                  GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: tampil.length,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 14,
+                      crossAxisSpacing: 14,
+                      mainAxisExtent: 272,
+                    ),
+                    itemBuilder: (_, i) => _RuanganCard(
+                      item: tampil[i],
+                      onPilih: () => _aksi(tampil[i], pilih: true),
+                      onJadwal: () => _aksi(tampil[i], pilih: false),
+                    ),
+                  ),
+                if (hasil.isNotEmpty) ...[
+                  const SizedBox(height: 18),
+                  _ProgressInfo(tampil: tampil.length, total: hasil.length),
+                  const SizedBox(height: 14),
+                  _LihatLainnya(onTap: _bukaHalamanLainnya),
+                ],
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ============================================================
+// Komponen
+// ============================================================
+
+class _TopBar extends StatelessWidget {
+  const _TopBar();
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            Container(
+              width: 46,
+              height: 46,
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Color(0xFF62D283), Color(0xFF237641)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: const Icon(Icons.meeting_room_outlined,
+                  color: Colors.white, size: 26),
+            ),
+            const SizedBox(width: 6),
+            const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('my',
+                    style: TextStyle(
+                        color: _C.green,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 16,
+                        height: 1)),
+                Text('SBUM',
+                    style: TextStyle(
+                        color: _C.green,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 22,
+                        height: 1)),
+              ],
+            ),
+          ],
+        ),
+        const CircleAvatar(
+          radius: 20,
+          backgroundColor: Color(0xFFE2E8F0),
+          child: Icon(Icons.person, color: _C.green, size: 26),
+        ),
+      ],
+    );
+  }
+}
+
+class _SearchField extends StatelessWidget {
+  final TextEditingController controller;
+  final ValueChanged<String> onChanged;
+
+  const _SearchField({required this.controller, required this.onChanged});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 46,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: TextField(
+        controller: controller,
+        onChanged: onChanged,
+        style: const TextStyle(fontSize: 14),
+        decoration: const InputDecoration(
+          hintText: 'Cari ruangan atau gedung...',
+          hintStyle: TextStyle(color: _C.muted, fontSize: 14),
+          prefixIcon: Icon(Icons.search, color: _C.muted),
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.symmetric(vertical: 13),
+        ),
+      ),
+    );
+  }
+}
+
+class _FilterRow extends StatelessWidget {
+  final _Filter selected;
+  final int jumlahSemua;
+  final int jumlahTersedia;
+  final int jumlahTidak;
+  final ValueChanged<_Filter> onSelect;
+
+  const _FilterRow({
+    required this.selected,
+    required this.jumlahSemua,
+    required this.jumlahTersedia,
+    required this.jumlahTidak,
+    required this.onSelect,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
+          _chip(
+            label: 'Semua ($jumlahSemua)',
+            active: selected == _Filter.semua,
+            leading: Icons.grid_view_rounded,
+            onTap: () => onSelect(_Filter.semua),
+          ),
+          const SizedBox(width: 8),
+          _chip(
+            label: 'Tersedia ($jumlahTersedia)',
+            active: selected == _Filter.tersedia,
+            dot: _C.green,
+            onTap: () => onSelect(_Filter.tersedia),
+          ),
+          const SizedBox(width: 8),
+          _chip(
+            label: 'Tidak Tersedia ($jumlahTidak)',
+            active: selected == _Filter.tidakTersedia,
+            dot: _C.red,
+            textColor: _C.red,
+            onTap: () => onSelect(_Filter.tidakTersedia),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _chip({
+    required String label,
+    required bool active,
+    required VoidCallback onTap,
+    IconData? leading,
+    Color? dot,
+    Color? textColor,
+  }) {
+    final fg = active ? Colors.white : (textColor ?? _C.greenDark);
+    return Material(
+      color: active ? _C.greenDark : Colors.white,
+      borderRadius: BorderRadius.circular(30),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(30),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (leading != null) ...[
+                Icon(leading, size: 16, color: fg),
+                const SizedBox(width: 6),
+              ],
+              if (dot != null) ...[
+                Container(
+                  width: 7,
+                  height: 7,
+                  decoration: BoxDecoration(
+                      color: active ? Colors.white : dot,
+                      shape: BoxShape.circle),
+                ),
+                const SizedBox(width: 6),
+              ],
+              Text(label,
+                  style: TextStyle(
+                      color: fg, fontSize: 13, fontWeight: FontWeight.w600)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _RuanganCard extends StatelessWidget {
+  final Ruangan item;
+  final VoidCallback onPilih;
+  final VoidCallback onJadwal;
+
+  const _RuanganCard({
+    required this.item,
+    required this.onPilih,
+    required this.onJadwal,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(14),
+        boxShadow: const [
+          BoxShadow(
+              color: Color(0x14000000), blurRadius: 8, offset: Offset(0, 2)),
+        ],
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: 132,
+            width: double.infinity,
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                _Foto(url: item.gambar),
+                Positioned(
+                  top: 8,
+                  left: 8,
+                  child: _StatusBadge(tersedia: item.tersedia),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 10, 8, 0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(item.nama,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700,
+                        color: _C.text)),
+                const SizedBox(height: 4),
+                Text('Kapasitas: ${item.kapasitas} Orang',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                        color: _C.greenDark)),
+                const SizedBox(height: 3),
+                Row(
+                  children: [
+                    const Icon(Icons.location_on_outlined,
+                        size: 14, color: _C.muted),
+                    const SizedBox(width: 3),
+                    Expanded(
+                      child: Text(item.lokasi,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style:
+                              const TextStyle(fontSize: 12, color: _C.muted)),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          const Spacer(),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+            child: item.tersedia
+                ? _ActionButton(
+                    label: 'Pilih',
+                    trailing: Icons.arrow_forward,
+                    filled: true,
+                    onTap: onPilih,
+                  )
+                : _ActionButton(
+                    label: 'Jadwal',
+                    leading: Icons.visibility_outlined,
+                    filled: false,
+                    onTap: onJadwal,
+                  ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _Foto extends StatelessWidget {
+  final String? url;
+  const _Foto({this.url});
+
+  @override
+  Widget build(BuildContext context) {
+    final placeholder = Container(
+      color: const Color(0xFFE5E7EB),
+      child: const Center(
+          child: Icon(Icons.meeting_room_outlined,
+              size: 40, color: Color(0xFF9CA3AF))),
+    );
+    if (url == null) return placeholder;
+    return Image.network(
+      url!,
+      fit: BoxFit.cover,
+      loadingBuilder: (context, child, progress) =>
+          progress == null ? child : placeholder,
+      errorBuilder: (_, __, ___) => placeholder,
+    );
+  }
+}
+
+class _StatusBadge extends StatelessWidget {
+  final bool tersedia;
+  const _StatusBadge({required this.tersedia});
+
+  @override
+  Widget build(BuildContext context) {
+    final color = tersedia ? _C.greenDark : _C.red;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+      decoration: BoxDecoration(
+        color: tersedia ? _C.greenSoft : _C.redSoft,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+              width: 6,
+              height: 6,
+              decoration: BoxDecoration(color: color, shape: BoxShape.circle)),
+          const SizedBox(width: 5),
+          Text(tersedia ? 'Tersedia' : 'Tidak Tersedia',
+              style: TextStyle(
+                  color: color, fontSize: 11, fontWeight: FontWeight.w600)),
+        ],
+      ),
+    );
+  }
+}
+
+class _ActionButton extends StatelessWidget {
+  final String label;
+  final IconData? leading;
+  final IconData? trailing;
+  final bool filled;
+  final VoidCallback onTap;
+
+  const _ActionButton({
+    required this.label,
+    required this.filled,
+    required this.onTap,
+    this.leading,
+    this.trailing,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final fg = filled ? Colors.white : _C.blue;
+    return SizedBox(
+      width: double.infinity,
+      height: 38,
+      child: Material(
+        borderRadius: BorderRadius.circular(10),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: onTap,
+          child: Ink(
+            decoration: BoxDecoration(
+              color: filled ? null : _C.blueSoft,
+              gradient: filled
+                  ? const LinearGradient(
+                      colors: [_C.greenDark, Color(0xFF1B7F45)])
+                  : null,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (leading != null) ...[
+                  Icon(leading, size: 16, color: fg),
+                  const SizedBox(width: 6),
+                ],
+                Text(label,
+                    style: TextStyle(
+                        color: fg, fontSize: 13, fontWeight: FontWeight.w600)),
+                if (trailing != null) ...[
+                  const SizedBox(width: 6),
+                  Icon(trailing, size: 16, color: fg),
+                ],
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ProgressInfo extends StatelessWidget {
+  final int tampil;
+  final int total;
+  const _ProgressInfo({required this.tampil, required this.total});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text('Menampilkan $tampil dari $total Ruangan',
+            style: const TextStyle(fontSize: 12.5, color: _C.muted)),
+        const SizedBox(height: 8),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: LinearProgressIndicator(
+            value: total == 0 ? 0 : tampil / total,
+            minHeight: 6,
+            backgroundColor: const Color(0xFFDCE6F7),
+            valueColor: const AlwaysStoppedAnimation(_C.greenDark),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _LihatLainnya extends StatelessWidget {
+  final VoidCallback onTap;
+  const _LihatLainnya({required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 46,
+      child: OutlinedButton(
+        onPressed: onTap,
+        style: OutlinedButton.styleFrom(
+          backgroundColor: const Color(0xFFF3F8FF),
+          foregroundColor: _C.greenDark,
+          side: const BorderSide(color: _C.greenDark, width: 1.2),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        ),
+        child: const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Lihat Ruangan Lainnya',
+                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14)),
+            SizedBox(width: 6),
+            Icon(Icons.keyboard_arrow_down, size: 20),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _EmptyState extends StatelessWidget {
+  const _EmptyState();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Padding(
+      padding: EdgeInsets.symmetric(vertical: 60),
+      child: Column(
+        children: [
+          Icon(Icons.search_off, size: 48, color: _C.muted),
+          SizedBox(height: 8),
+          Text('Ruangan tidak ditemukan',
+              style: TextStyle(color: _C.muted, fontSize: 14)),
+        ],
+      ),
+    );
+  }
+}
