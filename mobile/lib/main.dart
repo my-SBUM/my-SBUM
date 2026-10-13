@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'screens/auth/login_screen.dart'; // Import halaman Login
+
+import './inti/rute/pengarah_aplikasi.dart';
+import './inti/rute/rute_aplikasi.dart';
+import './inti/warna_aplikasi.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,11 +16,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'my-SBUM',
+      initialRoute: AppRoutes.login,
+      onGenerateRoute: AppRouter.generate,
       theme: ThemeData(
         useMaterial3: true,
-        scaffoldBackgroundColor: Colors.white,
+        scaffoldBackgroundColor: AppColors.background,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: AppColors.background,
+          surfaceTintColor: Colors.transparent,
+        ),
       ),
-      home: const LoginScreen(), // App dimulai dari LoginScreen
     );
   }
 }

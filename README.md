@@ -1,94 +1,213 @@
-# my SBUM (Sistem Web & Mobile)
+# my SBUM — Sistem Peminjaman Fasilitas
 
-my SBUM adalah sistem informasi **Sub Bagian Umum (SBUM)** untuk proses peminjaman fasilitas, monitoring, dan pengelolaan data melalui aplikasi web dan mobile.
+my SBUM adalah aplikasi untuk proses peminjaman ruangan dan peralatan Sub
+Bagian Umum (SBUM). Repository ini disiapkan untuk aplikasi mobile Flutter dan
+pengembangan backend/web.
 
-> **Web** untuk Penanggung Jawab & Kepala SBUM <br>
-> **Mobile** untuk Peminjam
+## Status aplikasi saat ini
 
----
+- **Mobile Flutter:** dapat dijalankan sebagai prototipe menggunakan data dan
+  layanan simulasi yang tersedia di aplikasi.
+- **Backend/web:** belum tersedia di repository ini. Folder `backend/` saat
+  ini hanya berisi placeholder, belum ada proyek Laravel, `composer.json`,
+  konfigurasi database, atau API.
+- **Koneksi aplikasi:** login, pendaftaran, perubahan kata sandi, dan pengajuan
+  belum mengirim data ke server. Tidak perlu menyalakan XAMPP/MySQL untuk
+  mencoba prototipe mobile.
 
-## Architecture
-
-```mermaid
-flowchart LR
-    M["📱 Flutter<br/>Peminjam"]
-    L["⚙️ Laravel<br/>Web + REST API"]
-    D[("🗄️ MySQL")]
-    W["🖥️ Web<br/>PJ & Kepala SBUM"]
-
-    M -->|"JSON / HTTP"| L
-    W --> L
-    L --> D
-```
-
-Laravel menjadi pusat backend dan menyediakan API yang digunakan oleh aplikasi Flutter.
+> Login prototipe hanya memeriksa bahwa kolom NIM/NIP dan password tidak
+> kosong. Data contoh bukan akun sungguhan; jangan gunakan atau memasukkan
+> password penting.
 
 ---
 
-## Stack
+## Teknologi
 
-|                 | Technology       |
-| --------------- | ---------------- |
-| Backend & Web   | **Laravel**      |
-| Mobile          | **Flutter**      |
-| Database        | **MySQL**        |
-| API             | **REST / JSON**  |
-| Version Control | **Git + GitHub** |
+| Bagian | Teknologi |
+| --- | --- |
+| Mobile | Flutter dan Dart |
+| Backend/web (rencana) | Laravel |
+| Database (rencana) | MySQL |
+| Komunikasi (rencana) | REST API / JSON |
 
----
-
-## Repository
+## Struktur repository
 
 ```text
-sbum-system/
-├── backend/     # Laravel
-├── mobile/      # Flutter
-├── docs/        # Dokumentasi proyek
+my-SBUM/
+├── backend/       # Placeholder; backend belum tersedia
+├── mobile/         # Aplikasi Flutter
+├── docs/           # Dokumentasi proyek
 ├── .gitignore
 └── README.md
 ```
 
-### Branch
+Beberapa bagian utama aplikasi mobile:
 
-```text
-main                  stable branch
+- `mobile/lib/fitur/` — halaman dan antarmuka fitur aplikasi.
+- `mobile/lib/data/` — data contoh, sumber data lokal, repository, dan layanan
+  simulasi.
+- `mobile/lib/model/` — model data aplikasi.
+- `mobile/lib/komponen/` — widget yang digunakan bersama.
+- `mobile/lib/inti/` — konfigurasi dan pengaturan rute aplikasi.
 
-feature/<task>        fitur baru
-fix/<task>            bug fix
-chore/<task>          setup / konfigurasi
-docs/<task>           dokumentasi
+---
+
+## Cara menjalankan aplikasi mobile di Windows
+
+### 1. Pasang kebutuhan
+
+Sebelum mulai, pasang:
+
+1. **Git** untuk mengambil kode dari GitHub.
+2. **Flutter SDK** dan Dart. Versi Dart harus memenuhi ketentuan di
+   `mobile/pubspec.yaml` (Dart `>=3.13.3 <4.0.0`).
+3. **Android Studio**, termasuk Android SDK dan Android Emulator, jika ingin
+   menjalankan aplikasi di emulator Android.
+
+Setelah pemasangan, pastikan perintah `git`, `flutter`, dan `dart` dapat
+dipanggil dari PowerShell. Periksa instalasi Flutter:
+
+```powershell
+flutter --version
+flutter doctor
 ```
 
-> [PENTING]
-> Jangan development langsung di `main`.
-> Buat branch → commit → push → Pull Request → merge.
+Ikuti petunjuk `flutter doctor` jika ada komponen Android yang belum siap.
+Untuk menerima lisensi Android SDK, jalankan:
+
+```powershell
+flutter doctor --android-licenses
+```
+
+### 2. Ambil repository
+
+Jalankan perintah berikut di PowerShell untuk mengunduh repository:
+
+```powershell
+git clone https://github.com/my-SBUM/my-SBUM.git
+Set-Location .\my-SBUM
+```
+
+Jika alamat repository berubah atau Anda tidak memiliki akses, buka halaman
+GitHub repository dan gunakan URL clone HTTPS dari tombol **Code**.
+
+### 3. Siapkan dependensi Flutter
+
+Jalankan dari folder utama repository:
+
+```powershell
+Set-Location .\mobile
+flutter pub get
+```
+
+Perintah ini mengunduh paket yang dibutuhkan aplikasi. Ulangi `flutter pub get`
+jika file `pubspec.yaml` berubah atau Flutter meminta dependensi diperbarui.
+
+### 4. Jalankan di emulator Android
+
+1. Buka Android Studio, lalu buat atau jalankan perangkat virtual melalui
+   **Device Manager**. Alternatifnya, sambungkan ponsel Android dengan USB dan
+   aktifkan **Developer options** serta **USB debugging**.
+2. Pastikan perangkat terdeteksi:
+
+   ```powershell
+   flutter devices
+   ```
+
+3. Jalankan aplikasi dari folder `mobile`:
+
+   ```powershell
+   flutter run
+   ```
+
+   Jika ada lebih dari satu perangkat, pilih salah satunya dengan ID yang
+   terlihat pada `flutter devices`:
+
+   ```powershell
+   flutter run -d <device-id>
+   ```
+
+Saat aplikasi sudah berjalan di terminal, tekan `r` untuk hot reload atau `R`
+untuk hot restart. Tekan `q` untuk menghentikan aplikasi.
+
+### Menjalankan di platform lain
+
+- **Chrome:** pasang Google Chrome, kemudian jalankan
+  `flutter run -d chrome` dari folder `mobile`.
+- **Windows desktop:** membutuhkan Visual Studio dengan workload
+  **Desktop development with C++**; jalankan `flutter run -d windows`.
+- **iOS:** membutuhkan macOS dan Xcode; iOS tidak dapat dibangun langsung dari
+  Windows.
 
 ---
 
-## Team Rules
+## Pemeriksaan kode dan tes
 
-- Pull `main` sebelum mulai ngoding.
-- Satu branch untuk satu fitur.
-- Jangan commit `.env`, token, password.
-- Gunakan Pull Request sebelum melakukan merge ke `main`.
-- Commit perubahan secara bertahap, jangan menunggu semuanya selesai dulu.
+Jalankan dari folder `mobile`:
+
+```powershell
+flutter analyze
+flutter test
+```
+
+Build APK debug untuk dipasang atau dibagikan sebagai hasil pengembangan:
+
+```powershell
+flutter build apk --debug
+```
+
+File APK akan dibuat di:
+
+```text
+mobile/build/app/outputs/flutter-apk/app-debug.apk
+```
 
 ---
 
-## Project Status
+## Pemecahan masalah
 
-`Repository Setup` **● In Progress**
+### `flutter` atau `dart` tidak dikenali
 
-`Laravel` ○ Not Started
+Pastikan folder `bin` Flutter SDK sudah ditambahkan ke `PATH`, lalu tutup dan
+buka kembali PowerShell. Periksa dengan `flutter --version` dan `dart --version`.
 
-`Flutter` ○ Not Started
+### Perangkat tidak muncul di `flutter devices`
 
-`REST API` ○ Not Started
+- Untuk emulator, pastikan perangkat virtual sudah dinyalakan di Android
+  Studio.
+- Untuk ponsel, pastikan USB debugging aktif dan izinkan komputer saat dialog
+  otorisasi muncul di ponsel.
+- Jalankan `flutter doctor` dan selesaikan masalah pada bagian Android toolchain.
 
-`Core Features` ○ Not Started
+### Gradle atau Android SDK gagal saat build
+
+Pastikan koneksi internet tersedia untuk unduhan pertama, Android SDK terpasang,
+dan lisensinya telah diterima menggunakan
+`flutter doctor --android-licenses`. Setelah itu coba lagi dengan
+`flutter run`.
+
+### Ingin menghapus hasil build dan mencoba ulang
+
+Dari folder `mobile`, jalankan:
+
+```powershell
+flutter clean
+flutter pub get
+flutter run
+```
 
 ---
 
-<sub>
-PBL-TRPL-303• my SBUM • Laravel & Flutter
-</sub>
+## Panduan kontribusi
+
+- Tarik perubahan terbaru dari `main` sebelum mulai mengerjakan fitur.
+- Buat satu branch untuk satu pekerjaan, misalnya `feature/panduan-peminjaman`,
+  `fix/navigasi-riwayat`, atau `docs/panduan-menjalankan`.
+- Jangan melakukan pengembangan langsung di `main`.
+- Jangan commit file `.env`, token, password, atau kredensial lainnya.
+- Jalankan analisis dan tes yang relevan sebelum membuat Pull Request.
+- Ajukan Pull Request agar perubahan dapat ditinjau sebelum digabung ke `main`.
+
+---
+
+<sub>PBL-TRPL-303 • my SBUM • Flutter</sub>
