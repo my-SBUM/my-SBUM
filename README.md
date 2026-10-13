@@ -35,8 +35,7 @@ pengembangan backend/web.
 ```text
 my-SBUM/
 ├── backend/       # Placeholder; backend belum tersedia
-├── mobile/         # Aplikasi Flutter
-├── docs/           # Dokumentasi proyek
+├── mobile/        # Aplikasi Flutter 
 ├── .gitignore
 └── README.md
 ```
