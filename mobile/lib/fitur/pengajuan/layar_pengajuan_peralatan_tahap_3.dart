@@ -4,6 +4,7 @@ import 'package:my_sbum/inti/rute/rute_aplikasi.dart';
 import 'package:my_sbum/data/layanan/layanan_aplikasi_simulasi.dart';
 import 'package:my_sbum/model/peralatan.dart';
 import 'package:my_sbum/komponen/latar_halaman_aplikasi.dart';
+import 'package:my_sbum/komponen/kepala_halaman_aplikasi.dart';
 
 class KonfirmasiPengajuanPeralatanScreen extends StatefulWidget {
   const KonfirmasiPengajuanPeralatanScreen({super.key});
@@ -80,310 +81,241 @@ class _KonfirmasiPengajuanPeralatanScreenState
     final durasi = data['durasiJam'] == null ? '-' : '${data['durasiJam']} jam';
 
     return AppScaffold(
-      showBackground: false,
+      showBackground: true,
       body: Stack(
         children: [
           const AppPageBackgroundLayer(),
           SafeArea(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  // Header
-                  Container(
-                    color: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 10,
-                    ),
-                    child: Row(
+            top: false,
+            child: Column(
+              children: [
+                const AppPageHeader(title: 'Detail Peralatan'),
+                Expanded(
+                  child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    padding: const EdgeInsets.fromLTRB(18, 16, 18, 24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        GestureDetector(
-                          onTap: () => Navigator.maybePop(context),
-                          child: Container(
-                            width: 42,
-                            height: 42,
-                            decoration: const BoxDecoration(
-                              color: Color(0xFFF1F5F9),
-                              shape: BoxShape.circle,
-                            ),
-                            child: const Icon(
-                              Icons.arrow_back_ios_new_rounded,
-                              size: 18,
-                              color: _ink,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        const Expanded(
-                          child: Text(
-                            'Detail Peralatan',
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w800,
-                              color: _ink,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: _green,
-                            image: const DecorationImage(
-                              image: NetworkImage(
-                                'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
+                        // Step indicator
+                        Row(
+                          children: [
+                            _stepItem(
+                              label: 'Cek Jadwal',
+                              child: const Icon(
+                                Icons.check_rounded,
+                                color: Colors.white,
+                                size: 20,
                               ),
-                              fit: BoxFit.cover,
+                            ),
+                            _stepItem(
+                              label: 'Isi form',
+                              child: const Icon(
+                                Icons.check_rounded,
+                                color: Colors.white,
+                                size: 20,
+                              ),
+                            ),
+                            _stepItem(
+                              label: 'Konfirmasi',
+                              child: const Text(
+                                '3',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        const SizedBox(height: 26),
+
+                        // Item card
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(14),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(18),
+                            border: Border.all(
+                              color: const Color(0xFFE2E8F0),
+                              width: 1.2,
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withOpacity(0.06),
-                                blurRadius: 6,
+                                color: Colors.black.withOpacity(0.02),
+                                blurRadius: 8,
                                 offset: const Offset(0, 2),
                               ),
                             ],
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  // Green strip
-                  Container(
-                    width: double.infinity,
-                    height: 110,
-                    color: const Color(0xFFD9F0E0),
-                  ),
-
-                  Transform.translate(
-                    offset: const Offset(0, -44),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 18),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Step indicator
-                          Row(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              _stepItem(
-                                label: 'Cek Jadwal',
-                                child: const Icon(
-                                  Icons.check_rounded,
-                                  color: Colors.white,
-                                  size: 20,
-                                ),
-                              ),
-                              _stepItem(
-                                label: 'Isi form',
-                                child: const Icon(
-                                  Icons.check_rounded,
-                                  color: Colors.white,
-                                  size: 20,
-                                ),
-                              ),
-                              _stepItem(
-                                label: 'Konfirmasi',
-                                child: const Text(
-                                  '3',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w800,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-
-                          const SizedBox(height: 26),
-
-                          // Item card
-                          Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.all(14),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(18),
-                              border: Border.all(
-                                color: const Color(0xFFE2E8F0),
-                                width: 1.2,
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.02),
-                                  blurRadius: 8,
-                                  offset: const Offset(0, 2),
-                                ),
-                              ],
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(12),
-                                  child: Image.network(
-                                    gambar,
-                                    width: 110,
-                                    height: 100,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return Container(
-                                        width: 110,
-                                        height: 100,
-                                        color: Colors.grey.shade300,
-                                        child: const Icon(
-                                          Icons.image_not_supported,
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        nama,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w800,
-                                          color: _ink,
-                                        ),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: Image.network(
+                                  gambar,
+                                  width: 110,
+                                  height: 100,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Container(
+                                      width: 110,
+                                      height: 100,
+                                      color: Colors.grey.shade300,
+                                      child: const Icon(
+                                        Icons.image_not_supported,
                                       ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        'Kode : $kode',
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          color: _muted,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 8),
-                                      _statusBadge(tersedia),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-
-                          const SizedBox(height: 24),
-
-                          const Text(
-                            'Konfirmasi Pengajuan',
-                            style: TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.w800,
-                              color: _ink,
-                            ),
-                          ),
-
-                          const SizedBox(height: 16),
-
-                          _infoCard('Kegiatan', _teks(data, 'kegiatan')),
-                          const SizedBox(height: 12),
-                          _infoCard(
-                            'Penanggung jawab',
-                            _teks(data, 'penanggungJawab'),
-                          ),
-                          const SizedBox(height: 12),
-                          _infoCard('Tanggal', _teks(data, 'tanggal')),
-                          const SizedBox(height: 12),
-                          _infoCard('Waktu', waktu),
-                          const SizedBox(height: 12),
-                          _infoCard('Durasi', durasi),
-                          const SizedBox(height: 12),
-                          _infoCard('Jumlah unit', _teks(data, 'jumlahUnit')),
-
-                          const SizedBox(height: 32),
-
-                          // Buttons
-                          Row(
-                            children: [
-                              Expanded(
-                                child: SizedBox(
-                                  height: 52,
-                                  child: OutlinedButton.icon(
-                                    onPressed: () => Navigator.pop(context),
-                                    style: OutlinedButton.styleFrom(
-                                      side: const BorderSide(
-                                        color: _red,
-                                        width: 1.5,
-                                      ),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      backgroundColor: Colors.white,
-                                    ),
-                                    icon: const Icon(
-                                      Icons.arrow_back_rounded,
-                                      size: 22,
-                                      color: _red,
-                                    ),
-                                    label: const Text(
-                                      'Kembali',
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w800,
-                                        color: _red,
-                                      ),
-                                    ),
-                                  ),
+                                    );
+                                  },
                                 ),
                               ),
                               const SizedBox(width: 12),
                               Expanded(
-                                child: SizedBox(
-                                  height: 52,
-                                  child: ElevatedButton.icon(
-                                    onPressed: _isSubmitting ? null : _submit,
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: _green,
-                                      foregroundColor: Colors.white,
-                                      elevation: 0,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      nama,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w800,
+                                        color: _ink,
                                       ),
                                     ),
-                                    icon: const Icon(
-                                      Icons.arrow_forward_rounded,
-                                      size: 22,
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      'Kode : $kode',
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        color: _muted,
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                     ),
-                                    label: _isSubmitting
-                                        ? const SizedBox(
-                                            width: 18,
-                                            height: 18,
-                                            child: CircularProgressIndicator(
-                                              strokeWidth: 2,
-                                              color: Colors.white,
-                                            ),
-                                          )
-                                        : const Text(
-                                            'Konfirmasi',
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w800,
-                                            ),
-                                          ),
-                                  ),
+                                    const SizedBox(height: 8),
+                                    _statusBadge(tersedia),
+                                  ],
                                 ),
                               ),
                             ],
                           ),
+                        ),
 
-                          const SizedBox(height: 24),
-                        ],
-                      ),
+                        const SizedBox(height: 24),
+
+                        const Text(
+                          'Konfirmasi Pengajuan',
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w800,
+                            color: _ink,
+                          ),
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        _infoCard('Kegiatan', _teks(data, 'kegiatan')),
+                        const SizedBox(height: 12),
+                        _infoCard(
+                          'Penanggung jawab',
+                          _teks(data, 'penanggungJawab'),
+                        ),
+                        const SizedBox(height: 12),
+                        _infoCard('Tanggal', _teks(data, 'tanggal')),
+                        const SizedBox(height: 12),
+                        _infoCard('Waktu', waktu),
+                        const SizedBox(height: 12),
+                        _infoCard('Durasi', durasi),
+                        const SizedBox(height: 12),
+                        _infoCard('Jumlah unit', _teks(data, 'jumlahUnit')),
+
+                        const SizedBox(height: 32),
+
+                        // Buttons
+                        Row(
+                          children: [
+                            Expanded(
+                              child: SizedBox(
+                                height: 52,
+                                child: OutlinedButton.icon(
+                                  onPressed: () => Navigator.pop(context),
+                                  style: OutlinedButton.styleFrom(
+                                    side: const BorderSide(
+                                      color: _red,
+                                      width: 1.5,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    backgroundColor: Colors.white,
+                                  ),
+                                  icon: const Icon(
+                                    Icons.arrow_back_rounded,
+                                    size: 22,
+                                    color: _red,
+                                  ),
+                                  label: const Text(
+                                    'Kembali',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w800,
+                                      color: _red,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: SizedBox(
+                                height: 52,
+                                child: ElevatedButton.icon(
+                                  onPressed: _isSubmitting ? null : _submit,
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: _green,
+                                    foregroundColor: Colors.white,
+                                    elevation: 0,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                  ),
+                                  icon: const Icon(
+                                    Icons.arrow_forward_rounded,
+                                    size: 22,
+                                  ),
+                                  label: _isSubmitting
+                                      ? const SizedBox(
+                                          width: 18,
+                                          height: 18,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                            color: Colors.white,
+                                          ),
+                                        )
+                                      : const Text(
+                                          'Konfirmasi',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w800,
+                                          ),
+                                        ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        const SizedBox(height: 24),
+                      ],
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],

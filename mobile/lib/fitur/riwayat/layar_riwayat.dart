@@ -74,11 +74,9 @@ class _RiwayatScreenState extends State<RiwayatScreen> {
       'Ditolak' => AppRoutes.riwayatDitolak,
       _ => null,
     };
-    Navigator.pushNamed(
-      context,
-      route ?? AppRoutes.riwayatDetail,
-      arguments: record,
-    );
+    if (route == null) return;
+
+    Navigator.pushNamed(context, route, arguments: record);
   }
 
   @override
@@ -135,12 +133,12 @@ class _RiwayatScreenState extends State<RiwayatScreen> {
                     child: TextField(
                       onChanged: (value) =>
                           setState(() => _searchQuery = value),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 14,
                         color: textDark,
                         fontWeight: FontWeight.w500,
                       ),
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         prefixIcon: Icon(
                           Icons.search_rounded,
                           color: textGrey,
@@ -165,7 +163,6 @@ class _RiwayatScreenState extends State<RiwayatScreen> {
                   const SizedBox(height: 18),
 
                   SizedBox(
-                    // Disamakan dengan tinggi filter pada Daftar Ruangan.
                     height: 36,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,

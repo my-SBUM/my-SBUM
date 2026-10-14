@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_sbum/komponen/kerangka_aplikasi.dart';
 import 'package:my_sbum/komponen/kepala_halaman_aplikasi.dart';
+import 'package:my_sbum/komponen/latar_halaman_aplikasi.dart';
 import 'package:my_sbum/inti/rute/rute_aplikasi.dart';
 import 'package:my_sbum/data/repositori/implementasi_repositori_peralatan.dart';
 import 'package:my_sbum/model/peralatan.dart';
@@ -62,281 +63,327 @@ class _PeralatanLainnyaScreenState extends State<PeralatanLainnyaScreen> {
   Widget build(BuildContext context) {
     final items = _filtered;
     return AppScaffold(
-      showBackground: false,
-      appBar: const AppPageHeader(title: 'Peralatan'),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // --- SEARCH BAR ---
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(24),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Color(0x05000000),
-                    blurRadius: 8,
-                    offset: Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: TextField(
-                onChanged: (v) => setState(() => _query = v),
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.search, color: textGrey),
-                  hintText: 'Cari peralatan atau kategori...',
-                  hintStyle: TextStyle(color: textGrey, fontSize: 14),
-                  border: InputBorder.none,
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            // --- FILTER KATEGORI CHIPS ---
-            SizedBox(
-              height: 38,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: _categories.length,
-                itemBuilder: (context, index) {
-                  final isSelected = _selectedCategoryIndex == index;
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _selectedCategoryIndex = index;
-                      });
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.only(right: 8),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
-                      ),
-                      decoration: BoxDecoration(
-                        color: isSelected ? primaryGreen : Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: isSelected
-                              ? primaryGreen
-                              : const Color(0xFFE2E8F0),
-                        ),
-                      ),
-                      child: Text(
-                        _categories[index],
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
-                          color: isSelected ? Colors.white : textDark,
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            // --- SUB-HEADER: TOTAL PERALATAN & SORT/LAYOUT TOGGLE ---
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      showBackground: true,
+      body: Stack(
+        children: [
+          const AppPageBackgroundLayer(),
+          SafeArea(
+            top: false,
+            bottom: false,
+            child: Column(
               children: [
-                Flexible(
-                  child: RichText(
-                    overflow: TextOverflow.ellipsis,
-                    text: TextSpan(
+                const AppPageHeader(title: 'Peralatan'),
+                Expanded(
+                  child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        TextSpan(
-                          text: '${items.length} ',
-                          style: const TextStyle(
-                            color: textDark,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                        // --- SEARCH BAR ---
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(24),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Color(0x05000000),
+                                blurRadius: 8,
+                                offset: Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: TextField(
+                            onChanged: (v) => setState(() => _query = v),
+                            decoration: const InputDecoration(
+                              icon: Icon(Icons.search, color: textGrey),
+                              hintText: 'Cari peralatan atau kategori...',
+                              hintStyle: TextStyle(
+                                color: textGrey,
+                                fontSize: 14,
+                              ),
+                              border: InputBorder.none,
+                            ),
                           ),
                         ),
-                        const TextSpan(
-                          text: 'peralatan ditemukan',
-                          style: TextStyle(color: textGrey, fontSize: 13),
+                        const SizedBox(height: 16),
+
+                        // --- FILTER KATEGORI CHIPS ---
+                        SizedBox(
+                          height: 38,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: _categories.length,
+                            itemBuilder: (context, index) {
+                              final isSelected =
+                                  _selectedCategoryIndex == index;
+                              return GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _selectedCategoryIndex = index;
+                                  });
+                                },
+                                child: Container(
+                                  margin: const EdgeInsets.only(right: 8),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 8,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: isSelected
+                                        ? primaryGreen
+                                        : Colors.white,
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(
+                                      color: isSelected
+                                          ? primaryGreen
+                                          : const Color(0xFFE2E8F0),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    _categories[index],
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.bold,
+                                      color: isSelected
+                                          ? Colors.white
+                                          : textDark,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
                         ),
+                        const SizedBox(height: 16),
+
+                        // --- SUB-HEADER: TOTAL PERALATAN & SORT/LAYOUT TOGGLE ---
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Flexible(
+                              child: RichText(
+                                overflow: TextOverflow.ellipsis,
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: '${items.length} ',
+                                      style: const TextStyle(
+                                        color: textDark,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const TextSpan(
+                                      text: 'peralatan ditemukan',
+                                      style: TextStyle(
+                                        color: textGrey,
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                // Dropdown Urutkan
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                    vertical: 4,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(
+                                      color: const Color(0xFFE2E8F0),
+                                    ),
+                                  ),
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton<String>(
+                                      value: _selectedSort,
+                                      isDense: true,
+                                      icon: const Icon(
+                                        Icons.keyboard_arrow_down,
+                                        size: 18,
+                                        color: textGrey,
+                                      ),
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600,
+                                        color: textDark,
+                                      ),
+                                      onChanged: (String? newValue) {
+                                        if (newValue != null) {
+                                          setState(() {
+                                            _selectedSort = newValue;
+                                          });
+                                        }
+                                      },
+                                      items: _sortOptions
+                                          .map<DropdownMenuItem<String>>((
+                                            String value,
+                                          ) {
+                                            return DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(value),
+                                            );
+                                          })
+                                          .toList(),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                // Toggle View Buttons (List / Grid)
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                      color: const Color(0xFFE2E8F0),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      IconButton(
+                                        padding: EdgeInsets.zero,
+                                        constraints: const BoxConstraints(
+                                          minWidth: 32,
+                                          minHeight: 32,
+                                        ),
+                                        icon: Icon(
+                                          Icons.format_list_bulleted_rounded,
+                                          size: 18,
+                                          color: _isListView
+                                              ? primaryGreen
+                                              : textGrey,
+                                        ),
+                                        onPressed: () {
+                                          setState(() {
+                                            _isListView = true;
+                                          });
+                                        },
+                                      ),
+                                      IconButton(
+                                        padding: EdgeInsets.zero,
+                                        constraints: const BoxConstraints(
+                                          minWidth: 32,
+                                          minHeight: 32,
+                                        ),
+                                        icon: Icon(
+                                          Icons.grid_view_rounded,
+                                          size: 18,
+                                          color: !_isListView
+                                              ? primaryGreen
+                                              : textGrey,
+                                        ),
+                                        onPressed: () {
+                                          setState(() {
+                                            _isListView = false;
+                                          });
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+
+                        // --- DAFTAR PERALATAN (LIST / GRID) ---
+                        if (items.isEmpty)
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 60),
+                            child: Center(
+                              child: Column(
+                                children: [
+                                  Icon(
+                                    Icons.search_off,
+                                    size: 48,
+                                    color: textGrey,
+                                  ),
+                                  SizedBox(height: 8),
+                                  Text(
+                                    'Peralatan tidak ditemukan',
+                                    style: TextStyle(
+                                      color: textGrey,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        else if (_isListView)
+                          ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: items.length,
+                            itemBuilder: (context, index) =>
+                                _buildHorizontalEquipmentCard(items[index]),
+                          )
+                        else
+                          GridView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: items.length,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  mainAxisSpacing: 12,
+                                  crossAxisSpacing: 12,
+                                  mainAxisExtent: 268,
+                                ),
+                            itemBuilder: (context, index) =>
+                                _buildGridEquipmentCard(items[index]),
+                          ),
+                        const SizedBox(height: 20),
+
+                        // --- FOOTER PROGRESS BAR ---
+                        if (items.isNotEmpty)
+                          Center(
+                            child: Column(
+                              children: [
+                                Text(
+                                  'Menampilkan ${items.length} dari ${_equipment.length} peralatan',
+                                  style: const TextStyle(
+                                    fontSize: 13,
+                                    color: textGrey,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(4),
+                                  child: SizedBox(
+                                    width: 160,
+                                    child: LinearProgressIndicator(
+                                      value: items.length / _equipment.length,
+                                      minHeight: 4,
+                                      backgroundColor: const Color(0xFFE2E8F0),
+                                      valueColor:
+                                          const AlwaysStoppedAnimation<Color>(
+                                            primaryGreen,
+                                          ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 24),
+                              ],
+                            ),
+                          ),
                       ],
                     ),
                   ),
                 ),
-                Row(
-                  children: [
-                    // Dropdown Urutkan
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: const Color(0xFFE2E8F0)),
-                      ),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                          value: _selectedSort,
-                          isDense: true,
-                          icon: const Icon(
-                            Icons.keyboard_arrow_down,
-                            size: 18,
-                            color: textGrey,
-                          ),
-                          style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            color: textDark,
-                          ),
-                          onChanged: (String? newValue) {
-                            if (newValue != null) {
-                              setState(() {
-                                _selectedSort = newValue;
-                              });
-                            }
-                          },
-                          items: _sortOptions.map<DropdownMenuItem<String>>((
-                            String value,
-                          ) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    // Toggle View Buttons (List / Grid)
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: const Color(0xFFE2E8F0)),
-                      ),
-                      child: Row(
-                        children: [
-                          IconButton(
-                            padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(
-                              minWidth: 32,
-                              minHeight: 32,
-                            ),
-                            icon: Icon(
-                              Icons.format_list_bulleted_rounded,
-                              size: 18,
-                              color: _isListView ? primaryGreen : textGrey,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _isListView = true;
-                              });
-                            },
-                          ),
-                          IconButton(
-                            padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(
-                              minWidth: 32,
-                              minHeight: 32,
-                            ),
-                            icon: Icon(
-                              Icons.grid_view_rounded,
-                              size: 18,
-                              color: !_isListView ? primaryGreen : textGrey,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _isListView = false;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
               ],
             ),
-            const SizedBox(height: 16),
-
-            // --- DAFTAR PERALATAN (LIST / GRID) ---
-            if (items.isEmpty)
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 60),
-                child: Center(
-                  child: Column(
-                    children: [
-                      Icon(Icons.search_off, size: 48, color: textGrey),
-                      SizedBox(height: 8),
-                      Text(
-                        'Peralatan tidak ditemukan',
-                        style: TextStyle(color: textGrey, fontSize: 14),
-                      ),
-                    ],
-                  ),
-                ),
-              )
-            else if (_isListView)
-              ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: items.length,
-                itemBuilder: (context, index) =>
-                    _buildHorizontalEquipmentCard(items[index]),
-              )
-            else
-              GridView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: items.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 12,
-                  crossAxisSpacing: 12,
-                  mainAxisExtent: 268,
-                ),
-                itemBuilder: (context, index) =>
-                    _buildGridEquipmentCard(items[index]),
-              ),
-            const SizedBox(height: 20),
-
-            // --- FOOTER PROGRESS BAR ---
-            if (items.isNotEmpty)
-              Center(
-                child: Column(
-                  children: [
-                    Text(
-                      'Menampilkan ${items.length} dari ${_equipment.length} peralatan',
-                      style: const TextStyle(
-                        fontSize: 13,
-                        color: textGrey,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(4),
-                      child: SizedBox(
-                        width: 160,
-                        child: LinearProgressIndicator(
-                          value: items.length / _equipment.length,
-                          minHeight: 4,
-                          backgroundColor: const Color(0xFFE2E8F0),
-                          valueColor: const AlwaysStoppedAnimation<Color>(
-                            primaryGreen,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                  ],
-                ),
-              ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

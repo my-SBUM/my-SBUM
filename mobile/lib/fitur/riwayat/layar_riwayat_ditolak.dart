@@ -2,146 +2,567 @@ import 'package:flutter/material.dart';
 import 'package:my_sbum/data/repositori/implementasi_repositori_pengajuan.dart';
 import 'package:my_sbum/model/catatan_pengajuan.dart';
 import 'package:my_sbum/komponen/kerangka_aplikasi.dart';
-import 'package:my_sbum/fitur/riwayat/layar_detail_status_pengajuan.dart';
+import 'package:my_sbum/komponen/kepala_halaman_aplikasi.dart';
+import 'package:my_sbum/komponen/latar_halaman_aplikasi.dart';
+
+class _C {
+  static const green = Color(0xFF1F8A4C);
+  static const buttonGreen = Color(0xFF046C4A);
+  static const ink = Color(0xFF0F2D44);
+  static const muted = Color(0xFF64748B);
+  static const label = Color(0xFF94A3B8);
+  static const chip = Color(0xFFF1F5F9);
+  static const divider = Color(0xFFEDEFF2);
+  static const red = Color(0xFFE53935);
+  static const redDark = Color(0xFFB91C1C);
+  static const redBadgeBg = Color(0xFFFEECEC);
+  static const redBannerBg = Color(0xFFFEF0F0);
+  static const redBannerBorder = Color(0xFFFECACA);
+}
 
 class DitolakScreen extends StatelessWidget {
   const DitolakScreen({super.key, this.record});
 
   final RequestRecord? record;
 
-  static const Color _ink = Color(0xFF1E293B);
-  static const Color _muted = Color(0xFF64748B);
-  static const Color _red = Color(0xFFB91C1C);
-  static const Color _redSoft = Color(0xFFFEE2E2);
-  static const Color _border = Color(0xFFE2E8F0);
-
   @override
   Widget build(BuildContext context) {
-    if (record != null) {
-      return StatusRequestDetailScreen(record: record!);
-    }
-    final rejectedRequests = const RequestRepositoryImpl()
-        .getAll()
-        .where((request) => request.status == 'Ditolak')
-        .toList();
+    // Data ruangan memakai data contoh yang sama dengan layar Diterima.
+    // ID dan alasan diambil dari record yang diklik (jika ada).
+    final detail = const RequestRepositoryImpl().getSampleStatusDetail();
+    final displayId = record?.id ?? detail.displayId;
+    final reason = (record?.reason != null && record!.reason!.isNotEmpty)
+        ? record!.reason!
+        : 'Jadwal Bentrok dengan kelas reguler.';
 
     return AppScaffold(
-      showBackground: false,
-      appBar: AppBar(
-        title: const Text('Riwayat Ditolak'),
-        centerTitle: true,
-        leading: IconButton(
-          tooltip: 'Kembali',
-          onPressed: () => Navigator.maybePop(context),
-          icon: const Icon(Icons.arrow_back_ios_new_rounded),
-        ),
-      ),
-      body: rejectedRequests.isEmpty
-          ? const Center(child: Text('Belum ada pengajuan yang ditolak.'))
-          : ListView(
-              padding: const EdgeInsets.all(20),
+      showBackground: true,
+      body: Stack(
+        children: [
+          const AppPageBackgroundLayer(),
+          SafeArea(
+            top: false,
+            bottom: false,
+            child: Column(
               children: [
-                for (final request in rejectedRequests)
-                  _RejectedRequestCard(request: request),
+                const AppPageHeader(title: 'Detail Ruangan'),
+                Expanded(
+                  child: Container(
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: SingleChildScrollView(
+                            physics: const BouncingScrollPhysics(),
+                            padding: const EdgeInsets.fromLTRB(20, 38, 20, 24),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Foto ruangan
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(22),
+                                  child: Image.network(
+                                    detail.imageUrl,
+                                    height: 200,
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Container(
+                                        height: 200,
+                                        width: double.infinity,
+                                        color: _C.chip,
+                                        child: const Icon(
+                                          Icons.meeting_room_outlined,
+                                          size: 48,
+                                          color: _C.label,
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(height: 18),
+
+                                // Judul + badge status
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            detail.title,
+                                            style: const TextStyle(
+                                              fontSize: 26,
+                                              fontWeight: FontWeight.w800,
+                                              color: _C.ink,
+                                              height: 1.2,
+                                              letterSpacing: -0.4,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 2),
+                                          Text(
+                                            detail.building,
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                              color: _C.muted,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 12,
+                                        vertical: 7,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: _C.redBadgeBg,
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      child: const Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 5,
+                                            backgroundColor: Color(0xFFEF4444),
+                                          ),
+                                          SizedBox(width: 10),
+                                          Text(
+                                            'Ditolak',
+                                            style: TextStyle(
+                                              fontSize: 14.5,
+                                              fontWeight: FontWeight.w700,
+                                              color: _C.red,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 20),
+
+                                // Banner alasan penolakan
+                                Container(
+                                  width: double.infinity,
+                                  padding: const EdgeInsets.fromLTRB(
+                                    16,
+                                    14,
+                                    16,
+                                    14,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: _C.redBannerBg,
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(
+                                      color: _C.redBannerBorder,
+                                      width: 1.5,
+                                    ),
+                                  ),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Padding(
+                                        padding: EdgeInsets.only(top: 2),
+                                        child: Icon(
+                                          Icons.error_outline_rounded,
+                                          color: _C.red,
+                                          size: 24,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 11),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Text(
+                                              'Pengajuan Ditolak',
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w800,
+                                                color: _C.redDark,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 2),
+                                            Text(
+                                              'Alasan: $reason',
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                color: _C.red,
+                                                height: 1.3,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 2),
+                                            const Text(
+                                              'Silakan pilih sesi waktu atau ruangan yang lain.',
+                                              style: TextStyle(
+                                                fontSize: 13,
+                                                color: _C.red,
+                                                height: 1.3,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+
+                                // Kartu ID pengajuan + sesi (warna redup)
+                                _Card(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'ID PENGAJUAN: $displayId',
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w800,
+                                          color: _C.label,
+                                          letterSpacing: 0.3,
+                                        ),
+                                      ),
+                                      const Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: 14,
+                                        ),
+                                        child: Divider(
+                                          height: 1,
+                                          thickness: 1,
+                                          color: _C.divider,
+                                        ),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Container(
+                                            width: 36,
+                                            height: 36,
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xFFF1F3F5),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            child: const Icon(
+                                              Icons.calendar_today_outlined,
+                                              color: _C.muted,
+                                              size: 20,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 12),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  detail.session,
+                                                  style: const TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w800,
+                                                    color: _C.label,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 2),
+                                                Text(
+                                                  detail.date,
+                                                  style: const TextStyle(
+                                                    fontSize: 14,
+                                                    color: _C.label,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+
+                                // Kartu kapasitas, lokasi, fasilitas
+                                _Card(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      _InfoRow(
+                                        icon: Icons.people_outline_rounded,
+                                        label: 'Kapasitas',
+                                        value: detail.capacity,
+                                      ),
+                                      const _CardDivider(),
+                                      _InfoRow(
+                                        icon: Icons.apartment_outlined,
+                                        label: 'Lokasi',
+                                        value: detail.location,
+                                      ),
+                                      const _CardDivider(),
+                                      const Row(
+                                        children: [
+                                          Icon(
+                                            Icons.checklist_rounded,
+                                            size: 24,
+                                            color: _C.green,
+                                          ),
+                                          SizedBox(width: 14),
+                                          Text(
+                                            'Fasilitas Ruangan',
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              color: _C.muted,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          left: 38,
+                                        ),
+                                        child: Wrap(
+                                          spacing: 8,
+                                          runSpacing: 8,
+                                          children: [
+                                            for (final facility
+                                                in detail.facilities)
+                                              _FacilityChip(label: facility),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+
+                                // Kartu informasi peminjam
+                                _Card(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Text(
+                                        'Informasi Peminjam',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w800,
+                                          color: _C.ink,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 10),
+                                      Row(
+                                        children: [
+                                          const CircleAvatar(
+                                            radius: 16,
+                                            backgroundColor: Color(0xFFEEF1F5),
+                                            child: Icon(
+                                              Icons.person_outline_rounded,
+                                              color: _C.muted,
+                                              size: 20,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 12),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  detail.borrower,
+                                                  style: const TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.w700,
+                                                    color: _C.ink,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 1),
+                                                Text(
+                                                  detail.borrowerRole,
+                                                  style: const TextStyle(
+                                                    fontSize: 13,
+                                                    color: _C.muted,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 18),
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 2),
+                                        child: Text.rich(
+                                          TextSpan(
+                                            children: [
+                                              const TextSpan(
+                                                text: 'Keperluan: ',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w400,
+                                                  color: _C.muted,
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text: detail.purpose,
+                                                style: const TextStyle(
+                                                  fontWeight: FontWeight.w800,
+                                                  color: _C.ink,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          style: const TextStyle(
+                                            fontSize: 14.5,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        // Tombol bawah
+                        SafeArea(
+                          top: false,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(28, 8, 28, 16),
+                            child: SizedBox(
+                              width: double.infinity,
+                              height: 50,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  // TODO: arahkan ke halaman pencarian ruangan,
+                                  // mis. Navigator.pushNamed(context, AppRoutes.xxx)
+                                  Navigator.of(context)
+                                      .popUntil((route) => route.isFirst);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: _C.buttonGreen,
+                                  foregroundColor: Colors.white,
+                                  elevation: 0,
+                                  shape: const StadiumBorder(),
+                                ),
+                                child: const Text(
+                                  'Cari Ruangan Lain',
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
+          ),
+        ],
+      ),
     );
   }
 }
 
-class _RejectedRequestCard extends StatelessWidget {
-  const _RejectedRequestCard({required this.request});
+// ---------------------------------------------------------------------------
+// Komponen bersama
+// ---------------------------------------------------------------------------
+class _Card extends StatelessWidget {
+  final Widget child;
 
-  final RequestRecord request;
+  const _Card({required this.child});
 
   @override
   Widget build(BuildContext context) {
-    final reason = request.reason;
-
     return Container(
-      margin: const EdgeInsets.only(bottom: 14),
-      padding: const EdgeInsets.all(18),
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: DitolakScreen._border),
+        borderRadius: BorderRadius.circular(22),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Text(
-                  request.title,
-                  style: const TextStyle(
-                    color: DitolakScreen._ink,
-                    fontSize: 17,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 10),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                  color: DitolakScreen._redSoft,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: const Text(
-                  'Ditolak',
-                  style: TextStyle(
-                    color: DitolakScreen._red,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Text(
-            request.id,
-            style: const TextStyle(color: DitolakScreen._muted, fontSize: 13),
-          ),
-          const SizedBox(height: 5),
-          Text(
-            request.date,
-            style: const TextStyle(color: DitolakScreen._muted, fontSize: 13),
-          ),
-          if (reason != null && reason.isNotEmpty) ...[
-            const SizedBox(height: 16),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: const Color(0xFFFFF7F7),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: DitolakScreen._redSoft),
-              ),
-              child: Text.rich(
-                TextSpan(
-                  children: [
-                    const TextSpan(
-                      text: 'Alasan penolakan: ',
-                      style: TextStyle(fontWeight: FontWeight.w700),
-                    ),
-                    TextSpan(text: reason),
-                  ],
-                ),
-                style: const TextStyle(
-                  color: DitolakScreen._red,
-                  fontSize: 13,
-                  height: 1.4,
-                ),
-              ),
+      child: child,
+    );
+  }
+}
+
+class _CardDivider extends StatelessWidget {
+  const _CardDivider();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Padding(
+      padding: EdgeInsets.symmetric(vertical: 12),
+      child: Divider(height: 1, thickness: 1, color: _C.divider),
+    );
+  }
+}
+
+class _InfoRow extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final String value;
+
+  const _InfoRow({
+    required this.icon,
+    required this.label,
+    required this.value,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(icon, size: 24, color: _C.green),
+        const SizedBox(width: 14),
+        Text(label, style: const TextStyle(fontSize: 15, color: _C.muted)),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Text(
+            value,
+            textAlign: TextAlign.end,
+            style: const TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w800,
+              color: _C.ink,
             ),
-          ],
-        ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _FacilityChip extends StatelessWidget {
+  final String label;
+
+  const _FacilityChip({required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: _C.chip,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Text(
+        label,
+        style: const TextStyle(
+          fontSize: 13,
+          fontWeight: FontWeight.w500,
+          color: _C.ink,
+        ),
       ),
     );
   }

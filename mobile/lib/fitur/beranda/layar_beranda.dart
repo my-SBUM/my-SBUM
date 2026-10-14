@@ -103,10 +103,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   Expanded(
                     child: _buildStatCard(
                       icon: Icons.desktop_windows_rounded,
-                      iconBgColor: const Color(0xFF3B82F6),
                       borderColor: const Color(0xFFBFDBFE),
-                      bgColor: Colors.white,
                       title: 'Total peralatan',
+                      iconGradient: const [
+                        Color(0xFF60A5FA),
+                        Color(0xFF3B82F6),
+                      ],
+                      waveColor: const Color(0xFFDBEAFE),
+                      waveStyle: 0,
                       count: '4',
                       onTap: () => _goToTab(_tabPeralatan),
                     ),
@@ -115,10 +119,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   Expanded(
                     child: _buildStatCard(
                       icon: Icons.home_rounded,
-                      iconBgColor: const Color(0xFF10B981),
-                      borderColor: const Color(0xFFA7F3D0),
-                      bgColor: Colors.white,
+                      borderColor: const Color(0xFF86DDB8),
                       title: 'Total ruangan',
+                      iconGradient: const [
+                        Color(0xFF3FCB8E),
+                        Color(0xFF1E9A5C),
+                      ],
+                      waveColor: const Color(0xFFD5F3E6),
+                      waveStyle: 1,
                       count: '24',
                       onTap: () => _goToTab(_tabRuangan),
                     ),
@@ -130,11 +138,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Expanded(
                     child: _buildStatCard(
-                      icon: Icons.check_circle_rounded,
-                      iconBgColor: const Color(0xFF10B981),
-                      borderColor: const Color(0xFFA7F3D0),
-                      bgColor: Colors.white,
+                      icon: Icons.verified_rounded,
+                      borderColor: const Color(0xFF86DDB8),
                       title: 'Proses selesai',
+                      iconGradient: const [
+                        Color(0xFF3FCB8E),
+                        Color(0xFF1E9A5C),
+                      ],
+                      waveColor: const Color(0xFFD5F3E6),
+                      waveStyle: 2,
                       count: '1',
                       onTap: () => Navigator.pushNamed(
                         context,
@@ -145,11 +157,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(width: 12),
                   Expanded(
                     child: _buildStatCard(
-                      icon: Icons.cancel_rounded,
-                      iconBgColor: const Color(0xFFEF4444),
-                      borderColor: const Color(0xFFFECACA),
-                      bgColor: Colors.white,
+                      icon: Icons.close_rounded,
+                      borderColor: const Color(0xFFF8B4B4),
                       title: 'Proses ditolak',
+                      iconGradient: const [
+                        Color(0xFFFF6B81),
+                        Color(0xFFEF4444),
+                      ],
+                      waveColor: const Color(0xFFFCE4E4),
+                      waveStyle: 3,
                       count: '1',
                       onTap: () => Navigator.pushNamed(
                         context,
@@ -179,7 +195,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   borderRadius: BorderRadius.circular(16),
                   onTap: () => Navigator.pushNamed(
                     context,
-                    AppRoutes.riwayatDetail,
+                    AppRoutes.riwayatDiterima,
                     arguments: const RequestRepositoryImpl()
                         .getDashboardFeatured(),
                   ),
@@ -362,80 +378,196 @@ class _HomeScreenState extends State<HomeScreen> {
   // Helper Widget Kartu Statistik
   Widget _buildStatCard({
     required IconData icon,
-    required Color iconBgColor,
+    required List<Color> iconGradient,
     required Color borderColor,
-    required Color bgColor,
+    required Color waveColor,
+    required int waveStyle,
     required String title,
     required String count,
     required VoidCallback onTap,
   }) {
     return Material(
-      color: bgColor,
-      borderRadius: BorderRadius.circular(16),
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(18),
       child: InkWell(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(18),
         onTap: onTap,
         child: Ink(
-          padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: bgColor,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: borderColor, width: 1.2),
-            boxShadow: const [
-              BoxShadow(
-                color: Color(0x05000000),
-                blurRadius: 6,
-                offset: Offset(0, 2),
-              ),
-            ],
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(color: borderColor, width: 1.5),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(16.5),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(minHeight: 88),
+              child: Stack(
                 children: [
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: iconBgColor,
-                      shape: BoxShape.circle,
+                  // Hiasan gelombang di bagian bawah kartu
+                  Positioned.fill(
+                    child: CustomPaint(
+                      painter: _WavePainter(color: waveColor, style: waveStyle),
                     ),
-                    child: Icon(icon, color: Colors.white, size: 20),
                   ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      title,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: textDark,
-                      ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 14,
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 38,
+                          height: 38,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: LinearGradient(
+                              colors: iconGradient,
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                            ),
+                          ),
+                          child: Icon(icon, color: Colors.white, size: 21),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                title,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w500,
+                                  color: textDark,
+                                ),
+                              ),
+                              const SizedBox(height: 2),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 2),
+                                      child: Text(
+                                        count,
+                                        style: const TextStyle(
+                                          fontSize: 28,
+                                          height: 1.1,
+                                          fontWeight: FontWeight.w800,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const Icon(
+                                    Icons.chevron_right_rounded,
+                                    size: 20,
+                                    color: textDark,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.baseline,
-                textBaseline: TextBaseline.alphabetic,
-                children: [
-                  Text(
-                    count,
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: textDark,
-                    ),
-                  ),
-                  const Icon(Icons.chevron_right, size: 18, color: textGrey),
-                ],
-              ),
-            ],
+            ),
           ),
         ),
       ),
     );
   }
+}
+
+// Gambar gelombang lembut di dasar kartu statistik
+class _WavePainter extends CustomPainter {
+  const _WavePainter({required this.color, required this.style});
+
+  final Color color;
+  final int style;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final w = size.width;
+    final h = size.height;
+    final paint = Paint()..color = color;
+
+    switch (style) {
+      case 0: // bukit di kiri
+        canvas.drawPath(
+          Path()
+            ..moveTo(0, h * 0.62)
+            ..cubicTo(w * 0.2, h * 0.5, w * 0.4, h * 0.62, w * 0.58, h * 0.9)
+            ..lineTo(w * 0.62, h)
+            ..lineTo(0, h)
+            ..close(),
+          paint,
+        );
+        break;
+      case 1: // bukit kiri kecil + gelombang kanan
+        canvas.drawPath(
+          Path()
+            ..moveTo(0, h * 0.72)
+            ..cubicTo(w * 0.15, h * 0.6, w * 0.35, h * 0.68, w * 0.5, h * 0.92)
+            ..lineTo(w * 0.54, h)
+            ..lineTo(0, h)
+            ..close(),
+          paint,
+        );
+        canvas.drawPath(
+          Path()
+            ..moveTo(w * 0.62, h)
+            ..cubicTo(w * 0.72, h * 0.78, w * 0.86, h * 0.7, w, h * 0.76)
+            ..lineTo(w, h)
+            ..close(),
+          paint,
+        );
+        break;
+      case 2: // gelombang kiri rendah + bukit kanan
+        canvas.drawPath(
+          Path()
+            ..moveTo(0, h * 0.8)
+            ..cubicTo(w * 0.15, h * 0.74, w * 0.3, h * 0.84, w * 0.45, h)
+            ..lineTo(0, h)
+            ..close(),
+          paint,
+        );
+        canvas.drawPath(
+          Path()
+            ..moveTo(w * 0.55, h)
+            ..cubicTo(w * 0.7, h * 0.7, w * 0.86, h * 0.6, w, h * 0.68)
+            ..lineTo(w, h)
+            ..close(),
+          paint,
+        );
+        break;
+      default: // gelombang kiri rendah + bukit kanan besar
+        canvas.drawPath(
+          Path()
+            ..moveTo(0, h * 0.86)
+            ..cubicTo(w * 0.25, h * 0.8, w * 0.45, h * 0.9, w * 0.6, h)
+            ..lineTo(0, h)
+            ..close(),
+          paint,
+        );
+        canvas.drawPath(
+          Path()
+            ..moveTo(w * 0.5, h)
+            ..cubicTo(w * 0.68, h * 0.62, w * 0.86, h * 0.5, w, h * 0.55)
+            ..lineTo(w, h)
+            ..close(),
+          paint,
+        );
+    }
+  }
+
+  @override
+  bool shouldRepaint(_WavePainter old) =>
+      old.color != color || old.style != style;
 }

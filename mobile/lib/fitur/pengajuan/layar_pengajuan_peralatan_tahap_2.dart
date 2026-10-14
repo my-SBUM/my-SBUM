@@ -4,6 +4,7 @@ import 'package:my_sbum/inti/rute/rute_aplikasi.dart';
 import 'package:my_sbum/data/repositori/implementasi_repositori_pengajuan.dart';
 import 'package:my_sbum/model/peralatan.dart';
 import 'package:my_sbum/komponen/latar_halaman_aplikasi.dart';
+import 'package:my_sbum/komponen/kepala_halaman_aplikasi.dart';
 
 class IsiFoPeralatanScreen extends StatefulWidget {
   const IsiFoPeralatanScreen({
@@ -194,364 +195,289 @@ class _IsiFoPeralatanScreenState extends State<IsiFoPeralatanScreen> {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      showBackground: false,
+      showBackground: true,
       body: Stack(
         children: [
           const AppPageBackgroundLayer(),
           SafeArea(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  // Header
-                  Container(
-                    color: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 10,
-                    ),
-                    child: Row(
+            top: false,
+            child: Column(
+              children: [
+                const AppPageHeader(title: 'Detail Peralatan'),
+                Expanded(
+                  child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    padding: const EdgeInsets.fromLTRB(18, 16, 18, 24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        GestureDetector(
-                          onTap: () => Navigator.maybePop(context),
-                          child: Container(
-                            width: 42,
-                            height: 42,
-                            decoration: const BoxDecoration(
-                              color: Color(0xFFF1F5F9),
-                              shape: BoxShape.circle,
-                            ),
-                            child: const Icon(
-                              Icons.arrow_back_ios_new_rounded,
-                              size: 18,
-                              color: _ink,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        const Expanded(
-                          child: Text(
-                            'Detail Peralatan',
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w800,
-                              color: _ink,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: _green,
-                            image: const DecorationImage(
-                              image: NetworkImage(
-                                'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
+                        // Step indicator
+                        Row(
+                          children: [
+                            _stepItem(
+                              child: const Icon(
+                                Icons.check_rounded,
+                                color: Colors.white,
+                                size: 24,
                               ),
-                              fit: BoxFit.cover,
+                              label: 'Cek Jadwal',
+                              active: true,
                             ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.06),
-                                blurRadius: 6,
-                                offset: const Offset(0, 2),
+                            _stepItem(
+                              child: const Text(
+                                '2',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                              label: 'Isi form',
+                              active: true,
+                            ),
+                            _stepItem(
+                              child: const Text(
+                                '3',
+                                style: TextStyle(
+                                  color: Color(0xFF6B7280),
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                              label: 'Konfirmasi',
+                              active: false,
+                            ),
+                          ],
+                        ),
+
+                        const SizedBox(height: 28),
+
+                        const Text(
+                          'Detail pengajuan',
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w800,
+                            color: _ink,
+                          ),
+                        ),
+
+                        const SizedBox(height: 18),
+
+                        _label('Pilih Kegiatan:'),
+                        const SizedBox(height: 8),
+                        _buildDropdown(
+                          value: _pilihanKegiatan,
+                          items: _activities,
+                          onChanged: (value) =>
+                              setState(() => _pilihanKegiatan = value),
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        _label('Pilih penanggung Jawab :'),
+                        const SizedBox(height: 8),
+                        _buildDropdown(
+                          value: _pilihanPenanggungJawab,
+                          items: _responsiblePeople,
+                          onChanged: (value) =>
+                              setState(() => _pilihanPenanggungJawab = value),
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        _label('Tanggal Peminjaman:'),
+                        const SizedBox(height: 8),
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 14,
+                          ),
+                          decoration: _fieldDecoration(12),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                _tanggalPeminjaman,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: _muted,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              const Icon(
+                                Icons.calendar_today_rounded,
+                                color: _muted,
+                                size: 20,
                               ),
                             ],
                           ),
                         ),
+
+                        const SizedBox(height: 18),
+
+                        // Jam mulai dan selesai
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: _jamBlok(
+                                'Jam mulai',
+                                _jamMulaiHour,
+                                _jamMulaiMinute,
+                              ),
+                            ),
+                            const SizedBox(width: 14),
+                            Expanded(
+                              child: _jamBlok(
+                                'Jam selesai',
+                                _jamSelesaiHour,
+                                _jamSelesaiMinute,
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        _label('Jumlah Unit:'),
+                        const SizedBox(height: 8),
+                        _buildDropdown(
+                          value: _jumlahUnit,
+                          items: _unitOptions,
+                          onChanged: (value) =>
+                              setState(() => _jumlahUnit = value),
+                        ),
+
+                        const SizedBox(height: 18),
+
+                        // Duration info
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 14,
+                            vertical: 12,
+                          ),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFDCFCE7),
+                            borderRadius: BorderRadius.circular(18),
+                          ),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.access_time_rounded,
+                                color: _green,
+                                size: 20,
+                              ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Text(
+                                  'Total durasi peminjaman · $_durasiJam jam',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700,
+                                    color: _green,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        const SizedBox(height: 18),
+
+                        _label('Keterangan'),
+                        const SizedBox(height: 8),
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(12),
+                          decoration: _fieldDecoration(12),
+                          child: TextField(
+                            controller: _keteranganController,
+                            minLines: 3,
+                            maxLines: 5,
+                            decoration: const InputDecoration(
+                              hintText: 'Tulis keterangan peminjaman...',
+                              hintStyle: TextStyle(color: _muted, fontSize: 14),
+                              border: InputBorder.none,
+                            ),
+                            style: const TextStyle(fontSize: 14, color: _ink),
+                          ),
+                        ),
+
+                        const SizedBox(height: 24),
+
+                        // Buttons
+                        Row(
+                          children: [
+                            Expanded(
+                              child: SizedBox(
+                                height: 52,
+                                child: OutlinedButton.icon(
+                                  onPressed: () => Navigator.pop(context),
+                                  style: OutlinedButton.styleFrom(
+                                    side: const BorderSide(
+                                      color: _red,
+                                      width: 1.5,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    backgroundColor: Colors.white,
+                                  ),
+                                  icon: const Icon(
+                                    Icons.arrow_back_rounded,
+                                    size: 20,
+                                    color: _red,
+                                  ),
+                                  label: const Text(
+                                    'Kembali',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w800,
+                                      color: _red,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: SizedBox(
+                                height: 52,
+                                child: ElevatedButton.icon(
+                                  onPressed: _lanjut,
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: _green,
+                                    foregroundColor: Colors.white,
+                                    elevation: 0,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                  ),
+                                  icon: const Icon(
+                                    Icons.arrow_forward_rounded,
+                                    size: 20,
+                                  ),
+                                  label: const Text(
+                                    'Lanjut',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w800,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        const SizedBox(height: 24),
                       ],
                     ),
                   ),
-
-                  // Green strip
-                  Container(
-                    width: double.infinity,
-                    height: 110,
-                    color: const Color(0xFFD9F0E0),
-                  ),
-
-                  Transform.translate(
-                    offset: const Offset(0, -44),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 18),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Step indicator
-                          Row(
-                            children: [
-                              _stepItem(
-                                child: const Icon(
-                                  Icons.check_rounded,
-                                  color: Colors.white,
-                                  size: 24,
-                                ),
-                                label: 'Cek Jadwal',
-                                active: true,
-                              ),
-                              _stepItem(
-                                child: const Text(
-                                  '2',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.w800,
-                                  ),
-                                ),
-                                label: 'Isi form',
-                                active: true,
-                              ),
-                              _stepItem(
-                                child: const Text(
-                                  '3',
-                                  style: TextStyle(
-                                    color: Color(0xFF6B7280),
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.w800,
-                                  ),
-                                ),
-                                label: 'Konfirmasi',
-                                active: false,
-                              ),
-                            ],
-                          ),
-
-                          const SizedBox(height: 28),
-
-                          const Text(
-                            'Detail pengajuan',
-                            style: TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.w800,
-                              color: _ink,
-                            ),
-                          ),
-
-                          const SizedBox(height: 18),
-
-                          _label('Pilih Kegiatan:'),
-                          const SizedBox(height: 8),
-                          _buildDropdown(
-                            value: _pilihanKegiatan,
-                            items: _activities,
-                            onChanged: (value) =>
-                                setState(() => _pilihanKegiatan = value),
-                          ),
-
-                          const SizedBox(height: 16),
-
-                          _label('Pilih penanggung Jawab :'),
-                          const SizedBox(height: 8),
-                          _buildDropdown(
-                            value: _pilihanPenanggungJawab,
-                            items: _responsiblePeople,
-                            onChanged: (value) => setState(
-                              () => _pilihanPenanggungJawab = value,
-                            ),
-                          ),
-
-                          const SizedBox(height: 16),
-
-                          _label('Tanggal Peminjaman:'),
-                          const SizedBox(height: 8),
-                          Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 14,
-                            ),
-                            decoration: _fieldDecoration(12),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  _tanggalPeminjaman,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    color: _muted,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                const Icon(
-                                  Icons.calendar_today_rounded,
-                                  color: _muted,
-                                  size: 20,
-                                ),
-                              ],
-                            ),
-                          ),
-
-                          const SizedBox(height: 18),
-
-                          // Jam mulai dan selesai
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: _jamBlok(
-                                  'Jam mulai',
-                                  _jamMulaiHour,
-                                  _jamMulaiMinute,
-                                ),
-                              ),
-                              const SizedBox(width: 14),
-                              Expanded(
-                                child: _jamBlok(
-                                  'Jam selesai',
-                                  _jamSelesaiHour,
-                                  _jamSelesaiMinute,
-                                ),
-                              ),
-                            ],
-                          ),
-
-                          const SizedBox(height: 16),
-
-                          _label('Jumlah Unit:'),
-                          const SizedBox(height: 8),
-                          _buildDropdown(
-                            value: _jumlahUnit,
-                            items: _unitOptions,
-                            onChanged: (value) =>
-                                setState(() => _jumlahUnit = value),
-                          ),
-
-                          const SizedBox(height: 18),
-
-                          // Duration info
-                          Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 14,
-                              vertical: 12,
-                            ),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFDCFCE7),
-                              borderRadius: BorderRadius.circular(18),
-                            ),
-                            child: Row(
-                              children: [
-                                const Icon(
-                                  Icons.access_time_rounded,
-                                  color: _green,
-                                  size: 20,
-                                ),
-                                const SizedBox(width: 10),
-                                Expanded(
-                                  child: Text(
-                                    'Total durasi peminjaman · $_durasiJam jam',
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700,
-                                      color: _green,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-
-                          const SizedBox(height: 18),
-
-                          _label('Keterangan'),
-                          const SizedBox(height: 8),
-                          Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.all(12),
-                            decoration: _fieldDecoration(12),
-                            child: TextField(
-                              controller: _keteranganController,
-                              minLines: 3,
-                              maxLines: 5,
-                              decoration: const InputDecoration(
-                                hintText: 'Tulis keterangan peminjaman...',
-                                hintStyle: TextStyle(
-                                  color: _muted,
-                                  fontSize: 14,
-                                ),
-                                border: InputBorder.none,
-                              ),
-                              style: const TextStyle(
-                                fontSize: 14,
-                                color: _ink,
-                              ),
-                            ),
-                          ),
-
-                          const SizedBox(height: 24),
-
-                          // Buttons
-                          Row(
-                            children: [
-                              Expanded(
-                                child: SizedBox(
-                                  height: 52,
-                                  child: OutlinedButton.icon(
-                                    onPressed: () => Navigator.pop(context),
-                                    style: OutlinedButton.styleFrom(
-                                      side: const BorderSide(
-                                        color: _red,
-                                        width: 1.5,
-                                      ),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      backgroundColor: Colors.white,
-                                    ),
-                                    icon: const Icon(
-                                      Icons.arrow_back_rounded,
-                                      size: 20,
-                                      color: _red,
-                                    ),
-                                    label: const Text(
-                                      'Kembali',
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w800,
-                                        color: _red,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: SizedBox(
-                                  height: 52,
-                                  child: ElevatedButton.icon(
-                                    onPressed: _lanjut,
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: _green,
-                                      foregroundColor: Colors.white,
-                                      elevation: 0,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                    ),
-                                    icon: const Icon(
-                                      Icons.arrow_forward_rounded,
-                                      size: 20,
-                                    ),
-                                    label: const Text(
-                                      'Lanjut',
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w800,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-
-                          const SizedBox(height: 24),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],
@@ -669,11 +595,7 @@ class _IsiFoPeralatanScreenState extends State<IsiFoPeralatanScreen> {
               fontWeight: FontWeight.w500,
             ),
           ),
-          icon: const Icon(
-            Icons.expand_more_rounded,
-            color: _muted,
-            size: 24,
-          ),
+          icon: const Icon(Icons.expand_more_rounded, color: _muted, size: 24),
           style: const TextStyle(
             fontSize: 16,
             color: _muted,
@@ -684,10 +606,8 @@ class _IsiFoPeralatanScreenState extends State<IsiFoPeralatanScreen> {
           },
           items: items
               .map(
-                (item) => DropdownMenuItem<String>(
-                  value: item,
-                  child: Text(item),
-                ),
+                (item) =>
+                    DropdownMenuItem<String>(value: item, child: Text(item)),
               )
               .toList(),
         ),

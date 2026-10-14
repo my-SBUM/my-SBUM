@@ -11,7 +11,6 @@ import 'package:my_sbum/fitur/riwayat/layar_riwayat.dart';
 import 'package:my_sbum/fitur/riwayat/layar_riwayat_diterima.dart';
 import 'package:my_sbum/fitur/riwayat/layar_riwayat_menunggu.dart';
 import 'package:my_sbum/fitur/riwayat/layar_riwayat_ditolak.dart';
-import 'package:my_sbum/fitur/riwayat/layar_detail_riwayat.dart';
 import 'package:my_sbum/fitur/lainnya/layar_panduan_peralatan.dart';
 import 'package:my_sbum/fitur/lainnya/layar_artikel_panduan.dart';
 import 'package:my_sbum/fitur/lainnya/layar_panduan.dart';
@@ -91,18 +90,6 @@ class AppRouter {
         record: settings.arguments is RequestRecord
             ? settings.arguments! as RequestRecord
             : null,
-      ),
-      AppRoutes.riwayatDetail => HistoryDetailScreen(
-        record: settings.arguments is RequestRecord
-            ? settings.arguments! as RequestRecord
-            : const RequestRecord(
-                id: '-',
-                title: 'Pengajuan',
-                date: '-',
-                pic: '-',
-                status: 'Menunggu',
-                isRoom: true,
-              ),
       ),
       AppRoutes.lainnya => const LainnyaScreen(),
       AppRoutes.notifikasi => const NotifikasiScreen(),

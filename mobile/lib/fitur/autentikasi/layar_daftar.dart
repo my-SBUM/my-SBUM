@@ -278,7 +278,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
               hintText: hintText,
               filled: true,
               fillColor: Colors.white,
-              hintStyle: const TextStyle(color: Colors.black38, fontSize: 14, fontWeight: FontWeight.w600),
+              hintStyle: const TextStyle(
+                color: Colors.black38,
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              ),
               prefixIcon: Icon(prefixIcon, color: Colors.grey, size: 20),
               suffixIcon: suffixIcon,
               contentPadding: const EdgeInsets.symmetric(

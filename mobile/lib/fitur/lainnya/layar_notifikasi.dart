@@ -20,6 +20,8 @@ class NotifikasiScreen extends StatelessWidget {
         children: [
           const AppPageBackgroundLayer(),
           SafeArea(
+            top: false,
+            bottom: false,
             child: Column(
               children: [
                 const AppPageHeader(title: 'Notifikasi'),
@@ -31,7 +33,7 @@ class NotifikasiScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 12),
 
                         // AKTIVITAS TERBARU
                         Row(

@@ -8,6 +8,6 @@ class LocalProfileDataSource {
     role: 'Peminjam',
     phone: '123123123',
     email: 'laode.abdul.rahman@gmail.com',
-    avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=80',
+    avatarUrl: 'https://img.freepik.com/premium-photo/cute-cartoon-boy-with-black-hair-smiling_949067-28056.jpg',
   );
 }

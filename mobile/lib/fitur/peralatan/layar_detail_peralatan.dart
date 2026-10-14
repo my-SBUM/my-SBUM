@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_sbum/komponen/kerangka_aplikasi.dart';
 import 'package:my_sbum/komponen/kepala_halaman_aplikasi.dart';
+import 'package:my_sbum/komponen/latar_halaman_aplikasi.dart';
 import 'package:my_sbum/komponen/navigasi_bawah_aplikasi.dart';
 import 'package:my_sbum/inti/rute/rute_aplikasi.dart';
 import 'package:my_sbum/data/repositori/implementasi_repositori_peralatan.dart';
@@ -61,97 +62,106 @@ class _PeralatanDetailScreenState extends State<PeralatanDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      showBackground: false,
-      body: SafeArea(
-        bottom: false,
-        child: Column(
-          children: [
-            const AppPageHeader(title: 'Detail Peralatan'),
-            Expanded(
-              child: Stack(
-                children: [
-                  // Blob hijau lembut di kanan atas
-                  Positioned(
-                    top: -50,
-                    right: -70,
-                    child: IgnorePointer(
-                      child: Container(
-                        width: 280,
-                        height: 280,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          gradient: RadialGradient(
-                            colors: [Color(0x4022C55E), Color(0x0022C55E)],
+      showBackground: true,
+      body: Stack(
+        children: [
+          const AppPageBackgroundLayer(),
+          SafeArea(
+            top: false,
+            bottom: false,
+            child: Column(
+              children: [
+                const AppPageHeader(title: 'Detail Peralatan'),
+                Expanded(
+                  child: Stack(
+                    children: [
+                      // Blob hijau lembut di kanan atas
+                      Positioned(
+                        top: -50,
+                        right: -70,
+                        child: IgnorePointer(
+                          child: Container(
+                            width: 280,
+                            height: 280,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              gradient: RadialGradient(
+                                colors: [Color(0x4022C55E), Color(0x0022C55E)],
+                              ),
+                            ),
                           ),
+                        ),
+                      ),
+                      SingleChildScrollView(
+                        physics: const BouncingScrollPhysics(),
+                        padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _HeroImage(url: _equipment.imageUrl),
+                            const SizedBox(height: 18),
+                            _TitleRow(
+                              title: _equipment.name,
+                              subtitle: 'Kode Peralatan : ${_equipment.code}',
+                              available: _equipment.available,
+                            ),
+                            const SizedBox(height: 18),
+                            _InfoCard(equipment: _equipment),
+                            const SizedBox(height: 16),
+                            _ListCard(
+                              icon: Icons.checklist_rounded,
+                              iconColor: AppColors.green,
+                              title: 'Kelengkapan',
+                              items: _equipment.completeness,
+                            ),
+                            const SizedBox(height: 16),
+                            _NoticeCard(
+                              icon: Icons.warning_rounded,
+                              iconColor: AppColors.warning,
+                              title: 'Himbauan',
+                              message: _equipment.notice,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 54,
+                    child: ElevatedButton(
+                      onPressed: !_equipment.available
+                          ? null
+                          : () => Navigator.pushNamed(
+                              context,
+                              AppRoutes.pengajuanAlatTahap1,
+                              arguments: widget.peralatan,
+                            ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.green,
+                        foregroundColor: Colors.white,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                      child: const Text(
+                        'Ajukan Peminjaman',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
                   ),
-                  SingleChildScrollView(
-                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 24),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _HeroImage(url: _equipment.imageUrl),
-                        const SizedBox(height: 18),
-                        _TitleRow(
-                          title: _equipment.name,
-                          subtitle: 'Kode Peralatan : ${_equipment.code}',
-                          available: _equipment.available,
-                        ),
-                        const SizedBox(height: 18),
-                        _InfoCard(equipment: _equipment),
-                        const SizedBox(height: 16),
-                        _ListCard(
-                          icon: Icons.checklist_rounded,
-                          iconColor: AppColors.green,
-                          title: 'Kelengkapan',
-                          items: _equipment.completeness,
-                        ),
-                        const SizedBox(height: 16),
-                        _NoticeCard(
-                          icon: Icons.warning_rounded,
-                          iconColor: AppColors.warning,
-                          title: 'Himbauan',
-                          message: _equipment.notice,
-                        ),
-                        const SizedBox(height: 18),
-                        SizedBox(
-                          width: double.infinity,
-                          height: 54,
-                          child: ElevatedButton(
-                            onPressed: !_equipment.available
-                                ? null
-                                : () => Navigator.pushNamed(
-                                    context,
-                                    AppRoutes.pengajuanAlatTahap1,
-                                    arguments: widget.peralatan,
-                                  ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.green,
-                              foregroundColor: Colors.white,
-                              elevation: 0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                            ),
-                            child: const Text(
-                              'Ajukan Peminjaman',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
       bottomNavigationBar: AppBottomNavigation(
         currentIndex: 2,

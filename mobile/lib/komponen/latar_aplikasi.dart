@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class AppBackground extends StatelessWidget {
   const AppBackground({super.key, required this.child});
@@ -7,12 +9,24 @@ class AppBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        CustomPaint(painter: _AppBackgroundPainter()),
-        child,
-      ],
+    return Stack(fit: StackFit.expand, children: [_buildBackground(), child]);
+  }
+
+  Widget _buildBackground() {
+    final assetPath = switch (defaultTargetPlatform) {
+      TargetPlatform.android => 'assets/images/Bg-android.svg',
+      TargetPlatform.iOS => 'assets/images/Bg-ios.svg',
+      _ => null,
+    };
+
+    if (assetPath == null) {
+      return CustomPaint(painter: _AppBackgroundPainter());
+    }
+
+    return SvgPicture.asset(
+      assetPath,
+      fit: BoxFit.fill,
+      alignment: Alignment.topCenter,
     );
   }
 }

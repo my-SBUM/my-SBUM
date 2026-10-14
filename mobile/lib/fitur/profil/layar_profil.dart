@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_sbum/komponen/kerangka_aplikasi.dart';
 import 'package:my_sbum/komponen/kepala_halaman_aplikasi.dart';
+import 'package:my_sbum/komponen/latar_halaman_aplikasi.dart';
 import 'package:my_sbum/inti/rute/rute_aplikasi.dart';
 import 'package:my_sbum/data/repositori/implementasi_repositori_profil.dart';
 import 'package:my_sbum/fitur/aksi/layar_keluar.dart';
@@ -25,238 +26,251 @@ class ProfilSayaScreen extends StatelessWidget {
 
     return AppScaffold(
       showBackground: true,
-      body: SafeArea(
-        child: Column(
-          children: [
-            const AppPageHeader(title: 'Profil Saya'),
-            Expanded(
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.fromLTRB(20, 8, 20, 28),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // ---------- KARTU PROFIL ----------
-                    Container(
-                      padding: const EdgeInsets.fromLTRB(20, 28, 20, 24),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(24),
-                        border: Border.all(color: _C.border),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Color(0x12000000),
-                            blurRadius: 18,
-                            offset: Offset(0, 6),
+      body: Stack(
+        children: [
+          const AppPageBackgroundLayer(),
+          SafeArea(
+            top: false,
+            bottom: false,
+            child: Column(
+              children: [
+                const AppPageHeader(title: 'Profil Saya'),
+                Expanded(
+                  child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        // ---------- KARTU PROFIL ----------
+                        Container(
+                          padding: const EdgeInsets.fromLTRB(20, 28, 20, 24),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(24),
+                            border: Border.all(color: _C.border),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Color(0x12000000),
+                                blurRadius: 18,
+                                offset: Offset(0, 6),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      child: Column(
-                        children: [
-                          // Avatar dengan ring gradasi + tombol edit
-                          SizedBox(
-                            width: 132,
-                            height: 132,
-                            child: Stack(
-                              children: [
-                                Container(
-                                  width: 132,
-                                  height: 132,
-                                  padding: const EdgeInsets.all(4),
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Color(0xFF64D587),
-                                        Color(0xFF20693B),
-                                      ],
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                    ),
-                                  ),
-                                  child: Container(
-                                    padding: const EdgeInsets.all(3),
-                                    decoration: const BoxDecoration(
-                                      color: Colors.white,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: ClipOval(
-                                      child: Image.network(
-                                        profile.avatarUrl,
-                                        fit: BoxFit.cover,
-                                        errorBuilder: (_, __, ___) =>
-                                            Container(
-                                              color: const Color(0xFFE2E8F0),
-                                              child: const Icon(
-                                                Icons.person_rounded,
-                                                size: 60,
-                                                color: _C.green,
-                                              ),
-                                            ),
+                          child: Column(
+                            children: [
+                              // Avatar dengan ring gradasi + tombol edit
+                              SizedBox(
+                                width: 132,
+                                height: 132,
+                                child: Stack(
+                                  children: [
+                                    Container(
+                                      width: 132,
+                                      height: 132,
+                                      padding: const EdgeInsets.all(4),
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            Color(0xFF64D587),
+                                            Color(0xFF20693B),
+                                          ],
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  right: 2,
-                                  bottom: 2,
-                                  child: Material(
-                                    color: _C.green,
-                                    shape: const CircleBorder(
-                                      side: BorderSide(
-                                        color: Colors.white,
-                                        width: 3,
-                                      ),
-                                    ),
-                                    elevation: 2,
-                                    child: InkWell(
-                                      customBorder: const CircleBorder(),
-                                      // TODO: arahkan ke halaman edit profil
-                                      onTap: () {},
-                                      child: const Padding(
-                                        padding: EdgeInsets.all(9),
-                                        child: Icon(
-                                          Icons.edit_rounded,
-                                          size: 18,
+                                      child: Container(
+                                        padding: const EdgeInsets.all(3),
+                                        decoration: const BoxDecoration(
                                           color: Colors.white,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: ClipOval(
+                                          child: Image.network(
+                                            profile.avatarUrl,
+                                            fit: BoxFit.cover,
+                                            errorBuilder: (_, __, ___) =>
+                                                Container(
+                                                  color: const Color(
+                                                    0xFFE2E8F0,
+                                                  ),
+                                                  child: const Icon(
+                                                    Icons.person_rounded,
+                                                    size: 60,
+                                                    color: _C.green,
+                                                  ),
+                                                ),
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
+                                    Positioned(
+                                      right: 2,
+                                      bottom: 2,
+                                      child: Material(
+                                        color: _C.green,
+                                        shape: const CircleBorder(
+                                          side: BorderSide(
+                                            color: Colors.white,
+                                            width: 3,
+                                          ),
+                                        ),
+                                        elevation: 2,
+                                        child: InkWell(
+                                          customBorder: const CircleBorder(),
+                                          // TODO: arahkan ke halaman edit profil
+                                          onTap: () {},
+                                          child: const Padding(
+                                            padding: EdgeInsets.all(9),
+                                            child: Icon(
+                                              Icons.edit_rounded,
+                                              size: 18,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 16),
+                              ),
+                              const SizedBox(height: 16),
 
-                          // Nama
-                          Text(
-                            profile.name,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.w800,
-                              color: _C.text,
-                              letterSpacing: -0.4,
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-
-                          // Badge peran
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 14,
-                              vertical: 6,
-                            ),
-                            decoration: BoxDecoration(
-                              color: _C.greenSoft,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const Icon(
-                                  Icons.verified_rounded,
-                                  size: 15,
-                                  color: _C.green,
+                              // Nama
+                              Text(
+                                profile.name,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w800,
+                                  color: _C.text,
+                                  letterSpacing: -0.4,
                                 ),
-                                const SizedBox(width: 6),
-                                Text(
-                                  profile.role,
-                                  style: const TextStyle(
-                                    fontSize: 12.5,
-                                    fontWeight: FontWeight.w700,
-                                    color: _C.greenDark,
-                                  ),
+                              ),
+                              const SizedBox(height: 10),
+
+                              // Badge peran
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 14,
+                                  vertical: 6,
                                 ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    const SizedBox(height: 26),
-
-                    // ---------- INFORMASI AKUN ----------
-                    const _SectionLabel('INFORMASI AKUN'),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(18),
-                        border: Border.all(color: _C.border),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Color(0x0A000000),
-                            blurRadius: 10,
-                            offset: Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        children: [
-                          _InfoRow(
-                            icon: Icons.phone_iphone_rounded,
-                            label: 'No. Telepon',
-                            value: profile.phone,
-                          ),
-                          const Divider(height: 1, indent: 66, color: _C.border),
-                          _InfoRow(
-                            icon: Icons.mail_outline_rounded,
-                            label: 'Email',
-                            value: profile.email,
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    const SizedBox(height: 26),
-
-                    // ---------- PENGATURAN ----------
-                    const _SectionLabel('KEAMANAN'),
-                    _ActionTile(
-                      icon: Icons.shield_outlined,
-                      title: 'Ubah Password',
-                      subtitle: 'Perbarui kata sandi akun Anda',
-                      color: _C.green,
-                      onTap: () => Navigator.pushNamed(
-                        context,
-                        AppRoutes.ubahPassword,
-                      ),
-                    ),
-
-                    const SizedBox(height: 24),
-
-                    // ---------- KELUAR ----------
-                    SizedBox(
-                      height: 52,
-                      child: OutlinedButton.icon(
-                        onPressed: () =>
-                            LogoutDialogPage.showAndLogout(context),
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: _C.red,
-                          backgroundColor: _C.redSoft.withOpacity(0.5),
-                          side: const BorderSide(color: _C.red, width: 1.2),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
+                                decoration: BoxDecoration(
+                                  color: _C.greenSoft,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Icon(
+                                      Icons.verified_rounded,
+                                      size: 15,
+                                      color: _C.green,
+                                    ),
+                                    const SizedBox(width: 6),
+                                    Text(
+                                      profile.role,
+                                      style: const TextStyle(
+                                        fontSize: 12.5,
+                                        fontWeight: FontWeight.w700,
+                                        color: _C.greenDark,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        icon: const Icon(Icons.logout_rounded, size: 20),
-                        label: const Text(
-                          'Keluar',
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700,
+
+                        const SizedBox(height: 26),
+
+                        // ---------- INFORMASI AKUN ----------
+                        const _SectionLabel('INFORMASI AKUN'),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(18),
+                            border: Border.all(color: _C.border),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Color(0x0A000000),
+                                blurRadius: 10,
+                                offset: Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            children: [
+                              _InfoRow(
+                                icon: Icons.phone_iphone_rounded,
+                                label: 'No. Telepon',
+                                value: profile.phone,
+                              ),
+                              const Divider(
+                                height: 1,
+                                indent: 66,
+                                color: _C.border,
+                              ),
+                              _InfoRow(
+                                icon: Icons.mail_outline_rounded,
+                                label: 'Email',
+                                value: profile.email,
+                              ),
+                            ],
                           ),
                         ),
-                      ),
+
+                        const SizedBox(height: 26),
+
+                        // ---------- PENGATURAN ----------
+                        const _SectionLabel('KEAMANAN'),
+                        _ActionTile(
+                          icon: Icons.shield_outlined,
+                          title: 'Ubah Password',
+                          subtitle: 'Perbarui kata sandi akun Anda',
+                          color: _C.green,
+                          onTap: () => Navigator.pushNamed(
+                            context,
+                            AppRoutes.ubahPassword,
+                          ),
+                        ),
+
+                        const SizedBox(height: 24),
+
+                        // ---------- KELUAR ----------
+                        SizedBox(
+                          height: 52,
+                          child: OutlinedButton.icon(
+                            onPressed: () =>
+                                LogoutDialogPage.showAndLogout(context),
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: _C.red,
+                              backgroundColor: _C.redSoft.withOpacity(0.5),
+                              side: const BorderSide(color: _C.red, width: 1.2),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                            ),
+                            icon: const Icon(Icons.logout_rounded, size: 20),
+                            label: const Text(
+                              'Keluar',
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

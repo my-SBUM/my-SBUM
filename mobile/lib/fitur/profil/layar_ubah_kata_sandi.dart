@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_sbum/komponen/kerangka_aplikasi.dart';
 import 'package:my_sbum/komponen/kepala_halaman_aplikasi.dart';
+import 'package:my_sbum/komponen/latar_halaman_aplikasi.dart';
 import 'package:my_sbum/data/layanan/layanan_aplikasi_simulasi.dart';
 
 class UbahPasswordScreen extends StatefulWidget {
@@ -120,201 +121,215 @@ class _UbahPasswordScreenState extends State<UbahPasswordScreen> {
     // tidak menabrak header, sama seperti halaman Profil Saya.
     return AppScaffold(
       showBackground: true,
-      body: SafeArea(
-        child: Column(
-          children: [
-            const AppPageHeader(title: 'Ubah Password'),
-            Expanded(
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // --- HEADER SECTION ---
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: borderColor),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Ubah Password',
+      body: Stack(
+        children: [
+          const AppPageBackgroundLayer(),
+          SafeArea(
+            top: false,
+            bottom: false,
+            child: Column(
+              children: [
+                const AppPageHeader(title: 'Ubah Password'),
+                Expanded(
+                  child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // --- HEADER SECTION ---
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(color: borderColor),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Ubah Password',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w800,
+                                  color: textDark,
+                                ),
+                              ),
+                              const SizedBox(height: 6),
+                              const Text(
+                                'Masukkan password lama dan buat password baru yang kuat',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: textGrey,
+                                  height: 1.4,
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+
+                              // PASSWORD LAMA
+                              const Text(
+                                'PASSWORD LAMA',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w800,
+                                  color: textGrey,
+                                  letterSpacing: 0.5,
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              _buildPasswordField(
+                                controller: _passwordLamaController,
+                                placeholder: 'Masukkan password lama',
+                                obscure: _obscurePasswordLama,
+                                isFilled: _isPasswordLamaFilled,
+                                onToggleObscure: () {
+                                  setState(() {
+                                    _obscurePasswordLama =
+                                        !_obscurePasswordLama;
+                                  });
+                                },
+                              ),
+                              const SizedBox(height: 24),
+
+                              // PASSWORD BARU
+                              const Text(
+                                'PASSWORD BARU',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w800,
+                                  color: textGrey,
+                                  letterSpacing: 0.5,
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              _buildPasswordField(
+                                controller: _passwordBaruController,
+                                placeholder: 'Masukkan password baru',
+                                obscure: _obscurePasswordBaru,
+                                isFilled: _isPasswordBaruFilled,
+                                onToggleObscure: () {
+                                  setState(() {
+                                    _obscurePasswordBaru =
+                                        !_obscurePasswordBaru;
+                                  });
+                                },
+                              ),
+                              const SizedBox(height: 24),
+
+                              // KONFIRMASI PASSWORD BARU
+                              const Text(
+                                'KONFIRMASI PASSWORD BARU',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w800,
+                                  color: textGrey,
+                                  letterSpacing: 0.5,
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              _buildPasswordField(
+                                controller: _konfirmasiPasswordController,
+                                placeholder: 'Masukkan ulang password',
+                                obscure: _obscureKonfirmasiPassword,
+                                isFilled: _isKonfirmasiPasswordFilled,
+                                onToggleObscure: () {
+                                  setState(() {
+                                    _obscureKonfirmasiPassword =
+                                        !_obscureKonfirmasiPassword;
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: double.infinity,
+                        height: 48,
+                        child: OutlinedButton(
+                          onPressed: () => Navigator.pop(context),
+                          style: OutlinedButton.styleFrom(
+                            side: const BorderSide(
+                              color: borderColor,
+                              width: 1.2,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            backgroundColor: Colors.white,
+                          ),
+                          child: const Text(
+                            'Batal',
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 15,
                               fontWeight: FontWeight.w800,
                               color: textDark,
                             ),
                           ),
-                          const SizedBox(height: 6),
-                          const Text(
-                            'Masukkan password lama dan buat password baru yang kuat',
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: textGrey,
-                              height: 1.4,
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-
-                          // PASSWORD LAMA
-                          const Text(
-                            'PASSWORD LAMA',
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w800,
-                              color: textGrey,
-                              letterSpacing: 0.5,
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          _buildPasswordField(
-                            controller: _passwordLamaController,
-                            placeholder: 'Masukkan password lama',
-                            obscure: _obscurePasswordLama,
-                            isFilled: _isPasswordLamaFilled,
-                            onToggleObscure: () {
-                              setState(() {
-                                _obscurePasswordLama = !_obscurePasswordLama;
-                              });
-                            },
-                          ),
-                          const SizedBox(height: 24),
-
-                          // PASSWORD BARU
-                          const Text(
-                            'PASSWORD BARU',
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w800,
-                              color: textGrey,
-                              letterSpacing: 0.5,
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          _buildPasswordField(
-                            controller: _passwordBaruController,
-                            placeholder: 'Masukkan password baru',
-                            obscure: _obscurePasswordBaru,
-                            isFilled: _isPasswordBaruFilled,
-                            onToggleObscure: () {
-                              setState(() {
-                                _obscurePasswordBaru = !_obscurePasswordBaru;
-                              });
-                            },
-                          ),
-                          const SizedBox(height: 24),
-
-                          // KONFIRMASI PASSWORD BARU
-                          const Text(
-                            'KONFIRMASI PASSWORD BARU',
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w800,
-                              color: textGrey,
-                              letterSpacing: 0.5,
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          _buildPasswordField(
-                            controller: _konfirmasiPasswordController,
-                            placeholder: 'Masukkan ulang password',
-                            obscure: _obscureKonfirmasiPassword,
-                            isFilled: _isKonfirmasiPasswordFilled,
-                            onToggleObscure: () {
-                              setState(() {
-                                _obscureKonfirmasiPassword =
-                                    !_obscureKonfirmasiPassword;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 28),
-
-                    // --- BUTTONS SECTION ---
-                    // Tombol Batal
-                    SizedBox(
-                      width: double.infinity,
-                      height: 48,
-                      child: OutlinedButton(
-                        onPressed: () => Navigator.pop(context),
-                        style: OutlinedButton.styleFrom(
-                          side: const BorderSide(color: borderColor, width: 1.2),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          backgroundColor: Colors.white,
-                        ),
-                        child: const Text(
-                          'Batal',
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w800,
-                            color: textDark,
-                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 12),
-
-                    // Tombol Simpan Perubahan
-                    SizedBox(
-                      width: double.infinity,
-                      height: 48,
-                      child: ElevatedButton.icon(
-                        onPressed:
-                            _isFormValid && !_isSaving ? _saveChanges : null,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              _isFormValid ? primaryGreen : Colors.grey,
-                          disabledBackgroundColor: Colors.grey.shade300,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                      const SizedBox(height: 12),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 48,
+                        child: ElevatedButton.icon(
+                          onPressed: _isFormValid && !_isSaving
+                              ? _saveChanges
+                              : null,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: _isFormValid
+                                ? primaryGreen
+                                : Colors.grey,
+                            disabledBackgroundColor: Colors.grey.shade300,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                           ),
-                        ),
-                        icon: Icon(
-                          Icons.check_rounded,
-                          size: 20,
-                          color: _isFormValid
-                              ? Colors.white
-                              : Colors.grey.shade600,
-                        ),
-                        label: _isSaving
-                            ? const SizedBox(
-                                width: 18,
-                                height: 18,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: Colors.white,
+                          icon: Icon(
+                            Icons.check_rounded,
+                            size: 20,
+                            color: _isFormValid
+                                ? Colors.white
+                                : Colors.grey.shade600,
+                          ),
+                          label: _isSaving
+                              ? const SizedBox(
+                                  width: 18,
+                                  height: 18,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              : Text(
+                                  'Simpan Perubahan',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w800,
+                                    color: _isFormValid
+                                        ? Colors.white
+                                        : Colors.grey.shade600,
+                                  ),
                                 ),
-                              )
-                            : Text(
-                                'Simpan Perubahan',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w800,
-                                  color: _isFormValid
-                                      ? Colors.white
-                                      : Colors.grey.shade600,
-                                ),
-                              ),
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 24),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

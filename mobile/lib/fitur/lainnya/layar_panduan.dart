@@ -7,7 +7,6 @@ import 'package:my_sbum/komponen/latar_halaman_aplikasi.dart';
 class PanduanScreen extends StatelessWidget {
   const PanduanScreen({super.key});
 
-  static const Color _bg = Color(0xFFF9F9F9);
   static const Color _textDark = Color(0xFF0F172A);
   static const Color _textLabel = Color(0xFF475569);
   static const Color _border = Color(0xFFE2E8F0);
@@ -54,6 +53,8 @@ class PanduanScreen extends StatelessWidget {
         children: [
           const AppPageBackgroundLayer(),
           SafeArea(
+            top: false,
+            bottom: false,
             child: Column(
               children: [
                 const AppPageHeader(title: 'Panduan'),
@@ -62,7 +63,7 @@ class PanduanScreen extends StatelessWidget {
                 Expanded(
                   child: ListView(
                     physics: const BouncingScrollPhysics(),
-                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 24),
+                    padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
                     children: [
                       const Text(
                         'PANDUAN PENGGUNAAN',

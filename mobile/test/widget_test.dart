@@ -1,5 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:my_sbum/komponen/latar_aplikasi.dart';
 import 'package:my_sbum/inti/rute/pengarah_aplikasi.dart';
 import 'package:my_sbum/inti/rute/rute_aplikasi.dart';
 import 'package:my_sbum/data/sumber_data/sumber_data_notifikasi_lokal.dart';
@@ -42,6 +45,25 @@ void main() {
       ),
       hasLength(2),
     );
+  });
+
+  testWidgets('app background loads platform-specific SVG assets', (
+    WidgetTester tester,
+  ) async {
+    try {
+      for (final platform in [TargetPlatform.android, TargetPlatform.iOS]) {
+        debugDefaultTargetPlatformOverride = platform;
+        await tester.pumpWidget(
+          const MaterialApp(home: AppBackground(child: SizedBox.expand())),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.byType(SvgPicture), findsOneWidget);
+        expect(tester.takeException(), isNull);
+      }
+    } finally {
+      debugDefaultTargetPlatformOverride = null;
+    }
   });
 
   testWidgets('app opens on the login screen', (WidgetTester tester) async {
@@ -94,6 +116,82 @@ void main() {
     expect(find.text('1 data'), findsOneWidget);
     expect(find.byType(RiwayatScreen), findsOneWidget);
   });
+
+  testWidgets(
+    'pending history detail opens the pending screen with its record',
+    (WidgetTester tester) async {
+      final record = const RequestRepositoryImpl().getAll().first;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          initialRoute: AppRoutes.riwayat,
+          onGenerateRoute: AppRouter.generate,
+        ),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.text(record.title));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(MenungguScreen), findsOneWidget);
+      expect(find.text('Detail Menunggu'), findsOneWidget);
+      expect(find.text(record.title), findsOneWidget);
+      expect(find.text(record.id), findsOneWidget);
+      expect(find.text(record.pic), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'history detail buttons navigate by status without changing filter',
+    (WidgetTester tester) async {
+      const details = {
+        'Menunggu': (route: AppRoutes.riwayatMenunggu, button: 'Lihat Detail'),
+        'Diterima': (
+          route: AppRoutes.riwayatDiterima,
+          button: 'Lihat Detail Peminjaman',
+        ),
+        'Ditolak': (
+          route: AppRoutes.riwayatDitolak,
+          button: 'Lihat Detail Alasan',
+        ),
+      };
+
+      for (final record in const RequestRepositoryImpl().getAll()) {
+        final detail = details[record.status]!;
+        final observer = _RecordingNavigatorObserver();
+
+        await tester.pumpWidget(
+          MaterialApp(
+            initialRoute: AppRoutes.riwayat,
+            onGenerateRoute: AppRouter.generate,
+            navigatorObservers: [observer],
+          ),
+        );
+        await tester.pumpAndSettle();
+        await tester.tap(find.text(record.status).first);
+        await tester.pumpAndSettle();
+        await tester.ensureVisible(find.text(detail.button));
+        await tester.tap(find.text(detail.button));
+        await tester.pumpAndSettle();
+
+        expect(observer.pushedRouteName, detail.route);
+        expect(observer.pushedArguments, same(record));
+        expect(find.text('Detail ${record.status}'), findsOneWidget);
+        expect(find.text(record.title), findsOneWidget);
+
+        Navigator.of(tester.element(find.text('Detail ${record.status}')))
+            .pop();
+        await tester.pumpAndSettle();
+
+        expect(find.text('1 data'), findsOneWidget);
+        expect(find.text(record.title), findsOneWidget);
+        for (final otherRecord in const RequestRepositoryImpl().getAll()) {
+          if (otherRecord.status != record.status) {
+            expect(find.text(otherRecord.title), findsNothing);
+          }
+        }
+      }
+    },
+  );
 
   testWidgets('history cards open their matching status detail screens', (
     WidgetTester tester,
@@ -223,4 +321,15 @@ void main() {
     expect(requestButton.onPressed, isNotNull);
     expect(tester.takeException(), isNull);
   });
+}
+
+class _RecordingNavigatorObserver extends NavigatorObserver {
+  String? pushedRouteName;
+  Object? pushedArguments;
+
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    pushedRouteName = route.settings.name;
+    pushedArguments = route.settings.arguments;
+  }
 }

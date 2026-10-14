@@ -87,11 +87,7 @@ class CancelRequestDialog {
                 const Text(
                   'Pastikan Anda ingin membatalkan peminjaman ini sebelum '
                   'melanjutkan. Aksi ini tidak dapat dibatalkan.',
-                  style: TextStyle(
-                    fontSize: 15,
-                    height: 1.5,
-                    color: _textGrey,
-                  ),
+                  style: TextStyle(fontSize: 15, height: 1.5, color: _textGrey),
                 ),
 
                 // Kartu detail peminjaman

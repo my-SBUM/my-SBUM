@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_sbum/komponen/kerangka_aplikasi.dart';
 import 'package:my_sbum/komponen/kepala_halaman_aplikasi.dart';
+import 'package:my_sbum/komponen/latar_halaman_aplikasi.dart';
 import 'package:my_sbum/komponen/navigasi_bawah_aplikasi.dart';
 import 'package:my_sbum/inti/rute/rute_aplikasi.dart';
 import 'package:my_sbum/data/repositori/implementasi_repositori_ruangan.dart';
@@ -52,79 +53,88 @@ class RuanganDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      showBackground: false,
-      body: SafeArea(
-        bottom: false,
-        child: Column(
-          children: [
-            const AppPageHeader(title: 'Detail Ruangan'),
-            Expanded(
-              child: Stack(
-                children: [
-                  // Blob hijau lembut di kanan atas
-                  Positioned(
-                    top: -50,
-                    right: -70,
-                    child: IgnorePointer(
-                      child: Container(
-                        width: 280,
-                        height: 280,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          gradient: RadialGradient(
-                            colors: [Color(0x4022C55E), Color(0x0022C55E)],
+      showBackground: true,
+      body: Stack(
+        children: [
+          const AppPageBackgroundLayer(),
+          SafeArea(
+            top: false,
+            bottom: false,
+            child: Column(
+              children: [
+                const AppPageHeader(title: 'Detail Ruangan'),
+                Expanded(
+                  child: Stack(
+                    children: [
+                      // Blob hijau lembut di kanan atas
+                      Positioned(
+                        top: -50,
+                        right: -70,
+                        child: IgnorePointer(
+                          child: Container(
+                            width: 280,
+                            height: 280,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              gradient: RadialGradient(
+                                colors: [Color(0x4022C55E), Color(0x0022C55E)],
+                              ),
+                            ),
                           ),
+                        ),
+                      ),
+                      SingleChildScrollView(
+                        physics: const BouncingScrollPhysics(),
+                        padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _HeroImage(url: _room.imageUrl),
+                            const SizedBox(height: 18),
+                            _TitleRow(room: _room),
+                            const SizedBox(height: 18),
+                            _InfoCard(room: _room),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 54,
+                    child: ElevatedButton(
+                      onPressed: !_room.available
+                          ? null
+                          : () => Navigator.pushNamed(
+                              context,
+                              AppRoutes.pengajuanRuangTahap1,
+                              arguments: {'ruangan': ruangan},
+                            ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.green,
+                        foregroundColor: Colors.white,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                      child: const Text(
+                        'Ajukan Peminjaman',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
                   ),
-                  SingleChildScrollView(
-                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 24),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _HeroImage(url: _room.imageUrl),
-                        const SizedBox(height: 18),
-                        _TitleRow(room: _room),
-                        const SizedBox(height: 18),
-                        _InfoCard(room: _room),
-                        const SizedBox(height: 20),
-                        SizedBox(
-                          width: double.infinity,
-                          height: 54,
-                          child: ElevatedButton(
-                            onPressed: !_room.available
-                                ? null
-                                : () => Navigator.pushNamed(
-                                    context,
-                                    AppRoutes.pengajuanRuangTahap1,
-                                    arguments: {'ruangan': ruangan},
-                                  ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.green,
-                              foregroundColor: Colors.white,
-                              elevation: 0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                            ),
-                            child: const Text(
-                              'Ajukan Peminjaman',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
       bottomNavigationBar: AppBottomNavigation(
         currentIndex: 1,

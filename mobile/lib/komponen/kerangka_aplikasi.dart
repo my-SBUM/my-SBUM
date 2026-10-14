@@ -21,12 +21,16 @@ class AppScaffold extends StatelessWidget {
     return Theme(
       data: theme.copyWith(
         appBarTheme: theme.appBarTheme.copyWith(
-          backgroundColor: showBackground ? Colors.transparent : Color (0xFFF9F9F9),
+          backgroundColor: showBackground
+              ? Colors.transparent
+              : Color(0xFFF9F9F9),
           surfaceTintColor: Colors.transparent,
         ),
       ),
       child: Scaffold(
-        backgroundColor: showBackground ? Colors.transparent : Color (0xFFF9F9F9),
+        backgroundColor: showBackground
+            ? Colors.transparent
+            : Color(0xFFF9F9F9),
         extendBodyBehindAppBar: showBackground,
         appBar: appBar,
         body: showBackground

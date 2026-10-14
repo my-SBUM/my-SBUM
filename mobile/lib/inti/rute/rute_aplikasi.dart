@@ -35,7 +35,6 @@ class AppRoutes {
   static const String riwayatMenunggu = '/riwayat/menunggu';
   static const String riwayatDiterima = '/riwayat/diterima';
   static const String riwayatDitolak = '/riwayat/ditolak';
-  static const String riwayatDetail = '/riwayat/detail';
 
   // ---------------- LAINNYA ----------------
   static const String lainnya = '/lainnya';

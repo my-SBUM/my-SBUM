@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_sbum/komponen/kepala_halaman_aplikasi.dart';
 import 'package:my_sbum/komponen/kerangka_aplikasi.dart';
+import 'package:my_sbum/komponen/latar_halaman_aplikasi.dart';
 
 enum GuideArticleType { roomBooking, cancellation }
 
@@ -73,37 +74,45 @@ class GuideArticleScreen extends StatelessWidget {
 
     return AppScaffold(
       showBackground: true,
-      body: SafeArea(
-        child: Column(
-          children: [
-            AppPageHeader(title: guide.title),
-            Expanded(
-              child: ListView(
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.fromLTRB(18, 18, 18, 24),
-                children: [
-                  _buildIntroCard(guide),
-                  const SizedBox(height: 26),
-                  const Text(
-                    'LANGKAH-LANGKAH',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: _dark,
-                    ),
+      body: Stack(
+        children: [
+          const AppPageBackgroundLayer(),
+          SafeArea(
+            top: false,
+            bottom: false,
+            child: Column(
+              children: [
+                AppPageHeader(title: guide.title),
+                Expanded(
+                  child: ListView(
+                    physics: const BouncingScrollPhysics(),
+                    padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
+                    children: [
+                      _buildIntroCard(guide),
+                      const SizedBox(height: 26),
+                      const Text(
+                        'LANGKAH-LANGKAH',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: _dark,
+                        ),
+                      ),
+                      const SizedBox(height: 14),
+                      for (var i = 0; i < guide.steps.length; i++) ...[
+                        _buildStepCard(i + 1, guide.steps[i]),
+                        if (i != guide.steps.length - 1)
+                          const SizedBox(height: 12),
+                      ],
+                      const SizedBox(height: 18),
+                      _buildNote(guide),
+                    ],
                   ),
-                  const SizedBox(height: 14),
-                  for (var i = 0; i < guide.steps.length; i++) ...[
-                    _buildStepCard(i + 1, guide.steps[i]),
-                    if (i != guide.steps.length - 1) const SizedBox(height: 12),
-                  ],
-                  const SizedBox(height: 18),
-                  _buildNote(guide),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

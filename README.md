@@ -8,9 +8,9 @@ pengembangan backend/web.
 
 - **Mobile Flutter:** dapat dijalankan sebagai prototipe menggunakan data dan
   layanan simulasi yang tersedia di aplikasi.
-- **Backend/web:** belum tersedia di repository ini. Folder `backend/` saat
-  ini hanya berisi placeholder, belum ada proyek Laravel, `composer.json`,
-  konfigurasi database, atau API.
+- **Prototipe web Laravel:** proyek Laravel tersedia di `web/` dan masih
+  menggunakan halaman awal serta konfigurasi bawaan. Folder `backend/` tetap
+  menjadi placeholder; integrasi database dan API belum dibuat.
 - **Koneksi aplikasi:** login, pendaftaran, perubahan kata sandi, dan pengajuan
   belum mengirim data ke server. Tidak perlu menyalakan XAMPP/MySQL untuk
   mencoba prototipe mobile.
@@ -26,7 +26,8 @@ pengembangan backend/web.
 | Bagian | Teknologi |
 | --- | --- |
 | Mobile | Flutter dan Dart |
-| Backend/web (rencana) | Laravel |
+| Prototipe web | Laravel 13 |
+| Backend/API (rencana) | Laravel |
 | Database (rencana) | MySQL |
 | Komunikasi (rencana) | REST API / JSON |
 
@@ -34,8 +35,9 @@ pengembangan backend/web.
 
 ```text
 my-SBUM/
-├── backend/       # Placeholder; backend belum tersedia
-├── mobile/        # Aplikasi Flutter 
+├── backend/       # Placeholder untuk backend/API
+├── mobile/        # Aplikasi Flutter
+├── web/           # Prototipe web Laravel
 ├── .gitignore
 └── README.md
 ```
@@ -49,7 +51,21 @@ Beberapa bagian utama aplikasi mobile:
 - `mobile/lib/komponen/` — widget yang digunakan bersama.
 - `mobile/lib/inti/` — konfigurasi dan pengaturan rute aplikasi.
 
----
+### Menjalankan prototipe web Laravel
+
+Pasang PHP dan Composer, lalu jalankan dari PowerShell:
+
+```powershell
+Set-Location .\web
+composer install
+php artisan serve
+```
+
+Buka alamat lokal yang ditampilkan oleh Artisan (biasanya
+`http://127.0.0.1:8000`). Proyek web ini masih berupa scaffold Laravel; belum
+terhubung ke database maupun aplikasi mobile.
+
+---a
 
 ## Cara menjalankan aplikasi mobile di Windows
 

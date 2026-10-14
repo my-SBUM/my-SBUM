@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_sbum/komponen/kerangka_aplikasi.dart';
 import 'package:my_sbum/inti/rute/rute_aplikasi.dart';
 import 'package:my_sbum/komponen/latar_halaman_aplikasi.dart';
+import 'package:my_sbum/komponen/kepala_halaman_aplikasi.dart';
 
 class DetailPeralatanCekJadwalScreen extends StatefulWidget {
   const DetailPeralatanCekJadwalScreen({super.key});
@@ -124,9 +125,7 @@ class _DetailPeralatanCekJadwalScreenState
       if ((mulai && selectedMinutes >= otherMinutes) ||
           (!mulai && selectedMinutes <= otherMinutes)) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Jam selesai harus setelah jam mulai.'),
-          ),
+          const SnackBar(content: Text('Jam selesai harus setelah jam mulai.')),
         );
         return;
       }
@@ -247,266 +246,84 @@ class _DetailPeralatanCekJadwalScreenState
     final lengkap = _isLengkap;
 
     return AppScaffold(
-      showBackground: false,
+      showBackground: true,
       body: Stack(
         children: [
           const AppPageBackgroundLayer(),
           SafeArea(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  // Header
-                  Container(
-                    color: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 10,
-                    ),
-                    child: Row(
+            top: false,
+            child: Column(
+              children: [
+                const AppPageHeader(title: 'Detail Peralatan'),
+                Expanded(
+                  child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    padding: const EdgeInsets.fromLTRB(18, 16, 18, 24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        GestureDetector(
-                          onTap: () => Navigator.maybePop(context),
-                          child: Container(
-                            width: 42,
-                            height: 42,
-                            decoration: const BoxDecoration(
-                              color: Color(0xFFF1F5F9),
-                              shape: BoxShape.circle,
+                        // Step indicator
+                        Row(
+                          children: [
+                            _stepItem(
+                              number: '1',
+                              label: 'Cek Jadwal',
+                              active: true,
                             ),
-                            child: const Icon(
-                              Icons.arrow_back_ios_new_rounded,
-                              size: 18,
-                              color: _ink,
+                            _stepItem(
+                              number: '2',
+                              label: 'Isi form',
+                              active: false,
                             ),
-                          ),
+                            _stepItem(
+                              number: '3',
+                              label: 'Konfirmasi',
+                              active: false,
+                            ),
+                          ],
                         ),
-                        const SizedBox(width: 12),
-                        const Expanded(
-                          child: Text(
-                            'Detail Peralatan',
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w800,
-                              color: _ink,
-                            ),
-                          ),
-                        ),
+
+                        const SizedBox(height: 28),
+
+                        // Item card
                         Container(
-                          width: 40,
-                          height: 40,
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(14),
                           decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: const Color(0xFF0A6332),
-                            image: const DecorationImage(
-                              image: NetworkImage(
-                                'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
-                              ),
-                              fit: BoxFit.cover,
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(18),
+                            border: Border.all(
+                              color: const Color(0xFFE2E8F0),
+                              width: 1.2,
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withOpacity(0.06),
-                                blurRadius: 6,
+                                color: Colors.black.withOpacity(0.02),
+                                blurRadius: 8,
                                 offset: const Offset(0, 2),
                               ),
                             ],
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  // Green strip
-                  Container(
-                    width: double.infinity,
-                    height: 110,
-                    color: const Color(0xFFD9F0E0),
-                  ),
-
-                  Transform.translate(
-                    offset: const Offset(0, -44),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 18),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Step indicator
-                          Row(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              _stepItem(
-                                number: '1',
-                                label: 'Cek Jadwal',
-                                active: true,
-                              ),
-                              _stepItem(
-                                number: '2',
-                                label: 'Isi form',
-                                active: false,
-                              ),
-                              _stepItem(
-                                number: '3',
-                                label: 'Konfirmasi',
-                                active: false,
-                              ),
-                            ],
-                          ),
-
-                          const SizedBox(height: 28),
-
-                          // Item card
-                          Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.all(14),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(18),
-                              border: Border.all(
-                                color: const Color(0xFFE2E8F0),
-                                width: 1.2,
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.02),
-                                  blurRadius: 8,
-                                  offset: const Offset(0, 2),
-                                ),
-                              ],
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(14),
-                                  child: Image.network(
-                                    'https://images.unsplash.com/photo-1516321165247-4aa89a48be28?auto=format&fit=crop&w=800&q=80',
-                                    width: 120,
-                                    height: 110,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return Container(
-                                        width: 120,
-                                        height: 110,
-                                        color: Colors.grey.shade300,
-                                        child: const Icon(
-                                          Icons.image_not_supported,
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                                const SizedBox(width: 14),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const Text(
-                                        'Kamera Luminux',
-                                        style: TextStyle(
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.w800,
-                                          color: _ink,
-                                        ),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(14),
+                                child: Image.network(
+                                  'https://images.unsplash.com/photo-1516321165247-4aa89a48be28?auto=format&fit=crop&w=800&q=80',
+                                  width: 120,
+                                  height: 110,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Container(
+                                      width: 120,
+                                      height: 110,
+                                      color: Colors.grey.shade300,
+                                      child: const Icon(
+                                        Icons.image_not_supported,
                                       ),
-                                      const SizedBox(height: 4),
-                                      const Text(
-                                        'Kode : MMX - 208',
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          color: Color(0xFF64748B),
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 10),
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 12,
-                                          vertical: 6,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xFFDCFCE7),
-                                          borderRadius: BorderRadius.circular(
-                                            18,
-                                          ),
-                                        ),
-                                        child: const Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            CircleAvatar(
-                                              radius: 6,
-                                              backgroundColor: Color(
-                                                0xFF16A34A,
-                                              ),
-                                            ),
-                                            SizedBox(width: 8),
-                                            Text(
-                                              'Tersedia',
-                                              style: TextStyle(
-                                                color: Color(0xFF15803D),
-                                                fontWeight: FontWeight.w800,
-                                                fontSize: 15,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-
-                          const SizedBox(height: 22),
-
-                          // Pilih tanggal
-                          const Text(
-                            'Pilih Waktu Pengajuan :',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: _ink,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-                          _fieldPilihan(
-                            value: _tanggalPeminjaman == null
-                                ? null
-                                : _formatTanggal(_tanggalPeminjaman!),
-                            placeholder: 'Pilih tanggal',
-                            icon: Icons.calendar_today_rounded,
-                            onTap: _pilihTanggal,
-                            verticalPadding: 14,
-                          ),
-
-                          const SizedBox(height: 20),
-
-                          // Jam mulai dan selesai
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      'Jam Mulai :',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: _ink,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    _fieldPilihan(
-                                      value: _jamMulai == null
-                                          ? null
-                                          : _formatJam(_jamMulai!),
-                                      placeholder: '--:--',
-                                      icon: Icons.access_time_rounded,
-                                      onTap: () => _pilihJam(mulai: true),
-                                    ),
-                                  ],
+                                    );
+                                  },
                                 ),
                               ),
                               const SizedBox(width: 14),
@@ -515,146 +332,253 @@ class _DetailPeralatanCekJadwalScreenState
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     const Text(
-                                      'Jam Selesai :',
+                                      'Kamera Luminux',
                                       style: TextStyle(
-                                        fontSize: 16,
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.w800,
                                         color: _ink,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    const Text(
+                                      'Kode : MMX - 208',
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        color: Color(0xFF64748B),
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
                                     const SizedBox(height: 10),
-                                    _fieldPilihan(
-                                      value: _jamSelesai == null
-                                          ? null
-                                          : _formatJam(_jamSelesai!),
-                                      placeholder: '--:--',
-                                      icon: Icons.access_time_rounded,
-                                      onTap: () => _pilihJam(mulai: false),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 12,
+                                        vertical: 6,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xFFDCFCE7),
+                                        borderRadius: BorderRadius.circular(18),
+                                      ),
+                                      child: const Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 6,
+                                            backgroundColor: Color(0xFF16A34A),
+                                          ),
+                                          SizedBox(width: 8),
+                                          Text(
+                                            'Tersedia',
+                                            style: TextStyle(
+                                              color: Color(0xFF15803D),
+                                              fontWeight: FontWeight.w800,
+                                              fontSize: 15,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
                               ),
                             ],
                           ),
+                        ),
 
-                          const SizedBox(height: 20),
+                        const SizedBox(height: 22),
 
-                          // Keterangan status (berubah sesuai kelengkapan input)
-                          const Text(
-                            'Keterangan',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: _ink,
-                              fontWeight: FontWeight.w600,
-                            ),
+                        // Pilih tanggal
+                        const Text(
+                          'Pilih Waktu Pengajuan :',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: _ink,
+                            fontWeight: FontWeight.w600,
                           ),
-                          const SizedBox(height: 10),
+                        ),
+                        const SizedBox(height: 12),
+                        _fieldPilihan(
+                          value: _tanggalPeminjaman == null
+                              ? null
+                              : _formatTanggal(_tanggalPeminjaman!),
+                          placeholder: 'Pilih tanggal',
+                          icon: Icons.calendar_today_rounded,
+                          onTap: _pilihTanggal,
+                          verticalPadding: 14,
+                        ),
 
-                          AnimatedContainer(
-                            duration: const Duration(milliseconds: 250),
-                            width: double.infinity,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 14,
-                            ),
-                            decoration: BoxDecoration(
-                              color: lengkap
-                                  ? const Color(0xFFDCFCE7)
-                                  : const Color(0xFFF1F5F9),
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(
-                                color: lengkap
-                                    ? const Color(0xFF82D8A6)
-                                    : const Color(0xFFE2E8F0),
-                                width: 1.5,
+                        const SizedBox(height: 20),
+
+                        // Jam mulai dan selesai
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'Jam Mulai :',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: _ink,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  _fieldPilihan(
+                                    value: _jamMulai == null
+                                        ? null
+                                        : _formatJam(_jamMulai!),
+                                    placeholder: '--:--',
+                                    icon: Icons.access_time_rounded,
+                                    onTap: () => _pilihJam(mulai: true),
+                                  ),
+                                ],
                               ),
                             ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    CircleAvatar(
-                                      radius: 8,
-                                      backgroundColor: lengkap
-                                          ? const Color(0xFF16A34A)
-                                          : _hint,
+                            const SizedBox(width: 14),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'Jam Selesai :',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: _ink,
+                                      fontWeight: FontWeight.w600,
                                     ),
-                                    const SizedBox(width: 10),
-                                    Expanded(
-                                      child: Text(
-                                        lengkap
-                                            ? 'Waktu pengajuan sudah dipilih'
-                                            : 'Pilih tanggal dan jam pengajuan',
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w800,
-                                          color: lengkap
-                                              ? const Color(0xFF0A6332)
-                                              : const Color(0xFF64748B),
-                                        ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  _fieldPilihan(
+                                    value: _jamSelesai == null
+                                        ? null
+                                        : _formatJam(_jamSelesai!),
+                                    placeholder: '--:--',
+                                    icon: Icons.access_time_rounded,
+                                    onTap: () => _pilihJam(mulai: false),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        // Keterangan status (berubah sesuai kelengkapan input)
+                        const Text(
+                          'Keterangan',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: _ink,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+
+                        AnimatedContainer(
+                          duration: const Duration(milliseconds: 250),
+                          width: double.infinity,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 14,
+                          ),
+                          decoration: BoxDecoration(
+                            color: lengkap
+                                ? const Color(0xFFDCFCE7)
+                                : const Color(0xFFF1F5F9),
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: lengkap
+                                  ? const Color(0xFF82D8A6)
+                                  : const Color(0xFFE2E8F0),
+                              width: 1.5,
+                            ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  CircleAvatar(
+                                    radius: 8,
+                                    backgroundColor: lengkap
+                                        ? const Color(0xFF16A34A)
+                                        : _hint,
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: Text(
+                                      lengkap
+                                          ? 'Waktu pengajuan sudah dipilih'
+                                          : 'Pilih tanggal dan jam pengajuan',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w800,
+                                        color: lengkap
+                                            ? const Color(0xFF0A6332)
+                                            : const Color(0xFF64748B),
                                       ),
                                     ),
-                                  ],
-                                ),
-                                const SizedBox(height: 8),
-                                Text(
-                                  lengkap
-                                      ? 'Tanggal dan jam yang dipilih digunakan pada pengajuan.'
-                                      : 'Lengkapi tanggal, jam mulai, dan jam selesai untuk melanjutkan.',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    color: lengkap
-                                        ? const Color(0xFF047857)
-                                        : const Color(0xFF94A3B8),
-                                    fontWeight: FontWeight.w500,
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-
-                          const SizedBox(height: 26),
-
-                          // Button lanjut (aktif jika input sudah lengkap)
-                          SizedBox(
-                            width: double.infinity,
-                            height: 56,
-                            child: ElevatedButton.icon(
-                              onPressed: lengkap ? _lanjut : null,
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF0A6332),
-                                foregroundColor: Colors.white,
-                                disabledBackgroundColor: const Color(
-                                  0xFFCBD5E1,
-                                ),
-                                disabledForegroundColor: Colors.white,
-                                elevation: 0,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(18),
-                                ),
+                                ],
                               ),
-                              icon: const Icon(
-                                Icons.arrow_forward_rounded,
-                                size: 24,
-                              ),
-                              label: const Text(
-                                'Lanjut isi form',
+                              const SizedBox(height: 8),
+                              Text(
+                                lengkap
+                                    ? 'Tanggal dan jam yang dipilih digunakan pada pengajuan.'
+                                    : 'Lengkapi tanggal, jam mulai, dan jam selesai untuk melanjutkan.',
                                 style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w800,
+                                  fontSize: 15,
+                                  color: lengkap
+                                      ? const Color(0xFF047857)
+                                      : const Color(0xFF94A3B8),
+                                  fontWeight: FontWeight.w500,
                                 ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        const SizedBox(height: 26),
+
+                        // Button lanjut (aktif jika input sudah lengkap)
+                        SizedBox(
+                          width: double.infinity,
+                          height: 56,
+                          child: ElevatedButton.icon(
+                            onPressed: lengkap ? _lanjut : null,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF0A6332),
+                              foregroundColor: Colors.white,
+                              disabledBackgroundColor: const Color(0xFFCBD5E1),
+                              disabledForegroundColor: Colors.white,
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18),
+                              ),
+                            ),
+                            icon: const Icon(
+                              Icons.arrow_forward_rounded,
+                              size: 24,
+                            ),
+                            label: const Text(
+                              'Lanjut isi form',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w800,
                               ),
                             ),
                           ),
+                        ),
 
-                          const SizedBox(height: 24),
-                        ],
-                      ),
+                        const SizedBox(height: 24),
+                      ],
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],
