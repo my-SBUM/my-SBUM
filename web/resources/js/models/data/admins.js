@@ -1,0 +1,39 @@
+// admins.js – data administrator (untuk halaman Kelola Admin)
+export const admins = [
+  {
+    id: 1,
+    name: "Dr. Ir. Hendra W.",
+    email: "hendra@polibatam.ac.id",
+    nip: "198505122010011001",
+    phone: "081200001111",
+    department: "Koordinator Laboratorium",
+    status: "aktif",
+  },
+  {
+    id: 2,
+    name: "Ahmad Zulfikar, M.T.",
+    email: "ahmad.z@polibatam.ac.id",
+    nip: "198803232011012002",
+    phone: "081200002222",
+    department: "Teknik Komputer",
+    status: "aktif",
+  },
+  {
+    id: 3,
+    name: "Siti Rahmawati, S.E.",
+    email: "siti.r@polibatam.ac.id",
+    nip: "199005152012013003",
+    phone: "081200003333",
+    department: "Tata Usaha SBUM",
+    status: "aktif",
+  },
+  {
+    id: 4,
+    name: "Rudi Hermawan",
+    email: "rudi.h@polibatam.ac.id",
+    nip: "199202182015014004",
+    phone: "081200004444",
+    department: "Teaching Factory",
+    status: "nonaktif",
+  },
+];
