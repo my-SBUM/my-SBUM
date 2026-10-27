@@ -1,8 +1,12 @@
+// Penjelasan edukatif: Komponen UI yang dapat dipakai ulang agar tampilan dan interaksi antar layar tetap konsisten.
+
 import 'package:flutter/material.dart';
+import 'package:my_sbum/komponen/gambar_aplikasi.dart';
 import 'package:my_sbum/inti/rute/rute_aplikasi.dart';
 import 'package:my_sbum/data/repositori/implementasi_repositori_profil.dart';
 import 'package:my_sbum/komponen/logo_aplikasi.dart';
 
+/// Keterangan kelas: AppHeader adalah class/widget utama yang menyediakan tanggung jawab sesuai file ini.
 class AppHeader extends StatelessWidget {
   const AppHeader({super.key});
 
@@ -78,7 +82,7 @@ class AppHeader extends StatelessWidget {
                   width: 35,
                   height: 35,
                   child: ClipOval(
-                    child: Image.network(
+                    child: AppImage(
                       profile.avatarUrl,
                       fit: BoxFit.cover,
                       errorBuilder: (_, __, ___) => const ColoredBox(

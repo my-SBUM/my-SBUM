@@ -1,5 +1,8 @@
+// Penjelasan edukatif: Komponen UI yang dapat dipakai ulang agar tampilan dan interaksi antar layar tetap konsisten.
+
 import 'package:flutter/material.dart';
 
+/// Keterangan kelas: AppBottomNavigation adalah class/widget utama yang menyediakan tanggung jawab sesuai file ini.
 class AppBottomNavigation extends StatelessWidget {
   const AppBottomNavigation({
     super.key,
@@ -47,6 +50,7 @@ class AppBottomNavigation extends StatelessWidget {
   }
 }
 
+/// Keterangan kelas: _NavigationItem adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _NavigationItem extends StatelessWidget {
   const _NavigationItem({
     required this.item,

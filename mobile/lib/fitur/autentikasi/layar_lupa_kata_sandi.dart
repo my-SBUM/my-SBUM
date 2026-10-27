@@ -1,8 +1,12 @@
+// Penjelasan edukatif: Layar fitur aplikasi; widget membangun UI, state menyimpan perubahan sementara, dan aksi pengguna memicu navigasi atau repository.
+// Pemula dapat mengikuti alur dari build() ke callback interaksi, lalu melihat perubahan state atau perpindahan rute.
+
 import 'package:flutter/material.dart';
 import 'package:my_sbum/komponen/kerangka_aplikasi.dart';
 import 'package:my_sbum/komponen/logo_aplikasi.dart';
 import 'package:my_sbum/data/layanan/layanan_aplikasi_simulasi.dart';
 
+/// Keterangan kelas: ForgotPasswordScreen adalah widget layar yang menjadi titik interaksi pengguna dan dapat meneruskan navigasi.
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
 
@@ -10,6 +14,7 @@ class ForgotPasswordScreen extends StatefulWidget {
   State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
 }
 
+/// Keterangan kelas: _ForgotPasswordScreenState adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   // Warna sesuai tema halaman Login
   static const Color primaryGreen = Color(0xFF2E9451);

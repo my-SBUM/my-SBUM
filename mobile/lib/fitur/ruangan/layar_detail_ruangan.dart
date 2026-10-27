@@ -1,4 +1,8 @@
+// Penjelasan edukatif: Layar fitur aplikasi; widget membangun UI, state menyimpan perubahan sementara, dan aksi pengguna memicu navigasi atau repository.
+// Pemula dapat mengikuti alur dari build() ke callback interaksi, lalu melihat perubahan state atau perpindahan rute.
+
 import 'package:flutter/material.dart';
+import 'package:my_sbum/komponen/gambar_aplikasi.dart';
 import 'package:my_sbum/komponen/kerangka_aplikasi.dart';
 import 'package:my_sbum/komponen/kepala_halaman_aplikasi.dart';
 import 'package:my_sbum/komponen/latar_halaman_aplikasi.dart';
@@ -11,6 +15,7 @@ import 'package:my_sbum/model/ruang.dart';
 /// ---------------------------------------------------------------------------
 /// Warna
 /// ---------------------------------------------------------------------------
+/// Keterangan kelas: AppColors adalah class/widget utama yang menyediakan tanggung jawab sesuai file ini.
 class AppColors {
   static const green = Color(0xFF1F8A4C);
   static const greenSoft = Color(0xFFDDF7E6);
@@ -28,6 +33,7 @@ class AppColors {
 /// ---------------------------------------------------------------------------
 /// Halaman Detail Ruangan
 /// ---------------------------------------------------------------------------
+/// Keterangan kelas: RuanganDetailScreen adalah widget layar yang menjadi titik interaksi pengguna dan dapat meneruskan navigasi.
 class RuanganDetailScreen extends StatelessWidget {
   const RuanganDetailScreen({super.key, this.ruangan});
 
@@ -152,6 +158,7 @@ class RuanganDetailScreen extends StatelessWidget {
 /// ---------------------------------------------------------------------------
 /// Foto ruangan
 /// ---------------------------------------------------------------------------
+/// Keterangan kelas: _HeroImage adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _HeroImage extends StatelessWidget {
   final String url;
 
@@ -164,7 +171,7 @@ class _HeroImage extends StatelessWidget {
       child: SizedBox(
         height: 180,
         width: double.infinity,
-        child: Image.network(
+        child: AppImage(
           url,
           fit: BoxFit.cover,
           loadingBuilder: (context, child, progress) {
@@ -196,6 +203,7 @@ class _HeroImage extends StatelessWidget {
 /// ---------------------------------------------------------------------------
 /// Nama ruangan + badge status
 /// ---------------------------------------------------------------------------
+/// Keterangan kelas: _TitleRow adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _TitleRow extends StatelessWidget {
   final Room room;
 
@@ -273,6 +281,7 @@ class _TitleRow extends StatelessWidget {
 /// ---------------------------------------------------------------------------
 /// Kartu info: kapasitas, lokasi, fasilitas
 /// ---------------------------------------------------------------------------
+/// Keterangan kelas: _InfoCard adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _InfoCard extends StatelessWidget {
   final Room room;
 
@@ -337,6 +346,7 @@ class _InfoCard extends StatelessWidget {
   }
 }
 
+/// Keterangan kelas: _InfoRow adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _InfoRow extends StatelessWidget {
   final IconData icon;
   final String label;
@@ -379,6 +389,7 @@ class _InfoRow extends StatelessWidget {
   }
 }
 
+/// Keterangan kelas: _InfoDivider adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _InfoDivider extends StatelessWidget {
   const _InfoDivider();
 
@@ -391,6 +402,7 @@ class _InfoDivider extends StatelessWidget {
   }
 }
 
+/// Keterangan kelas: _FacilityChip adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _FacilityChip extends StatelessWidget {
   final String label;
 

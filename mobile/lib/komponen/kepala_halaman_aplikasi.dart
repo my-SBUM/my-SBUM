@@ -1,8 +1,12 @@
+// Penjelasan edukatif: Komponen UI yang dapat dipakai ulang agar tampilan dan interaksi antar layar tetap konsisten.
+
 import 'package:flutter/material.dart';
+import 'package:my_sbum/komponen/gambar_aplikasi.dart';
 import 'package:flutter/services.dart';
 import 'package:my_sbum/inti/rute/rute_aplikasi.dart';
 import 'package:my_sbum/data/repositori/implementasi_repositori_profil.dart';
 
+/// Keterangan kelas: AppPageHeader adalah class/widget utama yang menyediakan tanggung jawab sesuai file ini.
 class AppPageHeader extends StatelessWidget implements PreferredSizeWidget {
   const AppPageHeader({
     super.key,
@@ -105,7 +109,7 @@ class AppPageHeader extends StatelessWidget implements PreferredSizeWidget {
                             width: 38,
                             height: 38,
                             child: ClipOval(
-                              child: Image.network(
+                              child: AppImage(
                                 profile.avatarUrl,
                                 fit: BoxFit.cover,
                                 errorBuilder: (_, _, _) => const ColoredBox(

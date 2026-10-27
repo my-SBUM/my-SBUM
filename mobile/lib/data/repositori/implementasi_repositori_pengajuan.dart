@@ -1,7 +1,11 @@
+// Penjelasan edukatif: Implementasi repository yang menjadi perantara layar dengan sumber data lokal; operasi baca/tulis dipusatkan di sini.
+// Repository biasanya dipanggil layar, sedangkan sumber data lokal menyimpan sumber nilai simulasi.
+
 import '../../model/detail_riwayat.dart';
 import '../../model/catatan_pengajuan.dart';
 import '../sumber_data/sumber_data_pengajuan_lokal.dart';
 
+/// Keterangan kelas: RequestRepositoryImpl adalah class akses data yang memisahkan kebutuhan UI dari penyimpanan lokal.
 class RequestRepositoryImpl {
   const RequestRepositoryImpl({
     this.dataSource = const LocalRequestDataSource(),

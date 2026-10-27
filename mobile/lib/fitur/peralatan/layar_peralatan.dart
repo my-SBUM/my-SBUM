@@ -1,4 +1,8 @@
+// Penjelasan edukatif: Layar fitur aplikasi; widget membangun UI, state menyimpan perubahan sementara, dan aksi pengguna memicu navigasi atau repository.
+// Pemula dapat mengikuti alur dari build() ke callback interaksi, lalu melihat perubahan state atau perpindahan rute.
+
 import 'package:flutter/material.dart';
+import 'package:my_sbum/komponen/gambar_aplikasi.dart';
 import 'package:my_sbum/komponen/kerangka_aplikasi.dart';
 import 'package:my_sbum/inti/rute/rute_aplikasi.dart';
 import 'package:my_sbum/data/repositori/implementasi_repositori_peralatan.dart';
@@ -7,6 +11,7 @@ import 'package:my_sbum/komponen/bilah_atas_aplikasi.dart';
 import 'package:my_sbum/komponen/latar_halaman_aplikasi.dart';
 
 // ---------- Warna ----------
+/// Keterangan kelas: _C adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _C {
   static const green = Color(0xFF2E9451);
   static const greenDark = Color(0xFF0A6332);
@@ -23,6 +28,7 @@ class _C {
 enum _Filter { semua, tersedia, tidakTersedia }
 
 // ---------- Screen ----------
+/// Keterangan kelas: PeralatanScreen adalah widget layar yang menjadi titik interaksi pengguna dan dapat meneruskan navigasi.
 class PeralatanScreen extends StatefulWidget {
   const PeralatanScreen({super.key});
 
@@ -30,6 +36,7 @@ class PeralatanScreen extends StatefulWidget {
   State<PeralatanScreen> createState() => _PeralatanScreenState();
 }
 
+/// Keterangan kelas: _PeralatanScreenState adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _PeralatanScreenState extends State<PeralatanScreen> {
   // Jumlah kartu yang ditampilkan di halaman ini.
   // Sisanya dilihat lewat tombol "Lihat Peralatan Lainnya".
@@ -189,6 +196,7 @@ class _PeralatanScreenState extends State<PeralatanScreen> {
   }
 }
 
+/// Keterangan kelas: _SearchField adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _SearchField extends StatelessWidget {
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
@@ -257,6 +265,7 @@ class _SearchField extends StatelessWidget {
   }
 }
 
+/// Keterangan kelas: _FilterRow adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _FilterRow extends StatelessWidget {
   final _Filter selected;
   final int jumlahSemua;
@@ -390,6 +399,7 @@ class _FilterRow extends StatelessWidget {
 
 // Mulai dari kartu hingga bagian bawah tidak diubah.
 
+/// Keterangan kelas: _PeralatanCard adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _PeralatanCard extends StatelessWidget {
   final Peralatan item;
   final VoidCallback onPilih;
@@ -503,6 +513,7 @@ class _PeralatanCard extends StatelessWidget {
   }
 }
 
+/// Keterangan kelas: _Foto adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _Foto extends StatelessWidget {
   final String? url;
 
@@ -525,7 +536,7 @@ class _Foto extends StatelessWidget {
       return placeholder;
     }
 
-    return Image.network(
+    return AppImage(
       url!,
       fit: BoxFit.cover,
       loadingBuilder: (context, child, progress) =>
@@ -535,6 +546,7 @@ class _Foto extends StatelessWidget {
   }
 }
 
+/// Keterangan kelas: _StatusBadge adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _StatusBadge extends StatelessWidget {
   final bool tersedia;
 
@@ -573,6 +585,7 @@ class _StatusBadge extends StatelessWidget {
   }
 }
 
+/// Keterangan kelas: _ActionButton adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _ActionButton extends StatelessWidget {
   final String label;
   final IconData? leading;
@@ -637,6 +650,7 @@ class _ActionButton extends StatelessWidget {
   }
 }
 
+/// Keterangan kelas: _ProgressInfo adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _ProgressInfo extends StatelessWidget {
   final int tampil;
   final int total;
@@ -666,6 +680,7 @@ class _ProgressInfo extends StatelessWidget {
   }
 }
 
+/// Keterangan kelas: _LihatLainnya adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _LihatLainnya extends StatelessWidget {
   final VoidCallback onTap;
 
@@ -702,6 +717,7 @@ class _LihatLainnya extends StatelessWidget {
   }
 }
 
+/// Keterangan kelas: _EmptyState adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _EmptyState extends StatelessWidget {
   const _EmptyState();
 

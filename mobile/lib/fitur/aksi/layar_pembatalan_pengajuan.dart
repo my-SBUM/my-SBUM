@@ -1,6 +1,10 @@
+// Penjelasan edukatif: Layar fitur aplikasi; widget membangun UI, state menyimpan perubahan sementara, dan aksi pengguna memicu navigasi atau repository.
+// Pemula dapat mengikuti alur dari build() ke callback interaksi, lalu melihat perubahan state atau perpindahan rute.
+
 import 'package:flutter/material.dart';
 import 'package:my_sbum/data/layanan/layanan_aplikasi_simulasi.dart';
 
+/// Keterangan kelas: CancelRequestDialog adalah class/widget utama yang menyediakan tanggung jawab sesuai file ini.
 class CancelRequestDialog {
   const CancelRequestDialog._();
 
@@ -197,6 +201,7 @@ class CancelRequestDialog {
   }
 }
 
+/// Keterangan kelas: _DetailRow adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _DetailRow extends StatelessWidget {
   final String label;
   final String value;

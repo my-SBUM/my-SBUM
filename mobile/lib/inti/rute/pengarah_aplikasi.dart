@@ -1,6 +1,9 @@
+// Penjelasan edukatif: Konfigurasi navigasi aplikasi; rute dipetakan ke layar dan pengarah meneruskan perpindahan halaman.
+
 import 'package:flutter/material.dart';
 import 'package:my_sbum/inti/rute/rute_aplikasi.dart';
 import 'package:my_sbum/fitur/autentikasi/layar_masuk.dart';
+import 'package:my_sbum/fitur/splash/layar_splash.dart';
 import 'package:my_sbum/fitur/autentikasi/layar_daftar.dart';
 import 'package:my_sbum/fitur/autentikasi/layar_lupa_kata_sandi.dart';
 import 'package:my_sbum/fitur/beranda/layar_beranda.dart';
@@ -34,11 +37,13 @@ import 'package:my_sbum/model/ruangan.dart';
 import 'package:my_sbum/model/peralatan.dart';
 import 'package:my_sbum/model/catatan_pengajuan.dart';
 
+/// Keterangan kelas: AppRouter adalah class/widget utama yang menyediakan tanggung jawab sesuai file ini.
 class AppRouter {
   AppRouter._();
 
   static Route<dynamic> generate(RouteSettings settings) {
     final Widget? page = switch (settings.name) {
+      AppRoutes.splash => const SplashScreen(),
       AppRoutes.login => const LoginScreen(),
       AppRoutes.register => const RegisterScreen(),
       AppRoutes.lupaPassword => const ForgotPasswordScreen(),
@@ -123,8 +128,14 @@ class AppRouter {
     return _page(page, settings);
   }
 
-  static MaterialPageRoute<dynamic> _page(Widget page, RouteSettings settings) {
-    return MaterialPageRoute(builder: (_) => page, settings: settings);
+  static PageRoute<dynamic> _page(Widget page, RouteSettings settings) {
+    return PageRouteBuilder<dynamic>(
+      settings: settings,
+      pageBuilder: (_, _, _) => page,
+      transitionDuration: Duration.zero,
+      reverseTransitionDuration: Duration.zero,
+      transitionsBuilder: (_, _, _, child) => child,
+    );
   }
 
   static String? _argumentString(Object? arguments, String key) {

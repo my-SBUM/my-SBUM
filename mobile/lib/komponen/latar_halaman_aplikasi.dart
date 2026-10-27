@@ -1,5 +1,8 @@
+// Penjelasan edukatif: Komponen UI yang dapat dipakai ulang agar tampilan dan interaksi antar layar tetap konsisten.
+
 import 'package:flutter/material.dart';
 
+/// Keterangan kelas: AppPageBackground adalah class/widget utama yang menyediakan tanggung jawab sesuai file ini.
 class AppPageBackground extends StatelessWidget {
   const AppPageBackground({super.key, required this.child});
 
@@ -13,6 +16,7 @@ class AppPageBackground extends StatelessWidget {
   }
 }
 
+/// Keterangan kelas: AppPageBackgroundLayer adalah class/widget utama yang menyediakan tanggung jawab sesuai file ini.
 class AppPageBackgroundLayer extends StatelessWidget {
   const AppPageBackgroundLayer({super.key});
 

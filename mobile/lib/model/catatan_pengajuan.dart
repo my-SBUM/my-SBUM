@@ -1,3 +1,6 @@
+// Penjelasan edukatif: Model data aplikasi; class di sini membawa nilai yang dipakai layar dan repository.
+
+/// Keterangan kelas: RequestRecord adalah model sederhana untuk membawa data antar lapisan aplikasi.
 class RequestRecord {
   const RequestRecord({
     required this.id,

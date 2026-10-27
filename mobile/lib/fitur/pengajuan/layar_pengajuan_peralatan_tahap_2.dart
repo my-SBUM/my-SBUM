@@ -1,3 +1,6 @@
+// Penjelasan edukatif: Layar fitur aplikasi; widget membangun UI, state menyimpan perubahan sementara, dan aksi pengguna memicu navigasi atau repository.
+// Pemula dapat mengikuti alur dari build() ke callback interaksi, lalu melihat perubahan state atau perpindahan rute.
+
 import 'package:flutter/material.dart';
 import 'package:my_sbum/komponen/kerangka_aplikasi.dart';
 import 'package:my_sbum/inti/rute/rute_aplikasi.dart';
@@ -6,6 +9,7 @@ import 'package:my_sbum/model/peralatan.dart';
 import 'package:my_sbum/komponen/latar_halaman_aplikasi.dart';
 import 'package:my_sbum/komponen/kepala_halaman_aplikasi.dart';
 
+/// Keterangan kelas: IsiFoPeralatanScreen adalah widget layar yang menjadi titik interaksi pengguna dan dapat meneruskan navigasi.
 class IsiFoPeralatanScreen extends StatefulWidget {
   const IsiFoPeralatanScreen({
     super.key,
@@ -22,6 +26,7 @@ class IsiFoPeralatanScreen extends StatefulWidget {
   State<IsiFoPeralatanScreen> createState() => _IsiFoPeralatanScreenState();
 }
 
+/// Keterangan kelas: _IsiFoPeralatanScreenState adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _IsiFoPeralatanScreenState extends State<IsiFoPeralatanScreen> {
   static const Color _ink = Color(0xFF1E293B);
   static const Color _muted = Color(0xFF64748B);

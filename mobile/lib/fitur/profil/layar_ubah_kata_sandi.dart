@@ -1,9 +1,13 @@
+// Penjelasan edukatif: Layar fitur aplikasi; widget membangun UI, state menyimpan perubahan sementara, dan aksi pengguna memicu navigasi atau repository.
+// Pemula dapat mengikuti alur dari build() ke callback interaksi, lalu melihat perubahan state atau perpindahan rute.
+
 import 'package:flutter/material.dart';
 import 'package:my_sbum/komponen/kerangka_aplikasi.dart';
 import 'package:my_sbum/komponen/kepala_halaman_aplikasi.dart';
 import 'package:my_sbum/komponen/latar_halaman_aplikasi.dart';
 import 'package:my_sbum/data/layanan/layanan_aplikasi_simulasi.dart';
 
+/// Keterangan kelas: UbahPasswordScreen adalah widget layar yang menjadi titik interaksi pengguna dan dapat meneruskan navigasi.
 class UbahPasswordScreen extends StatefulWidget {
   const UbahPasswordScreen({super.key});
 
@@ -11,6 +15,7 @@ class UbahPasswordScreen extends StatefulWidget {
   State<UbahPasswordScreen> createState() => _UbahPasswordScreenState();
 }
 
+/// Keterangan kelas: _UbahPasswordScreenState adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _UbahPasswordScreenState extends State<UbahPasswordScreen> {
   // Controllers
   late TextEditingController _passwordLamaController;

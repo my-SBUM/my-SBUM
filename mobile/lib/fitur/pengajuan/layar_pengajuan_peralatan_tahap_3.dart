@@ -1,4 +1,8 @@
+// Penjelasan edukatif: Layar fitur aplikasi; widget membangun UI, state menyimpan perubahan sementara, dan aksi pengguna memicu navigasi atau repository.
+// Pemula dapat mengikuti alur dari build() ke callback interaksi, lalu melihat perubahan state atau perpindahan rute.
+
 import 'package:flutter/material.dart';
+import 'package:my_sbum/komponen/gambar_aplikasi.dart';
 import 'package:my_sbum/komponen/kerangka_aplikasi.dart';
 import 'package:my_sbum/inti/rute/rute_aplikasi.dart';
 import 'package:my_sbum/data/layanan/layanan_aplikasi_simulasi.dart';
@@ -6,6 +10,7 @@ import 'package:my_sbum/model/peralatan.dart';
 import 'package:my_sbum/komponen/latar_halaman_aplikasi.dart';
 import 'package:my_sbum/komponen/kepala_halaman_aplikasi.dart';
 
+/// Keterangan kelas: KonfirmasiPengajuanPeralatanScreen adalah widget layar yang menjadi titik interaksi pengguna dan dapat meneruskan navigasi.
 class KonfirmasiPengajuanPeralatanScreen extends StatefulWidget {
   const KonfirmasiPengajuanPeralatanScreen({super.key});
 
@@ -14,6 +19,7 @@ class KonfirmasiPengajuanPeralatanScreen extends StatefulWidget {
       _KonfirmasiPengajuanPeralatanScreenState();
 }
 
+/// Keterangan kelas: _KonfirmasiPengajuanPeralatanScreenState adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _KonfirmasiPengajuanPeralatanScreenState
     extends State<KonfirmasiPengajuanPeralatanScreen> {
   static const Color _ink = Color(0xFF1E293B);
@@ -21,7 +27,7 @@ class _KonfirmasiPengajuanPeralatanScreenState
   static const Color _green = Color(0xFF0A6332);
   static const Color _red = Color(0xFFC62828);
   static const String _gambarCadangan =
-      'https://images.unsplash.com/photo-1516321165247-4aa89a48be28?auto=format&fit=crop&w=800&q=80';
+      'assets/images/foto_lokal_01_0574d1235e.jpg';
 
   bool _isSubmitting = false;
 
@@ -156,7 +162,7 @@ class _KonfirmasiPengajuanPeralatanScreenState
                             children: [
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(12),
-                                child: Image.network(
+                                child: AppImage(
                                   gambar,
                                   width: 110,
                                   height: 100,

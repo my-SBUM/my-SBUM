@@ -1,3 +1,5 @@
+// Penjelasan edukatif: Titik masuk aplikasi Flutter; file ini membuat MyApp dan memasang pengarah rute awal.
+
 import 'package:flutter/material.dart';
 
 import './inti/rute/pengarah_aplikasi.dart';
@@ -8,6 +10,7 @@ void main() {
   runApp(const MyApp());
 }
 
+/// Keterangan kelas: MyApp adalah class/widget utama yang menyediakan tanggung jawab sesuai file ini.
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -16,7 +19,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'my-SBUM',
-      initialRoute: AppRoutes.login,
+      initialRoute: AppRoutes.splash,
       onGenerateRoute: AppRouter.generate,
       theme: ThemeData(
         useMaterial3: true,

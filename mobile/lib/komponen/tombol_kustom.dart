@@ -1,7 +1,10 @@
+// Penjelasan edukatif: Komponen UI yang dapat dipakai ulang agar tampilan dan interaksi antar layar tetap konsisten.
+
 import 'package:flutter/material.dart';
 
 import '../inti/warna_aplikasi.dart';
 
+/// Keterangan kelas: CustomButton adalah class/widget utama yang menyediakan tanggung jawab sesuai file ini.
 class CustomButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;

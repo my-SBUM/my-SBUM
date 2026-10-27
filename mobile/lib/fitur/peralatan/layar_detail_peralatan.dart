@@ -1,4 +1,8 @@
+// Penjelasan edukatif: Layar fitur aplikasi; widget membangun UI, state menyimpan perubahan sementara, dan aksi pengguna memicu navigasi atau repository.
+// Pemula dapat mengikuti alur dari build() ke callback interaksi, lalu melihat perubahan state atau perpindahan rute.
+
 import 'package:flutter/material.dart';
+import 'package:my_sbum/komponen/gambar_aplikasi.dart';
 import 'package:my_sbum/komponen/kerangka_aplikasi.dart';
 import 'package:my_sbum/komponen/kepala_halaman_aplikasi.dart';
 import 'package:my_sbum/komponen/latar_halaman_aplikasi.dart';
@@ -11,6 +15,7 @@ import 'package:my_sbum/model/peralatan.dart';
 /// ---------------------------------------------------------------------------
 /// Warna
 /// ---------------------------------------------------------------------------
+/// Keterangan kelas: AppColors adalah class/widget utama yang menyediakan tanggung jawab sesuai file ini.
 class AppColors {
   static const green = Color(0xFF1F8A4C);
   static const greenSoft = Color(0xFFDDF7E6);
@@ -31,6 +36,7 @@ class AppColors {
 /// ---------------------------------------------------------------------------
 /// Halaman Detail Peralatan
 /// ---------------------------------------------------------------------------
+/// Keterangan kelas: PeralatanDetailScreen adalah widget layar yang menjadi titik interaksi pengguna dan dapat meneruskan navigasi.
 class PeralatanDetailScreen extends StatefulWidget {
   const PeralatanDetailScreen({super.key, this.peralatan});
 
@@ -40,6 +46,7 @@ class PeralatanDetailScreen extends StatefulWidget {
   State<PeralatanDetailScreen> createState() => _PeralatanDetailScreenState();
 }
 
+/// Keterangan kelas: _PeralatanDetailScreenState adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _PeralatanDetailScreenState extends State<PeralatanDetailScreen> {
   final _repository = const PeralatanRepositoryImpl();
 
@@ -179,6 +186,7 @@ class _PeralatanDetailScreenState extends State<PeralatanDetailScreen> {
 /// ---------------------------------------------------------------------------
 /// Foto
 /// ---------------------------------------------------------------------------
+/// Keterangan kelas: _HeroImage adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _HeroImage extends StatelessWidget {
   final String url;
 
@@ -191,7 +199,7 @@ class _HeroImage extends StatelessWidget {
       child: SizedBox(
         height: 180,
         width: double.infinity,
-        child: Image.network(
+        child: AppImage(
           url,
           fit: BoxFit.cover,
           loadingBuilder: (context, child, progress) {
@@ -223,6 +231,7 @@ class _HeroImage extends StatelessWidget {
 /// ---------------------------------------------------------------------------
 /// Nama + kode + badge status
 /// ---------------------------------------------------------------------------
+/// Keterangan kelas: _TitleRow adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _TitleRow extends StatelessWidget {
   final String title;
   final String subtitle;
@@ -304,6 +313,7 @@ class _TitleRow extends StatelessWidget {
 /// ---------------------------------------------------------------------------
 /// Kartu info: stok + lokasi
 /// ---------------------------------------------------------------------------
+/// Keterangan kelas: _InfoCard adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _InfoCard extends StatelessWidget {
   final Equipment equipment;
 
@@ -333,6 +343,7 @@ class _InfoCard extends StatelessWidget {
   }
 }
 
+/// Keterangan kelas: _InfoRow adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _InfoRow extends StatelessWidget {
   final IconData icon;
   final String label;
@@ -375,6 +386,7 @@ class _InfoRow extends StatelessWidget {
   }
 }
 
+/// Keterangan kelas: _InfoDivider adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _InfoDivider extends StatelessWidget {
   const _InfoDivider();
 
@@ -390,6 +402,7 @@ class _InfoDivider extends StatelessWidget {
 /// ---------------------------------------------------------------------------
 /// Kartu daftar (Kelengkapan)
 /// ---------------------------------------------------------------------------
+/// Keterangan kelas: _ListCard adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _ListCard extends StatelessWidget {
   final IconData icon;
   final Color iconColor;
@@ -433,6 +446,7 @@ class _ListCard extends StatelessWidget {
 /// ---------------------------------------------------------------------------
 /// Kartu himbauan
 /// ---------------------------------------------------------------------------
+/// Keterangan kelas: _NoticeCard adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _NoticeCard extends StatelessWidget {
   final IconData icon;
   final Color iconColor;
@@ -472,6 +486,7 @@ class _NoticeCard extends StatelessWidget {
   }
 }
 
+/// Keterangan kelas: _CardTitle adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _CardTitle extends StatelessWidget {
   final IconData icon;
   final Color iconColor;
@@ -503,6 +518,7 @@ class _CardTitle extends StatelessWidget {
 }
 
 /// Cangkang kartu putih bergaris tipis yang dipakai ulang.
+/// Keterangan kelas: _CardShell adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _CardShell extends StatelessWidget {
   final Widget child;
   final EdgeInsetsGeometry padding;

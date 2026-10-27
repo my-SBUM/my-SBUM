@@ -1,3 +1,6 @@
+// Penjelasan edukatif: Model data aplikasi; class di sini membawa nilai yang dipakai layar dan repository.
+
+/// Keterangan kelas: Room adalah class/widget utama yang menyediakan tanggung jawab sesuai file ini.
 class Room {
   final String name;
   final String building;
@@ -20,6 +23,7 @@ class Room {
   });
 }
 
+/// Keterangan kelas: SessionSlot adalah class/widget utama yang menyediakan tanggung jawab sesuai file ini.
 class SessionSlot {
   final String label;
   final String time;

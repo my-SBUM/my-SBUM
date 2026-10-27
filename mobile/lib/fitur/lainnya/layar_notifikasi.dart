@@ -1,3 +1,6 @@
+// Penjelasan edukatif: Layar fitur aplikasi; widget membangun UI, state menyimpan perubahan sementara, dan aksi pengguna memicu navigasi atau repository.
+// Pemula dapat mengikuti alur dari build() ke callback interaksi, lalu melihat perubahan state atau perpindahan rute.
+
 import 'package:flutter/material.dart';
 import 'package:my_sbum/komponen/kerangka_aplikasi.dart';
 import 'package:my_sbum/komponen/kepala_halaman_aplikasi.dart';
@@ -5,6 +8,7 @@ import 'package:my_sbum/data/model/catatan_notifikasi.dart';
 import 'package:my_sbum/data/repositori/implementasi_repositori_notifikasi.dart';
 import 'package:my_sbum/komponen/latar_halaman_aplikasi.dart';
 
+/// Keterangan kelas: NotifikasiScreen adalah widget layar yang menjadi titik interaksi pengguna dan dapat meneruskan navigasi.
 class NotifikasiScreen extends StatelessWidget {
   const NotifikasiScreen({super.key});
 
@@ -33,16 +37,15 @@ class NotifikasiScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 12),
+                        const SizedBox(height: 18),
 
-                        // AKTIVITAS TERBARU
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const Text(
-                              'AKTIVITAS TERBARU',
+                              'AKTIVITAS NOTIFIKASI',
                               style: TextStyle(
-                                fontSize: 13,
+                                fontSize: 12,
                                 fontWeight: FontWeight.w800,
                                 letterSpacing: 0.8,
                                 color: Color(0xFF64748B),
@@ -58,7 +61,7 @@ class NotifikasiScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Text(
-                                '$newCount Baru',
+                                '$newCount belum dibaca',
                                 style: const TextStyle(
                                   color: Color(0xFF0A6332),
                                   fontSize: 12,
@@ -74,7 +77,7 @@ class NotifikasiScreen extends StatelessWidget {
                         Expanded(
                           child: ListView.separated(
                             itemCount: items.length,
-                            separatorBuilder: (_, __) =>
+                            separatorBuilder: (_, _) =>
                                 const SizedBox(height: 12),
                             itemBuilder: (context, index) {
                               final item = items[index];
@@ -96,6 +99,7 @@ class NotifikasiScreen extends StatelessWidget {
   }
 }
 
+/// Keterangan kelas: NotificationTile adalah class/widget utama yang menyediakan tanggung jawab sesuai file ini.
 class NotificationTile extends StatelessWidget {
   final NotificationRecord item;
 
@@ -125,87 +129,162 @@ class NotificationTile extends StatelessWidget {
             NotificationKind.rejected => const Color(0xFFE2E8F0),
           }
         : const Color(0xFFE2E8F0);
-    final cardColor = item.isNew
-        ? switch (item.kind) {
-            NotificationKind.success => const Color(0xFFE9F9EF),
-            NotificationKind.reminder => const Color(0xFFF4FAFF),
-            NotificationKind.rejected => Colors.white,
-          }
-        : Colors.white;
+    final cardColor = item.isNew ? const Color(0xFFF7FCF9) : Colors.white;
+    final actionLabel = item.action.replaceAll('_', ' ').toUpperCase();
+
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      padding: const EdgeInsets.fromLTRB(14, 14, 14, 15),
       decoration: BoxDecoration(
         color: cardColor,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: borderColor, width: 1.6),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: item.isNew ? borderColor : const Color(0xFFE2E8F0),
+        ),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x0D0F2D44),
+            blurRadius: 12,
+            offset: Offset(0, 5),
+          ),
+        ],
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Icon status
           Container(
-            width: 42,
-            height: 42,
+            width: 44,
+            height: 44,
             decoration: BoxDecoration(
               color: iconBackground,
-              borderRadius: BorderRadius.circular(28),
-              border: Border.all(
-                color: iconColor.withOpacity(0.35),
-                width: 1.4,
-              ),
+              shape: BoxShape.circle,
+              border: Border.all(color: iconColor.withValues(alpha: 0.3)),
             ),
-            child: Icon(icon, color: iconColor, size: 24),
+            child: Icon(icon, color: iconColor, size: 23),
           ),
-
           const SizedBox(width: 12),
-
-          // Text content
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 2),
-              child: RichText(
-                text: TextSpan(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    TextSpan(
-                      text: '${item.title}\n',
-                      style: const TextStyle(
-                        color: Color(0xFF1E293B),
-                        fontWeight: FontWeight.w800,
-                        fontSize: 18,
-                        height: 1.3,
+                    Expanded(
+                      child: Text(
+                        item.object,
+                        style: const TextStyle(
+                          color: Color(0xFF0F2D44),
+                          fontWeight: FontWeight.w800,
+                          fontSize: 16,
+                          height: 1.25,
+                        ),
                       ),
                     ),
-                    TextSpan(
-                      text: item.message,
+                    if (item.isNew)
+                      Container(
+                        width: 8,
+                        height: 8,
+                        margin: const EdgeInsets.only(left: 8, top: 5),
+                        decoration: BoxDecoration(
+                          color: iconColor,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Wrap(
+                  spacing: 6,
+                  runSpacing: 6,
+                  children: [
+                    _NotificationBadge(
+                      icon: Icons.bolt_rounded,
+                      label: actionLabel,
+                      color: iconColor,
+                      background: iconBackground,
+                    ),
+                    _NotificationBadge(
+                      icon: Icons.badge_outlined,
+                      label: item.actor,
+                      color: const Color(0xFF64748B),
+                      background: const Color(0xFFF1F5F9),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 9),
+                Text(
+                  item.message,
+                  style: const TextStyle(
+                    color: Color(0xFF475569),
+                    fontSize: 13,
+                    height: 1.45,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.schedule_rounded,
+                      size: 14,
+                      color: Color(0xFF94A3B8),
+                    ),
+                    const SizedBox(width: 5),
+                    Text(
+                      item.timestamp,
                       style: const TextStyle(
-                        color: Color(0xFF64748B),
-                        fontSize: 13,
-                        height: 1.5,
-                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF94A3B8),
+                        fontSize: 11,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                   ],
                 ),
-              ),
+              ],
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
 
-          const SizedBox(width: 8),
+class _NotificationBadge extends StatelessWidget {
+  const _NotificationBadge({
+    required this.icon,
+    required this.label,
+    required this.color,
+    required this.background,
+  });
 
-          // dot new
-          if (item.isNew)
-            Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: Container(
-                width: 10,
-                height: 10,
-                decoration: BoxDecoration(
-                  color: iconColor,
-                  shape: BoxShape.circle,
-                ),
-              ),
+  final IconData icon;
+  final String label;
+  final Color color;
+  final Color background;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+      decoration: BoxDecoration(
+        color: background,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 13, color: color),
+          const SizedBox(width: 4),
+          Text(
+            label,
+            style: TextStyle(
+              color: color,
+              fontSize: 10,
+              fontWeight: FontWeight.w800,
+              letterSpacing: 0.2,
             ),
+          ),
         ],
       ),
     );

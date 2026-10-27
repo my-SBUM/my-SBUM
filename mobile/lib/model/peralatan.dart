@@ -1,3 +1,6 @@
+// Penjelasan edukatif: Model data aplikasi; class di sini membawa nilai yang dipakai layar dan repository.
+
+/// Keterangan kelas: Peralatan adalah class/widget utama yang menyediakan tanggung jawab sesuai file ini.
 class Peralatan {
   final String nama;
   final int stok;

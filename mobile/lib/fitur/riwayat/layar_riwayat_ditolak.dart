@@ -1,10 +1,15 @@
+// Penjelasan edukatif: Layar fitur aplikasi; widget membangun UI, state menyimpan perubahan sementara, dan aksi pengguna memicu navigasi atau repository.
+// Pemula dapat mengikuti alur dari build() ke callback interaksi, lalu melihat perubahan state atau perpindahan rute.
+
 import 'package:flutter/material.dart';
+import 'package:my_sbum/komponen/gambar_aplikasi.dart';
 import 'package:my_sbum/data/repositori/implementasi_repositori_pengajuan.dart';
 import 'package:my_sbum/model/catatan_pengajuan.dart';
 import 'package:my_sbum/komponen/kerangka_aplikasi.dart';
 import 'package:my_sbum/komponen/kepala_halaman_aplikasi.dart';
 import 'package:my_sbum/komponen/latar_halaman_aplikasi.dart';
 
+/// Keterangan kelas: _C adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _C {
   static const green = Color(0xFF1F8A4C);
   static const buttonGreen = Color(0xFF046C4A);
@@ -20,6 +25,7 @@ class _C {
   static const redBannerBorder = Color(0xFFFECACA);
 }
 
+/// Keterangan kelas: DitolakScreen adalah widget layar yang menjadi titik interaksi pengguna dan dapat meneruskan navigasi.
 class DitolakScreen extends StatelessWidget {
   const DitolakScreen({super.key, this.record});
 
@@ -60,7 +66,7 @@ class DitolakScreen extends StatelessWidget {
                                 // Foto ruangan
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(22),
-                                  child: Image.network(
+                                  child: AppImage(
                                     detail.imageUrl,
                                     height: 200,
                                     width: double.infinity,
@@ -477,6 +483,7 @@ class DitolakScreen extends StatelessWidget {
 // ---------------------------------------------------------------------------
 // Komponen bersama
 // ---------------------------------------------------------------------------
+/// Keterangan kelas: _Card adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _Card extends StatelessWidget {
   final Widget child;
 
@@ -496,6 +503,7 @@ class _Card extends StatelessWidget {
   }
 }
 
+/// Keterangan kelas: _CardDivider adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _CardDivider extends StatelessWidget {
   const _CardDivider();
 
@@ -508,6 +516,7 @@ class _CardDivider extends StatelessWidget {
   }
 }
 
+/// Keterangan kelas: _InfoRow adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _InfoRow extends StatelessWidget {
   final IconData icon;
   final String label;
@@ -543,6 +552,7 @@ class _InfoRow extends StatelessWidget {
   }
 }
 
+/// Keterangan kelas: _FacilityChip adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _FacilityChip extends StatelessWidget {
   final String label;
 

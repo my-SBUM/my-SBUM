@@ -1,3 +1,6 @@
+// Penjelasan edukatif: Layar fitur aplikasi; widget membangun UI, state menyimpan perubahan sementara, dan aksi pengguna memicu navigasi atau repository.
+// Pemula dapat mengikuti alur dari build() ke callback interaksi, lalu melihat perubahan state atau perpindahan rute.
+
 import 'package:flutter/material.dart';
 import 'package:my_sbum/komponen/kepala_halaman_aplikasi.dart';
 import 'package:my_sbum/komponen/kerangka_aplikasi.dart';
@@ -5,6 +8,7 @@ import 'package:my_sbum/komponen/latar_halaman_aplikasi.dart';
 
 enum GuideArticleType { roomBooking, cancellation }
 
+/// Keterangan kelas: GuideArticleScreen adalah widget layar yang menjadi titik interaksi pengguna dan dapat meneruskan navigasi.
 class GuideArticleScreen extends StatelessWidget {
   const GuideArticleScreen({super.key, required this.type});
 
@@ -277,6 +281,7 @@ class GuideArticleScreen extends StatelessWidget {
   }
 }
 
+/// Keterangan kelas: _GuideContent adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _GuideContent {
   const _GuideContent({
     required this.title,
@@ -295,6 +300,7 @@ class _GuideContent {
   final bool isWarning;
 }
 
+/// Keterangan kelas: _GuideStep adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _GuideStep {
   const _GuideStep({required this.title, required this.description});
 

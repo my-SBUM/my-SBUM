@@ -1,4 +1,8 @@
+// Penjelasan edukatif: Layar fitur aplikasi; widget membangun UI, state menyimpan perubahan sementara, dan aksi pengguna memicu navigasi atau repository.
+// Pemula dapat mengikuti alur dari build() ke callback interaksi, lalu melihat perubahan state atau perpindahan rute.
+
 import 'package:flutter/material.dart';
+import 'package:my_sbum/komponen/gambar_aplikasi.dart';
 import 'package:my_sbum/komponen/kerangka_aplikasi.dart';
 import 'package:my_sbum/komponen/kepala_halaman_aplikasi.dart';
 import 'package:my_sbum/komponen/latar_halaman_aplikasi.dart';
@@ -6,6 +10,7 @@ import 'package:my_sbum/inti/rute/rute_aplikasi.dart';
 import 'package:my_sbum/data/repositori/implementasi_repositori_profil.dart';
 import 'package:my_sbum/fitur/aksi/layar_keluar.dart';
 
+/// Keterangan kelas: _C adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _C {
   static const green = Color(0xFF2E9451);
   static const greenDark = Color(0xFF0A6332);
@@ -17,6 +22,7 @@ class _C {
   static const border = Color(0xFFE2E8F0);
 }
 
+/// Keterangan kelas: ProfilSayaScreen adalah widget layar yang menjadi titik interaksi pengguna dan dapat meneruskan navigasi.
 class ProfilSayaScreen extends StatelessWidget {
   const ProfilSayaScreen({super.key});
 
@@ -87,7 +93,7 @@ class ProfilSayaScreen extends StatelessWidget {
                                           shape: BoxShape.circle,
                                         ),
                                         child: ClipOval(
-                                          child: Image.network(
+                                          child: AppImage(
                                             profile.avatarUrl,
                                             fit: BoxFit.cover,
                                             errorBuilder: (_, __, ___) =>
@@ -276,6 +282,7 @@ class ProfilSayaScreen extends StatelessWidget {
   }
 }
 
+/// Keterangan kelas: _SectionLabel adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _SectionLabel extends StatelessWidget {
   final String text;
 
@@ -298,6 +305,7 @@ class _SectionLabel extends StatelessWidget {
   }
 }
 
+/// Keterangan kelas: _InfoRow adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _InfoRow extends StatelessWidget {
   final IconData icon;
   final String label;
@@ -352,6 +360,7 @@ class _InfoRow extends StatelessWidget {
   }
 }
 
+/// Keterangan kelas: _ActionTile adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _ActionTile extends StatelessWidget {
   final IconData icon;
   final String title;

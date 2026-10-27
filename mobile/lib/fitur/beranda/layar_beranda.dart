@@ -1,3 +1,6 @@
+// Penjelasan edukatif: Layar fitur aplikasi; widget membangun UI, state menyimpan perubahan sementara, dan aksi pengguna memicu navigasi atau repository.
+// Pemula dapat mengikuti alur dari build() ke callback interaksi, lalu melihat perubahan state atau perpindahan rute.
+
 import 'package:flutter/material.dart';
 import 'package:my_sbum/komponen/kerangka_aplikasi.dart';
 import 'package:my_sbum/komponen/navigasi_bawah_aplikasi.dart';
@@ -10,6 +13,7 @@ import 'package:my_sbum/fitur/ruangan/layar_ruangan.dart';
 import 'package:my_sbum/komponen/bilah_atas_aplikasi.dart';
 import 'package:my_sbum/komponen/latar_halaman_aplikasi.dart';
 
+/// Keterangan kelas: HomeScreen adalah widget layar yang menjadi titik interaksi pengguna dan dapat meneruskan navigasi.
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, this.initialTab = 0});
 
@@ -19,6 +23,7 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
+/// Keterangan kelas: _HomeScreenState adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _HomeScreenState extends State<HomeScreen> {
   late int _selectedIndex;
 
@@ -486,6 +491,7 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 // Gambar gelombang lembut di dasar kartu statistik
+/// Keterangan kelas: _WavePainter adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _WavePainter extends CustomPainter {
   const _WavePainter({required this.color, required this.style});
 

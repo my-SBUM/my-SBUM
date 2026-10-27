@@ -1,9 +1,13 @@
+// Penjelasan edukatif: Layar fitur aplikasi; widget membangun UI, state menyimpan perubahan sementara, dan aksi pengguna memicu navigasi atau repository.
+// Pemula dapat mengikuti alur dari build() ke callback interaksi, lalu melihat perubahan state atau perpindahan rute.
+
 import 'package:flutter/material.dart';
 import 'package:my_sbum/komponen/kerangka_aplikasi.dart';
 import 'package:my_sbum/komponen/kepala_halaman_aplikasi.dart';
 import 'package:my_sbum/inti/rute/rute_aplikasi.dart';
 import 'package:my_sbum/komponen/latar_halaman_aplikasi.dart';
 
+/// Keterangan kelas: PanduanScreen adalah widget layar yang menjadi titik interaksi pengguna dan dapat meneruskan navigasi.
 class PanduanScreen extends StatelessWidget {
   const PanduanScreen({super.key});
 
@@ -91,6 +95,7 @@ class PanduanScreen extends StatelessWidget {
   }
 }
 
+/// Keterangan kelas: _GuideItem adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _GuideItem {
   final IconData icon;
   final String title;
@@ -103,6 +108,7 @@ class _GuideItem {
   });
 }
 
+/// Keterangan kelas: _GuideCard adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _GuideCard extends StatelessWidget {
   final _GuideItem item;
 

@@ -1,8 +1,12 @@
+// Penjelasan edukatif: Layar fitur aplikasi; widget membangun UI, state menyimpan perubahan sementara, dan aksi pengguna memicu navigasi atau repository.
+// Pemula dapat mengikuti alur dari build() ke callback interaksi, lalu melihat perubahan state atau perpindahan rute.
+
 import 'package:flutter/material.dart';
 import 'package:my_sbum/komponen/kerangka_aplikasi.dart';
 import 'package:my_sbum/inti/rute/rute_aplikasi.dart';
 import 'package:my_sbum/komponen/latar_halaman_aplikasi.dart';
 
+/// Keterangan kelas: RequestSuccessScreen adalah widget layar yang menjadi titik interaksi pengguna dan dapat meneruskan navigasi.
 class RequestSuccessScreen extends StatelessWidget {
   const RequestSuccessScreen({super.key});
 

@@ -8,6 +8,7 @@ import 'package:my_sbum/inti/rute/rute_aplikasi.dart';
 import 'package:my_sbum/data/sumber_data/sumber_data_notifikasi_lokal.dart';
 import 'package:my_sbum/data/repositori/implementasi_repositori_pengajuan.dart';
 import 'package:my_sbum/fitur/autentikasi/layar_masuk.dart';
+import 'package:my_sbum/fitur/splash/layar_splash.dart';
 import 'package:my_sbum/data/repositori/implementasi_repositori_peralatan.dart';
 import 'package:my_sbum/model/ruangan.dart';
 import 'package:my_sbum/fitur/ruangan/layar_detail_ruangan.dart';
@@ -66,8 +67,14 @@ void main() {
     }
   });
 
-  testWidgets('app opens on the login screen', (WidgetTester tester) async {
+  testWidgets('app opens on splash then continues to login', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(const MyApp());
+
+    expect(find.byType(SplashScreen), findsOneWidget);
+    await tester.pump(const Duration(seconds: 3));
+    await tester.pumpAndSettle();
 
     expect(find.byType(LoginScreen), findsOneWidget);
   });

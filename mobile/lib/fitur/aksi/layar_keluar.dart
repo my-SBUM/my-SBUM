@@ -1,6 +1,10 @@
+// Penjelasan edukatif: Layar fitur aplikasi; widget membangun UI, state menyimpan perubahan sementara, dan aksi pengguna memicu navigasi atau repository.
+// Pemula dapat mengikuti alur dari build() ke callback interaksi, lalu melihat perubahan state atau perpindahan rute.
+
 import 'package:flutter/material.dart';
 import 'package:my_sbum/inti/rute/rute_aplikasi.dart';
 
+/// Keterangan kelas: _C adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _C {
   static const red = Color(0xFFEF4444);
   static const redSoft = Color(0xFFFEE2E2);
@@ -10,6 +14,7 @@ class _C {
   static const cancelBorder = Color(0xFFE2E8F0);
 }
 
+/// Keterangan kelas: LogoutDialogPage adalah widget layar yang menjadi titik interaksi pengguna dan dapat meneruskan navigasi.
 class LogoutDialogPage extends StatelessWidget {
   const LogoutDialogPage({super.key});
 

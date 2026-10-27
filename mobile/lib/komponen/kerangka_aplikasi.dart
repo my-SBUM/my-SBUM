@@ -1,6 +1,9 @@
+// Penjelasan edukatif: Komponen UI yang dapat dipakai ulang agar tampilan dan interaksi antar layar tetap konsisten.
+
 import 'package:flutter/material.dart';
 import 'package:my_sbum/komponen/latar_aplikasi.dart';
 
+/// Keterangan kelas: AppScaffold adalah class/widget utama yang menyediakan tanggung jawab sesuai file ini.
 class AppScaffold extends StatelessWidget {
   const AppScaffold({
     super.key,

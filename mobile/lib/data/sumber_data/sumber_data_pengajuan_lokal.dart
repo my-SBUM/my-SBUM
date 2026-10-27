@@ -1,6 +1,10 @@
+// Penjelasan edukatif: Sumber data lokal simulasi; class di sini menyediakan data contoh dan perubahan data tanpa server.
+// Repository biasanya dipanggil layar, sedangkan sumber data lokal menyimpan sumber nilai simulasi.
+
 import '../../model/catatan_pengajuan.dart';
 import '../../model/detail_riwayat.dart';
 
+/// Keterangan kelas: LocalRequestDataSource adalah class akses data yang memisahkan kebutuhan UI dari penyimpanan lokal.
 class LocalRequestDataSource {
   const LocalRequestDataSource();
 
@@ -91,6 +95,6 @@ class LocalRequestDataSource {
     borrower: 'Andi Wijaya',
     borrowerRole: 'Mahasiswa Informatika',
     purpose: 'Kuliah Pengganti Algoritma',
-    imageUrl: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80',
+    imageUrl: 'assets/images/foto_lokal_02_53faffa46f.jpg',
   );
 }

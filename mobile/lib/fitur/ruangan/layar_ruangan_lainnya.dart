@@ -1,4 +1,8 @@
+// Penjelasan edukatif: Layar fitur aplikasi; widget membangun UI, state menyimpan perubahan sementara, dan aksi pengguna memicu navigasi atau repository.
+// Pemula dapat mengikuti alur dari build() ke callback interaksi, lalu melihat perubahan state atau perpindahan rute.
+
 import 'package:flutter/material.dart';
+import 'package:my_sbum/komponen/gambar_aplikasi.dart';
 import 'package:my_sbum/komponen/kerangka_aplikasi.dart';
 import 'package:my_sbum/komponen/kepala_halaman_aplikasi.dart';
 import 'package:my_sbum/komponen/latar_halaman_aplikasi.dart';
@@ -6,6 +10,7 @@ import 'package:my_sbum/inti/rute/rute_aplikasi.dart';
 import 'package:my_sbum/data/repositori/implementasi_repositori_ruangan.dart';
 import 'package:my_sbum/model/ruangan.dart';
 
+/// Keterangan kelas: RuanganLainnyaScreen adalah widget layar yang menjadi titik interaksi pengguna dan dapat meneruskan navigasi.
 class RuanganLainnyaScreen extends StatefulWidget {
   const RuanganLainnyaScreen({super.key});
 
@@ -13,6 +18,7 @@ class RuanganLainnyaScreen extends StatefulWidget {
   State<RuanganLainnyaScreen> createState() => _RuanganLainnyaScreenState();
 }
 
+/// Keterangan kelas: _RuanganLainnyaScreenState adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _RuanganLainnyaScreenState extends State<RuanganLainnyaScreen> {
   int _selectedBuildingIndex = 0; // 0: Semua Gedung, 1: Gedung A, dst.
   String _selectedSort = 'Terdekat';
@@ -447,7 +453,7 @@ class _RuanganLainnyaScreenState extends State<RuanganLainnyaScreen> {
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(radius),
-          child: Image.network(
+          child: AppImage(
             room.gambar ?? '',
             width: width,
             height: height,

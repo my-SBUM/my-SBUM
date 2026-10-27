@@ -1,6 +1,10 @@
+// Penjelasan edukatif: Sumber data lokal simulasi; class di sini menyediakan data contoh dan perubahan data tanpa server.
+// Repository biasanya dipanggil layar, sedangkan sumber data lokal menyimpan sumber nilai simulasi.
+
 import '../../model/peralatan.dart';
 import '../../model/alat.dart';
 
+/// Keterangan kelas: LocalPeralatanDataSource adalah class akses data yang memisahkan kebutuhan UI dari penyimpanan lokal.
 class LocalPeralatanDataSource {
   const LocalPeralatanDataSource();
 
@@ -148,10 +152,9 @@ class LocalPeralatanDataSource {
     notice:
         'Kerusakan atau kehilangan aksesori menjadi tanggung jawab '
         'peminjam penuh',
-    imageUrl: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=400',
+    imageUrl: 'assets/images/foto_lokal_03_10b5f5d2c6.jpg',
     available: true,
   );
 
-  static const String _image =
-      'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=400';
+  static const String _image = 'assets/images/foto_lokal_03_10b5f5d2c6.jpg';
 }

@@ -1,5 +1,8 @@
+// Penjelasan edukatif: Bagian aplikasi mobile yang mendukung alur peminjaman.
+
 import 'dart:async';
 
+/// Keterangan kelas: MockAppService adalah class/widget utama yang menyediakan tanggung jawab sesuai file ini.
 class MockAppService {
   const MockAppService();
 

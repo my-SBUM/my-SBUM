@@ -1,9 +1,13 @@
+// Penjelasan edukatif: Layar fitur aplikasi; widget membangun UI, state menyimpan perubahan sementara, dan aksi pengguna memicu navigasi atau repository.
+// Pemula dapat mengikuti alur dari build() ke callback interaksi, lalu melihat perubahan state atau perpindahan rute.
+
 import 'package:flutter/material.dart';
 import 'package:my_sbum/komponen/kerangka_aplikasi.dart';
 import 'package:my_sbum/inti/rute/rute_aplikasi.dart';
 import 'package:my_sbum/data/layanan/layanan_aplikasi_simulasi.dart';
 import 'package:my_sbum/komponen/logo_aplikasi.dart';
 
+/// Keterangan kelas: LoginScreen adalah widget layar yang menjadi titik interaksi pengguna dan dapat meneruskan navigasi.
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -11,6 +15,7 @@ class LoginScreen extends StatefulWidget {
   State createState() => _LoginScreenState();
 }
 
+/// Keterangan kelas: _LoginScreenState adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _nimController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();

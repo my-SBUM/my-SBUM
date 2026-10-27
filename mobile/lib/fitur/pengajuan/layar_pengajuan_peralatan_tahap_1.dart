@@ -1,9 +1,14 @@
+// Penjelasan edukatif: Layar fitur aplikasi; widget membangun UI, state menyimpan perubahan sementara, dan aksi pengguna memicu navigasi atau repository.
+// Pemula dapat mengikuti alur dari build() ke callback interaksi, lalu melihat perubahan state atau perpindahan rute.
+
 import 'package:flutter/material.dart';
+import 'package:my_sbum/komponen/gambar_aplikasi.dart';
 import 'package:my_sbum/komponen/kerangka_aplikasi.dart';
 import 'package:my_sbum/inti/rute/rute_aplikasi.dart';
 import 'package:my_sbum/komponen/latar_halaman_aplikasi.dart';
 import 'package:my_sbum/komponen/kepala_halaman_aplikasi.dart';
 
+/// Keterangan kelas: DetailPeralatanCekJadwalScreen adalah widget layar yang menjadi titik interaksi pengguna dan dapat meneruskan navigasi.
 class DetailPeralatanCekJadwalScreen extends StatefulWidget {
   const DetailPeralatanCekJadwalScreen({super.key});
 
@@ -12,6 +17,7 @@ class DetailPeralatanCekJadwalScreen extends StatefulWidget {
       _DetailPeralatanCekJadwalScreenState();
 }
 
+/// Keterangan kelas: _DetailPeralatanCekJadwalScreenState adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
 class _DetailPeralatanCekJadwalScreenState
     extends State<DetailPeralatanCekJadwalScreen> {
   // Awalnya kosong: pengguna harus memilih sendiri.
@@ -309,8 +315,8 @@ class _DetailPeralatanCekJadwalScreenState
                             children: [
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(14),
-                                child: Image.network(
-                                  'https://images.unsplash.com/photo-1516321165247-4aa89a48be28?auto=format&fit=crop&w=800&q=80',
+                                child: AppImage(
+                                  'assets/images/foto_lokal_01_0574d1235e.jpg',
                                   width: 120,
                                   height: 110,
                                   fit: BoxFit.cover,

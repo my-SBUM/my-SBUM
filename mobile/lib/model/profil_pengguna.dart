@@ -1,3 +1,6 @@
+// Penjelasan edukatif: Model data aplikasi; class di sini membawa nilai yang dipakai layar dan repository.
+
+/// Keterangan kelas: UserProfile adalah class/widget utama yang menyediakan tanggung jawab sesuai file ini.
 class UserProfile {
   const UserProfile({
     required this.name,

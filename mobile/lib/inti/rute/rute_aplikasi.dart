@@ -1,5 +1,11 @@
+// Penjelasan edukatif: Konfigurasi navigasi aplikasi; rute dipetakan ke layar dan pengarah meneruskan perpindahan halaman.
+
+/// Keterangan kelas: AppRoutes adalah class/widget utama yang menyediakan tanggung jawab sesuai file ini.
 class AppRoutes {
   AppRoutes._();
+
+  // ---------------- SPLASH ----------------
+  static const String splash = '/splash';
 
   // ---------------- AUTH ----------------
   static const String login = '/login';
