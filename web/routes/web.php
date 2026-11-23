@@ -1,116 +1,141 @@
-﻿<?php
+<?php
 
 use Illuminate\Support\Facades\Route;
-use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\KepalaController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RuanganController;
 
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+*/
 
-// Landing Page Utama
 Route::get('/', function () {
     return view('welcome');
-})->name('landing');
+});
 
-// Tampilan Login
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
-
-// Tampilan Register
+// Route Publik / Guest (Pendaftaran & Login)
 Route::get('/register', function () {
     return view('auth.register');
 })->name('register');
 
-// Penanggu Jawab
-Route::prefix('penanggung-jawab')->name('pj.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('penanggung-jawab.dashboard');
-    })->name('dashboard');
+Route::post('/register', [AuthController::class, 'registerStore'])->name('register.store');
 
-    Route::get('/peminjaman/ruangan', function () {
-        return view('penanggung-jawab.peminjaman.ruangan');
-    })->name('peminjaman.ruangan');
+Route::get('/login', function () {
+    return view('auth.login');
+})->name('login');
 
-    Route::get('/peminjaman/alat', function () {
-        return view('penanggung-jawab.peminjaman.alat');
-    })->name('peminjaman.alat');
+Route::post('/login', [AuthController::class, 'loginStore'])->name('login.store');
 
-    Route::get('/persetujuan', function () {
-        return view('penanggung-jawab.persetujuan.index');
-    })->name('persetujuan.index');
+// Route Terproteksi (Wajib Login)
+Route::middleware(['auth'])->group(function () {
 
-    Route::get('/riwayat', function () {
-        return view('penanggung-jawab.riwayat.index');
-    })->name('riwayat.index');
-});
+    // 1. Kelompok Route Role Penanggung Jawab (PJ)
+    Route::prefix('pj')->group(function () {
+        Route::get('/dashboard', function () {
+            return view('pj.dashboard');
+        })->name('dashboard');
 
-// PIC Routes
-Route::prefix('pic')->name('pic.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('pic.dashboard');
-    })->name('dashboard');
+        Route::get('/ruangan', function () {
+            return view('pj.ruangan');
+        })->name('ruangan.pj');
 
-    Route::get('/peminjaman/ruangan', function () {
-        return view('pic.peminjaman.ruangan');
-    })->name('peminjaman.ruangan');
+        Route::get('/peralatan', function () {
+            return view('pj.peralatan');
+        })->name('peralatan.pj');
 
-    Route::get('/peminjaman/alat', function () {
-        return view('pic.peminjaman.alat');
-    })->name('peminjaman.alat');
+        Route::get('/persetujuan', function () {
+            return view('pj.persetujuan');
+        })->name('persetujuan.pj');
 
-    Route::get('/persetujuan', function () {
-        return view('pic.persetujuan.index');
-    })->name('persetujuan.index');
+        Route::get('/riwayat', function () {
+            return view('pj.riwayat');
+        })->name('riwayat.pj');
+    });
 
-    Route::get('/riwayat', function () {
-        return view('pic.riwayat.index');
-    })->name('riwayat.index');
+    // 2. Kelompok Route Role PIC
+    Route::prefix('pic')->group(function () {
+        Route::get('/dashboard', function () {
+            return view('pic.dashboard');
+        })->name('pic.dashboard');
 
-    Route::get('/ruangan', function () {
-        return view('pic.ruangan.index');
-    })->name('ruangan.index');
+        Route::get('/ruangan', function () {
+            return view('pic.ruangan');
+        })->name('ruangan.pic');
 
-    Route::get('/peralatan', function () {
-        return view('pic.peralatan.index');
-    })->name('peralatan.index');
-});
+        Route::get('/peralatan', function () {
+            return view('pic.peralatan');
+        })->name('peralatan.pic');
 
-// Admin Routes
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('dashboard');
+        Route::get('/persetujuan', function () {
+            return view('pic.persetujuan');
+        })->name('persetujuan.pic');
 
-    Route::get('/persetujuan', function () {
-        return view('admin.persetujuan.index');
-    })->name('persetujuan.index');
+        Route::get('/riwayat', function () {
+            return view('pic.riwayat');
+        })->name('riwayat.pic');
 
-    Route::get('/ruangan', function () {
-        return view('admin.ruangan.index');
-    })->name('ruangan.index');
+        Route::get('/kelola-ruangan', function () {
+            return view('pic.kelola-ruangan');
+        })->name('kelola.ruangan.pic');
 
-    Route::get('/peralatan', function () {
-        return view('admin.peralatan.index');
-    })->name('peralatan.index');
+        Route::get('/kelola-peralatan', function () {
+            return view('pic.kelola-peralatan');
+        })->name('kelola.peralatan.pic');
+    });
 
-    Route::get('/kalender', function () {
-        return view('admin.kalender.index');
-    })->name('kalender.index');
-});
+    // 3. Kelompok Route Role Kepala SBUM
+    Route::prefix('kepala')->group(function () {
+        Route::get('/dashboard', function () {
+            return view('kepala.dashboard');
+        })->name('kepala.dashboard');
 
-// Kepala SBUM Routes
-Route::prefix('kepala-sbum')->name('kepala-sbum.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('kepala-sbum.dashboard');
-    })->name('dashboard');
+        Route::get('/persetujuan', function () {
+            return view('kepala.persetujuan');
+        })->name('persetujuan.kepala');
 
-    Route::get('/persetujuan', function () {
-        return view('kepala-sbum.persetujuan.index');
-    })->name('persetujuan.index');
+        Route::get('/kalender', function () {
+            return view('kepala.kalender');
+        })->name('kalender.kepala');
 
-    Route::get('/kalender', function () {
-        return view('kepala-sbum.kalender.index');
-    })->name('kalender.index');
+        // Route Kelola Admin
+        Route::get('/kelola-admin', [KepalaController::class, 'indexAdmin'])->name('admin.kepala');
+        Route::get('/kelola-admin/tambah', [KepalaController::class, 'createAdmin'])->name('admin.create.kepala');
+        Route::post('/kelola-admin/store', [KepalaController::class, 'storeAdmin'])->name('admin.store.kepala');
+    });
 
-    Route::get('/admin', function () {
-        return view('kepala-sbum.admin.index');
-    })->name('admin.index');
+    // 4. Kelompok Route Role Admin
+    Route::prefix('admin')->group(function () {
+        Route::get('/dashboard', function () {
+            return view('admin.dashboard');
+        })->name('admin.dashboard');
+
+        Route::get('/persetujuan', function () {
+            return view('admin.persetujuan');
+        })->name('persetujuan.admin');
+
+        // Kelola Ruangan Admin (Terhubung ke RuanganController)
+        Route::get('/kelola-ruangan', [RuanganController::class, 'index'])->name('kelola.ruangan.admin');
+        Route::post('/kelola-ruangan/store', [RuanganController::class, 'store'])->name('kelola.ruangan.store');
+        Route::delete('/kelola-ruangan/{id}', [RuanganController::class, 'destroy'])->name('kelola.ruangan.destroy');
+
+        Route::get('/kelola-peralatan', function () {
+            return view('admin.kelola-peralatan');
+        })->name('kelola.peralatan.admin');
+
+        Route::get('/kalender', function () {
+            return view('admin.kalender');
+        })->name('kalender.admin');
+    });
+
+    // Route Manajemen Profil Akun
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
+
+    // Process Logout
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
 });

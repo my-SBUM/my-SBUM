@@ -1,136 +1,358 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="id">
 
-@section('title', 'Halaman Dashboard PIC - mySBUM')
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard PIC - mySBUM</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Font Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
 
-@section('content')
-<div class="space-y-6">
-    <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Halaman Dashborad</h1>
+<body class="bg-[#F8F9FC] text-[#1E293B] h-screen flex overflow-hidden">
 
-    <!-- 3 Top Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bg-white p-6 rounded-2xl border-l-4 border-l-[#056839] border border-slate-100 shadow-sm space-y-4">
-            <span class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">PERLU DISETUJUI</span>
-            <div class="flex items-baseline space-x-2">
-                <span class="text-4xl font-extrabold text-slate-900">5</span>
-                <span class="text-sm font-semibold text-slate-600">Fasilitas</span>
-            </div>
-            <div class="inline-block bg-emerald-300 text-emerald-950 text-[11px] font-bold px-3 py-1 rounded-full">
-                ! Butuh Tindakan Segera
-            </div>
-        </div>
+    <!-- SIDEBAR -->
+    @include('layouts.sidebar_pic')
 
-        <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm space-y-2">
-            <span class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">TOTAL RUANGAN</span>
-            <div class="flex items-baseline space-x-2">
-                <span class="text-4xl font-extrabold text-slate-900">22</span>
-                <span class="text-sm font-semibold text-slate-600">Ruangan</span>
-            </div>
-            <p class="text-xs text-slate-400 font-medium pt-2">14 Dalam Peminjaman</p>
-        </div>
+    <!-- MAIN WRAPPER AREA -->
+    <div class="flex-grow flex flex-col min-w-0 h-full overflow-hidden">
 
-        <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm space-y-2">
-            <span class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">TOTAL PERALATAN</span>
-            <div class="flex items-baseline space-x-2">
-                <span class="text-4xl font-extrabold text-slate-900">7</span>
-                <span class="text-sm font-semibold text-slate-600">Peralatan</span>
-            </div>
-            <p class="text-xs text-slate-400 font-medium pt-2">7 Dalam Peminjaman</p>
-        </div>
-    </div>
-
-    <!-- Content Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <div class="lg:col-span-8 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm space-y-6">
-            <div class="flex items-center justify-between">
-                <div>
-                    <h2 class="text-base font-bold text-slate-900">Peminjaman yang diajukan</h2>
-                    <p class="text-xs text-slate-400">Peminjaman yang baru - baru ini diajukan</p>
-                </div>
-                <a href="{{ route('pic.persetujuan.index') }}" class="text-xs font-bold text-[#056839] hover:underline flex items-center space-x-1">
-                    <span>Lihat Semua (5)</span>
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                </a>
+        <!-- TOP NAVBAR / HEADER -->
+        <header class="h-20 bg-white border-b border-gray-100 flex items-center justify-between px-6 md:px-10 shrink-0">
+            <div class="flex items-center gap-4">
+                <button class="md:hidden text-gray-500 hover:text-gray-700">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
             </div>
 
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="text-[10px] font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 pb-2">
-                            <th class="pb-3 font-semibold">ITEM PEMINJAMAN</th>
-                            <th class="pb-3 font-semibold">KATEGORI & WAKTU</th>
-                            <th class="pb-3 font-semibold text-right">STATUS</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100 text-xs">
-                        <tr>
-                            <td class="py-3.5 flex items-center space-x-3">
-                                <div class="w-9 h-9 rounded-full bg-[#056839] text-white flex items-center justify-center flex-shrink-0">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path></svg>
-                                </div>
-                                <div>
-                                    <p class="font-bold text-slate-800">Scanner Epson</p>
-                                    <p class="text-[10px] text-slate-400">PIC: Andi Wijaya</p>
-                                </div>
-                            </td>
-                            <td class="py-3.5">
-                                <p class="font-semibold text-slate-800">Non-Akademik BDE8</p>
-                                <p class="text-[10px] text-slate-400">16 Juli 2026 - 07:15 - 10:15</p>
-                            </td>
-                            <td class="py-3.5 text-right">
-                                <span class="bg-rose-500 text-white text-[10px] font-bold px-3 py-1 rounded-md uppercase">DITOLAK</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="py-3.5 flex items-center space-x-3">
-                                <div class="w-9 h-9 rounded-full bg-[#056839] text-white flex items-center justify-center flex-shrink-0">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-                                </div>
-                                <div>
-                                    <p class="font-bold text-slate-800">Ruang Rapat Besar B302</p>
-                                    <p class="text-[10px] text-slate-400">PIC: Andi Wijaya</p>
-                                </div>
-                            </td>
-                            <td class="py-3.5">
-                                <p class="font-semibold text-slate-800">Akademik 4038</p>
-                                <p class="text-[10px] text-slate-400">18 Juli 2026 - 11:30 - 14:30</p>
-                            </td>
-                            <td class="py-3.5 text-right">
-                                <span class="bg-rose-500 text-white text-[10px] font-bold px-3 py-1 rounded-md uppercase">DITOLAK</span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="lg:col-span-4 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm space-y-4 flex flex-col justify-between">
-            <div>
-                <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-                    <div class="flex items-center space-x-2">
-                        <svg class="w-4 h-4 text-[#056839]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                        <h3 class="text-sm font-bold text-slate-900">Aktivitas Terbaru</h3>
+            <!-- Profile User dengan Dropdown Hover -->
+            <div class="relative group cursor-pointer py-2">
+                <div class="flex items-center gap-3">
+                    <div class="text-right hidden sm:block">
+                        <h2 class="text-sm font-bold text-gray-800 leading-tight">
+                            {{ Auth::user()->name ?? 'Dr. Ir. Hendra W.' }}
+                        </h2>
+                        <p class="text-xs text-gray-400 capitalize">
+                            {{ Auth::user()->role ?? 'Koordinator Lab' }}
+                        </p>
                     </div>
-                    <span class="bg-emerald-300 text-emerald-950 text-[10px] font-bold px-2.5 py-0.5 rounded-full">Disetujui</span>
+                    <div
+                        class="w-10 h-10 rounded-full bg-[#006A4E] text-white flex items-center justify-center font-bold text-sm">
+                        <i class="fa-regular fa-user"></i>
+                    </div>
+                    <i
+                        class="fa-solid fa-chevron-down text-xs text-gray-400 group-hover:rotate-180 transition-transform"></i>
                 </div>
 
-                <div class="space-y-3 pt-4">
-                    <div class="bg-slate-50 p-3 rounded-xl flex items-start space-x-3 border border-slate-100">
-                        <div class="w-6 h-6 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5">!</div>
-                        <div>
-                            <div class="flex items-center justify-between">
-                                <p class="text-xs font-bold text-slate-800">Peminjaman Dibat..</p>
-                                <span class="text-[9px] text-slate-400">Hari ini, 09:30 WIB</span>
-                            </div>
-                            <p class="text-[10px] text-slate-500 mt-0.5">Kamera DSLR Canon EOS dibatalkan oleh Budi Santoso.</p>
+                <div class="absolute right-0 top-full w-44 pt-2 hidden group-hover:block z-50">
+                    <div class="bg-white rounded-xl shadow-lg border border-gray-100 relative">
+                        <div
+                            class="absolute -top-1.5 right-4 w-3 h-3 bg-white border-t border-l border-gray-100 rotate-45">
+                        </div>
+                        <div class="py-2 relative z-10">
+                            <a href="{{ route('profile.edit') }}"
+                                class="flex items-center gap-2.5 px-4 py-2.5 text-xs font-semibold text-gray-700 hover:bg-gray-50 hover:text-[#006A4E] transition-colors">
+                                <i class="fa-regular fa-user text-gray-400 w-4"></i>
+                                Akun Saya
+                            </a>
+                            <div class="border-t border-gray-100 my-1"></div>
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button type="submit"
+                                    class="w-full flex items-center gap-2.5 px-4 py-2.5 text-xs font-semibold text-red-600 hover:bg-red-50 transition-colors text-left">
+                                    <i class="fa-solid fa-right-from-bracket text-red-500 w-4"></i>
+                                    Log Out
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
+        </header>
 
-            <a href="#" class="w-full text-center py-2 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 transition">
-                Lihat Semua Aktivitas &gt;
-            </a>
-        </div>
+        <!-- DASHBOARD BODY CONTENT -->
+        <main class="p-6 md:p-10 space-y-8 flex-grow overflow-y-auto">
+
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Halaman Dashborad</h1>
+
+            <!-- CARDS OVERVIEW (3 Grid) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                <!-- Card 1: Perlu Disetujui -->
+                <div
+                    class="bg-white p-6 rounded-2xl border border-gray-100 shadow-[0_4px_20px_rgb(0,0,0,0.02)] relative overflow-hidden flex flex-col justify-between">
+                    <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-[#006A4E]"></div>
+                    <div>
+                        <span class="text-[11px] font-bold text-gray-400 tracking-wider uppercase">PERLU
+                            DISETUJUI</span>
+                        <div class="flex items-baseline gap-2 mt-2">
+                            <span class="text-4xl font-bold text-gray-800">5</span>
+                            <span class="text-sm font-medium text-gray-500">Fasilitas</span>
+                        </div>
+                    </div>
+                    <div class="mt-6">
+                        <span
+                            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-[#56E39F] text-[#004D39]">
+                            ! Butuh Tindakan Segera
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Card 2: Total Ruangan -->
+                <div
+                    class="bg-white p-6 rounded-2xl border border-gray-100 shadow-[0_4px_20px_rgb(0,0,0,0.02)] flex flex-col justify-between">
+                    <div>
+                        <span class="text-[11px] font-bold text-gray-400 tracking-wider uppercase">TOTAL RUANGAN</span>
+                        <div class="flex items-baseline gap-2 mt-2">
+                            <span class="text-4xl font-bold text-gray-800">22</span>
+                            <span class="text-sm font-medium text-gray-500">Ruangan</span>
+                        </div>
+                    </div>
+                    <div class="mt-6">
+                        <span class="text-xs text-gray-400 font-medium">14 Dalam Peminjaman</span>
+                    </div>
+                </div>
+
+                <!-- Card 3: Total Peralatan -->
+                <div
+                    class="bg-white p-6 rounded-2xl border border-gray-100 shadow-[0_4px_20px_rgb(0,0,0,0.02)] flex flex-col justify-between">
+                    <div>
+                        <span class="text-[11px] font-bold text-gray-400 tracking-wider uppercase">TOTAL
+                            PERALATAN</span>
+                        <div class="flex items-baseline gap-2 mt-2">
+                            <span class="text-4xl font-bold text-gray-800">7</span>
+                            <span class="text-sm font-medium text-gray-500">Peralatan</span>
+                        </div>
+                    </div>
+                    <div class="mt-6">
+                        <span class="text-xs text-gray-400 font-medium">7 Dalam Peminjaman</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- LOWER GRID SECTION: TABLE & RECENT ACTIVITY -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+                <!-- LEFT COLUMN: PEMINJAMAN YANG DIAJUKAN (Span 2) -->
+                <div
+                    class="lg:col-span-2 bg-white rounded-2xl border border-gray-100 p-6 shadow-[0_4px_20px_rgb(0,0,0,0.02)] flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-6">
+                            <div>
+                                <h2 class="text-lg font-bold text-gray-800">Peminjaman yang diajukan</h2>
+                                <p class="text-xs text-gray-400 mt-0.5">Peminjaman yang baru - baru ini diajukan</p>
+                            </div>
+                            <a href="#"
+                                class="text-xs font-bold text-[#006A4E] hover:underline flex items-center gap-1">
+                                Lihat Semua (5) <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                            </a>
+                        </div>
+
+                        <!-- Table -->
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr
+                                        class="text-[11px] font-bold text-gray-400 tracking-wider border-b border-gray-50">
+                                        <th class="pb-3 uppercase">ITEM PEMINJAMAN</th>
+                                        <th class="pb-3 uppercase">KATEGORI & WAKTU</th>
+                                        <th class="pb-3 uppercase text-center">STATUS</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-50 text-xs">
+                                    <!-- Row 1 -->
+                                    <tr>
+                                        <td class="py-3.5 pr-4">
+                                            <div class="flex items-center gap-3">
+                                                <div
+                                                    class="w-9 h-9 rounded-full bg-[#006A4E] text-white flex items-center justify-center shrink-0">
+                                                    <i class="fa-solid fa-wrench text-xs"></i>
+                                                </div>
+                                                <div>
+                                                    <p class="font-bold text-gray-800">Scanner Epson</p>
+                                                    <p class="text-[10px] text-gray-400">PIC: Andi Wijaya</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="py-3.5 px-2">
+                                            <p class="font-bold text-gray-700">Non-Akademik BDE8</p>
+                                            <p class="text-[10px] text-gray-400">16 Juli 2026 - 07:15 - 10:15</p>
+                                        </td>
+                                        <td class="py-3.5 pl-2 text-center">
+                                            <span
+                                                class="px-3 py-1 rounded-full text-[10px] font-bold bg-[#EF4444] text-white">DITOLAK</span>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Row 2 -->
+                                    <tr>
+                                        <td class="py-3.5 pr-4">
+                                            <div class="flex items-center gap-3">
+                                                <div
+                                                    class="w-9 h-9 rounded-full bg-[#006A4E] text-white flex items-center justify-center shrink-0">
+                                                    <i class="fa-solid fa-door-closed text-xs"></i>
+                                                </div>
+                                                <div>
+                                                    <p class="font-bold text-gray-800">Ruang Rapat Besar B302</p>
+                                                    <p class="text-[10px] text-gray-400">PIC: Andi Wijaya</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="py-3.5 px-2">
+                                            <p class="font-bold text-gray-700">Akademik 4038</p>
+                                            <p class="text-[10px] text-gray-400">18 Juli 2026 - 11:30 - 14:30</p>
+                                        </td>
+                                        <td class="py-3.5 pl-2 text-center">
+                                            <span
+                                                class="px-3 py-1 rounded-full text-[10px] font-bold bg-[#EF4444] text-white">DITOLAK</span>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Row 3 -->
+                                    <tr>
+                                        <td class="py-3.5 pr-4">
+                                            <div class="flex items-center gap-3">
+                                                <div
+                                                    class="w-9 h-9 rounded-full bg-[#006A4E] text-white flex items-center justify-center shrink-0">
+                                                    <i class="fa-solid fa-wrench text-xs"></i>
+                                                </div>
+                                                <div>
+                                                    <p class="font-bold text-gray-800">Scanner Epson</p>
+                                                    <p class="text-[10px] text-gray-400">PIC: Andi Wijaya</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="py-3.5 px-2">
+                                            <p class="font-bold text-gray-700">Non-Akademik BDE8</p>
+                                            <p class="text-[10px] text-gray-400">16 Juli 2026 - 07:15 - 10:15</p>
+                                        </td>
+                                        <td class="py-3.5 pl-2 text-center">
+                                            <span
+                                                class="px-3 py-1 rounded-full text-[10px] font-bold bg-[#EF4444] text-white">DITOLAK</span>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Row 4 -->
+                                    <tr>
+                                        <td class="py-3.5 pr-4">
+                                            <div class="flex items-center gap-3">
+                                                <div
+                                                    class="w-9 h-9 rounded-full bg-[#006A4E] text-white flex items-center justify-center shrink-0">
+                                                    <i class="fa-solid fa-door-closed text-xs"></i>
+                                                </div>
+                                                <div>
+                                                    <p class="font-bold text-gray-800">Scanner Epson</p>
+                                                    <p class="text-[10px] text-gray-400">PIC: Andi Wijaya</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="py-3.5 px-2">
+                                            <p class="font-bold text-gray-700">Non-Akademik BDE8</p>
+                                            <p class="text-[10px] text-gray-400">16 Juli 2026 - 07:15 - 10:15</p>
+                                        </td>
+                                        <td class="py-3.5 pl-2 text-center">
+                                            <span
+                                                class="px-3 py-1 rounded-full text-[10px] font-bold bg-[#EF4444] text-white">DITOLAK</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT COLUMN: AKTIVITAS TERBARU (Span 1) -->
+                <div
+                    class="bg-white rounded-2xl border border-gray-100 p-6 shadow-[0_4px_20px_rgb(0,0,0,0.02)] flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-6">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-regular fa-calendar text-[#006A4E]"></i>
+                                <h2 class="text-base font-bold text-gray-800">Aktivitas Terbaru</h2>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-[#6EE7B7] text-[#004D39]">
+                                Disetujui
+                            </span>
+                        </div>
+
+                        <!-- Activity Feed List -->
+                        <div class="space-y-3">
+                            <!-- Activity Item 1 -->
+                            <div class="p-3 bg-[#F8FAFC] rounded-xl flex items-start gap-3">
+                                <div
+                                    class="w-7 h-7 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center shrink-0 mt-0.5 text-xs font-bold">
+                                    !
+                                </div>
+                                <div class="text-xs">
+                                    <div class="flex justify-between items-center gap-2">
+                                        <h3 class="font-bold text-gray-800">Peminjaman Dibat..</h3>
+                                        <span class="text-[10px] text-gray-400">Hari ini, 09:30 WIB</span>
+                                    </div>
+                                    <p class="text-gray-500 text-[11px] mt-0.5">Kamera DSLR Canon EOS dibatalkan oleh
+                                        Budi Santoso.</p>
+                                </div>
+                            </div>
+
+                            <!-- Activity Item 2 -->
+                            <div class="p-3 bg-[#F8FAFC] rounded-xl flex items-start gap-3">
+                                <div
+                                    class="w-7 h-7 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5 text-xs">
+                                    <i class="fa-solid fa-check"></i>
+                                </div>
+                                <div class="text-xs">
+                                    <div class="flex justify-between items-center gap-2">
+                                        <h3 class="font-bold text-gray-800">Peminjaman Baru</h3>
+                                        <span class="text-[10px] text-gray-400">Kemarin, 14:15 WIB</span>
+                                    </div>
+                                    <p class="text-gray-500 text-[11px] mt-0.5">Scanner Epson diajukan oleh Budi
+                                        Santoso, perlu persetujuan.</p>
+                                </div>
+                            </div>
+
+                            <!-- Activity Item 3 -->
+                            <div class="p-3 bg-[#F8FAFC] rounded-xl flex items-start gap-3">
+                                <div
+                                    class="w-7 h-7 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5 text-xs">
+                                    <i class="fa-solid fa-check"></i>
+                                </div>
+                                <div class="text-xs">
+                                    <div class="flex justify-between items-center gap-2">
+                                        <h3 class="font-bold text-gray-800">Peminjaman Baru</h3>
+                                        <span class="text-[10px] text-gray-400">Kemarin, 10:05 WIB</span>
+                                    </div>
+                                    <p class="text-gray-500 text-[11px] mt-0.5">Ruang Rapat Besar B302 diajukan oleh
+                                        Budi Santoso.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Button -->
+                    <div class="mt-6">
+                        <button
+                            class="w-full py-2.5 border border-gray-200 rounded-xl text-xs font-bold text-gray-600 hover:bg-gray-50 transition-all">
+                            Lihat Semua Aktivitas &gt;
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
     </div>
-</div>
-@endsection
+
+</body>
+
+</html>

@@ -10,12 +10,39 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    protected $fillable = ['name', 'email', 'password', 'role'];
+    /**
+     * Nama primary key sesuai tabel database
+     */
+    protected $primaryKey = 'id_number';
 
-    protected $hidden = ['password', 'remember_token'];
+    /**
+     * Matikan auto-increment jika NIM/NIP diinput manual
+     */
+    public $incrementing = false;
 
-    protected function casts(): array
-    {
-        return ['email_verified_at' => 'datetime', 'password' => 'hashed'];
-    }
+    /**
+     * Tipe data primary key
+     */
+    protected $keyType = 'string';
+
+    /**
+     * Kolom yang boleh diisi
+     */
+    protected $fillable = [
+        'id_number',
+        'name',
+        'email',
+        'phone_number',
+        'profile_picture',
+        'password',
+        'role',
+    ];
+
+    /**
+     * Kolom yang disembunyikan
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
 }
