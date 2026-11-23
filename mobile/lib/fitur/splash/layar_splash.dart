@@ -1,8 +1,6 @@
 // Penjelasan edukatif: Layar fitur aplikasi; widget membangun UI, state menyimpan perubahan sementara, dan aksi pengguna memicu navigasi atau repository.
 // Pemula dapat mengikuti alur dari build() ke callback interaksi, lalu melihat perubahan state atau perpindahan rute.
 
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:my_sbum/inti/rute/rute_aplikasi.dart';
 import 'package:my_sbum/komponen/latar_aplikasi.dart';
@@ -19,7 +17,6 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
-  Timer? _navigationTimer;
 
   @override
   void initState() {
@@ -27,17 +24,19 @@ class _SplashScreenState extends State<SplashScreen>
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1800),
-    )..forward();
+    );
+    _controller.addStatusListener(_onAnimationStatus);
+    _controller.forward();
+  }
 
-    _navigationTimer = Timer(const Duration(seconds: 60), () {
-      if (!mounted) return;
-      Navigator.pushReplacementNamed(context, AppRoutes.login);
-    });
+  void _onAnimationStatus(AnimationStatus status) {
+    if (status != AnimationStatus.completed || !mounted) return;
+    Navigator.pushReplacementNamed(context, AppRoutes.login);
   }
 
   @override
   void dispose() {
-    _navigationTimer?.cancel();
+    _controller.removeStatusListener(_onAnimationStatus);
     _controller.dispose();
     super.dispose();
   }
