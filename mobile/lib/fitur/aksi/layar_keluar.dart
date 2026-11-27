@@ -2,6 +2,7 @@
 // Pemula dapat mengikuti alur dari build() ke callback interaksi, lalu melihat perubahan state atau perpindahan rute.
 
 import 'package:flutter/material.dart';
+import 'package:my_sbum/data/layanan/layanan_autentikasi.dart';
 import 'package:my_sbum/inti/rute/rute_aplikasi.dart';
 
 /// Keterangan kelas: _C adalah widget/helper internal untuk menyusun bagian kecil UI atau state.
@@ -24,6 +25,16 @@ class LogoutDialogPage extends StatelessWidget {
       builder: (_) => const LogoutDialogPage(),
     );
     if (shouldLogout == true && context.mounted) {
+      try {
+        await const AuthService().logout();
+      } catch (error) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text('Gagal keluar: $error')));
+        }
+        return;
+      }
+      if (!context.mounted) return;
       Navigator.pushNamedAndRemoveUntil(
         context,
         AppRoutes.login,

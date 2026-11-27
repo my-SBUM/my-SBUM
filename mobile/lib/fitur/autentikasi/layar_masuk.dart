@@ -4,7 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_sbum/komponen/kerangka_aplikasi.dart';
 import 'package:my_sbum/inti/rute/rute_aplikasi.dart';
-import 'package:my_sbum/data/layanan/layanan_aplikasi_simulasi.dart';
+import 'package:my_sbum/data/layanan/layanan_autentikasi.dart';
 import 'package:my_sbum/komponen/logo_aplikasi.dart';
 
 /// Keterangan kelas: LoginScreen adalah widget layar yang menjadi titik interaksi pengguna dan dapat meneruskan navigasi.
@@ -23,19 +23,48 @@ class _LoginScreenState extends State<LoginScreen> {
   final FocusNode _passwordFocusNode = FocusNode();
   bool _isPasswordObscured = true;
   bool _isLoading = false;
+  bool _sudahDicoba = false;
+  String? _pesanLogin;
+
+  String? get _kesalahanIdentitas {
+    final nilai = _nimController.text.trim();
+    if (nilai.isEmpty) return 'Masukkan NIM/NIP atau email.';
+    if (nilai.runes.length > 100) return 'Identitas maksimal 100 karakter.';
+    if (RegExp(r'^[0-9]+$').hasMatch(nilai)) return null;
+    if (!nilai.contains('@'))
+      return 'Gunakan angka untuk NIM/NIP, atau masukkan email.';
+    if (!RegExp(r'^[^@\s]+@[^@\s]+$').hasMatch(nilai)) {
+      return 'Periksa format email, misalnya nama@kampus.ac.id.';
+    }
+    return null;
+  }
+
+  String? get _kesalahanSandi {
+    final nilai = _passwordController.text;
+    if (nilai.trim().isEmpty) return 'Masukkan kata sandi.';
+    if (nilai.runes.length > 1024) return 'Kata sandi maksimal 1024 karakter.';
+    return null;
+  }
+
+  void _perbaruiValidasi(String _) {
+    if (_sudahDicoba) setState(() => _pesanLogin = null);
+  }
 
   Future<void> _login() async {
+    if (_isLoading) return;
     final identifier = _nimController.text.trim();
     final password = _passwordController.text;
 
-    // Jika NIM/NIP kosong, langsung fokus ke input NIM/NIP
-    if (identifier.isEmpty) {
+    setState(() {
+      _sudahDicoba = true;
+      _pesanLogin = null;
+    });
+    if (_kesalahanIdentitas != null) {
       _nimFocusNode.requestFocus();
       return;
     }
 
-    // Jika password kosong, langsung fokus ke input password
-    if (password.isEmpty) {
+    if (_kesalahanSandi != null) {
       _passwordFocusNode.requestFocus();
       return;
     }
@@ -43,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() => _isLoading = true);
 
     try {
-      await const MockAppService().login(
+      await const AuthService().login(
         identifier: identifier,
         password: password,
       );
@@ -58,8 +87,10 @@ class _LoginScreenState extends State<LoginScreen> {
     } catch (error) {
       if (!mounted) return;
 
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Login gagal: $error')));
+      final message = error is AuthException
+          ? error.message
+          : 'Login belum berhasil. Periksa konfigurasi aplikasi dan server.';
+      setState(() => _pesanLogin = message);
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -122,7 +153,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 // 3. Label & Input NIM/NIP
                 const Text(
-                  'NIM/NIP',
+                  'NIM/NIP atau email',
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
@@ -133,8 +164,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextField(
                   controller: _nimController,
                   focusNode: _nimFocusNode,
+                  readOnly: _isLoading,
+                  onChanged: _perbaruiValidasi,
                   decoration: InputDecoration(
-                    hintText: 'Masukkan NIM/NIP anda',
+                    errorText: _sudahDicoba ? _kesalahanIdentitas : null,
+                    errorMaxLines: 3,
+                    hintText: 'Masukkan NIM/NIP atau email',
                     hintStyle: const TextStyle(color: hintColor, fontSize: 14),
                     prefixIcon: const Icon(
                       Icons.badge_outlined,
@@ -177,9 +212,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextField(
                   controller: _passwordController,
                   focusNode: _passwordFocusNode,
+                  readOnly: _isLoading,
+                  onChanged: _perbaruiValidasi,
+                  onSubmitted: (_) => _login(),
                   obscureText: _isPasswordObscured,
                   decoration: InputDecoration(
                     hintText: 'Masukkan Password Anda',
+                    errorText: _sudahDicoba ? _kesalahanSandi : null,
+                    errorMaxLines: 3,
                     hintStyle: const TextStyle(color: hintColor, fontSize: 14),
                     prefixIcon: const Icon(
                       Icons.lock_outline,
@@ -247,6 +287,19 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 24),
 
                 // 6. Tombol MASUK (Gradasi Hijau)
+                if (_pesanLogin != null)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: Semantics(
+                      liveRegion: true,
+                      child: Text(
+                        _pesanLogin!,
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.error,
+                        ),
+                      ),
+                    ),
+                  ),
                 Container(
                   height: 52,
                   decoration: BoxDecoration(

@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:my_sbum/komponen/latar_aplikasi.dart';
 import 'package:my_sbum/inti/rute/pengarah_aplikasi.dart';
@@ -70,6 +71,7 @@ void main() {
   testWidgets('app opens on splash then continues to login', (
     WidgetTester tester,
   ) async {
+    FlutterSecureStorage.setMockInitialValues({});
     await tester.pumpWidget(const MyApp());
 
     expect(find.byType(SplashScreen), findsOneWidget);

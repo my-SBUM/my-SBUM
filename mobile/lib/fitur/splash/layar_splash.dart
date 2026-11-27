@@ -2,6 +2,7 @@
 // Pemula dapat mengikuti alur dari build() ke callback interaksi, lalu melihat perubahan state atau perpindahan rute.
 
 import 'package:flutter/material.dart';
+import 'package:my_sbum/data/layanan/layanan_autentikasi.dart';
 import 'package:my_sbum/inti/rute/rute_aplikasi.dart';
 import 'package:my_sbum/komponen/latar_aplikasi.dart';
 
@@ -29,9 +30,20 @@ class _SplashScreenState extends State<SplashScreen>
     _controller.forward();
   }
 
-  void _onAnimationStatus(AnimationStatus status) {
+  void _onAnimationStatus(AnimationStatus status) async {
     if (status != AnimationStatus.completed || !mounted) return;
-    Navigator.pushReplacementNamed(context, AppRoutes.login);
+    var next = AppRoutes.login;
+    try {
+      if (await const AuthService().restore()) next = AppRoutes.home;
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Sesi belum dapat diperiksa. Silakan masuk kembali.'),
+        ),
+      );
+    }
+    if (mounted) Navigator.pushReplacementNamed(context, next);
   }
 
   @override

@@ -6,14 +6,6 @@ import 'dart:async';
 class MockAppService {
   const MockAppService();
 
-  Future<void> login({
-    required String identifier,
-    required String password,
-  }) async {
-    await Future<void>.delayed(const Duration(milliseconds: 500));
-    // TODO: sambungkan ke API
-  }
-
   Future<void> register({
     required String name,
     required String identifier,

@@ -12,7 +12,7 @@ Aplikasi Flutter untuk peminjaman ruangan dan peralatan SBUM.
 - `lib/data/sumber_data/`: katalog ruangan/peralatan, riwayat, notifikasi,
   daftar pilihan formulir, dan data lokal untuk layar detail.
 - `lib/data/repositori/`: implementasi repository yang membaca datasource lokal.
-- `lib/data/layanan/`: layanan mock untuk aksi autentikasi dan pengajuan.
+- `lib/data/layanan/`: layanan login Laravel dan layanan simulasi untuk fitur lain.
 - `lib/data/model/`: model data transport yang tidak bergantung pada widget UI.
 
 Fixture katalog, riwayat, notifikasi, profil, lookup formulir, dan data fallback

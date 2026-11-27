@@ -6,18 +6,11 @@ pengembangan backend/web.
 
 ## Status aplikasi saat ini
 
-- **Mobile Flutter:** dapat dijalankan sebagai prototipe menggunakan data dan
-  layanan simulasi yang tersedia di aplikasi.
-- **Prototipe web Laravel:** proyek Laravel tersedia di `web/` dan masih
-  menggunakan halaman awal serta konfigurasi bawaan. Folder `backend/` tetap
-  menjadi placeholder; integrasi database dan API belum dibuat.
-- **Koneksi aplikasi:** login, pendaftaran, perubahan kata sandi, dan pengajuan
-  belum mengirim data ke server. Tidak perlu menyalakan XAMPP/MySQL untuk
-  mencoba prototipe mobile.
-
-> Login prototipe hanya memeriksa bahwa kolom NIM/NIP dan password tidak
-> kosong. Data contoh bukan akun sungguhan; jangan gunakan atau memasukkan
-> password penting.
+- **Login mobile:** Flutter mengirim NIM/NIP atau email dan kata sandi ke API Laravel di `web/`.
+  Gunakan akun aktif dari database development. Token berlaku satu hari dan disimpan
+  di penyimpanan aman perangkat. Logout mencabut token sesi tersebut.
+- **Fitur mobile lainnya:** pendaftaran, perubahan kata sandi, dan pengajuan masih
+  menggunakan simulasi. Profil dan katalog masih menggunakan data contoh.
 
 ---
 
@@ -27,9 +20,9 @@ pengembangan backend/web.
 | --- | --- |
 | Mobile | Flutter dan Dart |
 | Prototipe web | Laravel 13 |
-| Backend/API (rencana) | Laravel |
-| Database (rencana) | MySQL |
-| Komunikasi (rencana) | REST API / JSON |
+| Backend/API | Laravel dan Sanctum |
+| Database | MySQL |
+| Komunikasi | HTTP API / JSON |
 
 ## Struktur repository
 
@@ -61,11 +54,16 @@ composer install
 php artisan serve
 ```
 
-Buka alamat lokal yang ditampilkan oleh Artisan (biasanya
-`http://127.0.0.1:8000`). Proyek web ini masih berupa scaffold Laravel; belum
-terhubung ke database maupun aplikasi mobile.
+Untuk login mobile, nyalakan MySQL Laragon dan arahkan `web/.env` ke database
+hasil impor SQL revisi 2. Dump tersebut sudah menyediakan `users` dan
+`personal_access_tokens`. Saat server Artisan berjalan pada port 8000, build
+debug di emulator Android menggunakan `http://10.0.2.2:8000/api` secara otomatis.
+Untuk HP Android melalui USB debugging, jalankan `adb reverse tcp:8000 tcp:8000`,
+lalu dari folder mobile jalankan
+`flutter run --dart-define=API_BASE_URL=http://127.0.0.1:8000/api`.
+Untuk build rilis, isi `API_BASE_URL` dengan URL HTTPS.
 
----a
+---
 
 ## Cara menjalankan aplikasi mobile di Windows
 
