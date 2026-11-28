@@ -13,7 +13,7 @@ use App\Http\Controllers\RuanganController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 // Route Publik / Guest (Pendaftaran & Login)
