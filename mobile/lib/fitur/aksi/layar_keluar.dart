@@ -71,7 +71,7 @@ class LogoutDialogPage extends StatelessWidget {
 
             // Deskripsi
             const Text(
-              'Apakah Anda yakin ingin keluar\ndari akun SPARA Anda?',
+              'Apakah Anda yakin ingin keluar\ndari akun mySBUM Anda?',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 15, color: _C.muted, height: 1.5),
             ),
